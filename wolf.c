@@ -6,12 +6,18 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:18:33 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 14:19:01 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 16:17:31 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf.h"
+#include "input.h"
 
-int		wolf_init(t_wolf *wolf)
+int		game_loop(t_wolf *wolf)
 {
+	while (!wolf->quit)
+	{
+		user_event(wolf);
+	}
+	return (0);
 }
