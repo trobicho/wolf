@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:56:05 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 20:08:30 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 20:57:00 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,15 @@ static int	check_hor_intesect(t_ray *ray, t_map *map)
 	t_vec2i	pos;
 
 	pos.y = (ray->origin.y / map->grid_len) * map->grid_len - 1;
-	pos.x = ray->origin.x + (ray->origin.y - pos.y) * tan(ray->angle);
-	x_a = map->grid_len / tan((double)ray->angle);
+	if (ray->angle > M_PI)
+		pos.y = (ray->origin.y / map->grid_len) * map->grid_len + map->grid_len;
+	pos.x = (int)(ray->origin.x + (ray->origin.y - pos.y) / tan(ray->angle));
+
+	x_a = (int)(map->grid_len / tan((double)ray->angle));
 	y_a = map->grid_len;
+	if (ray->angle > M_PI)
+		y_a = -map->grid_len;
+
 	//printf("%d, %d, %lf, %d, %d\n", x_a, y_a, tan((double)ray->angle), pos.x, pos.y);
 	found = 0;
 	while ((found = check_grid(map, pos)) == 0)
@@ -47,9 +53,15 @@ static int	check_ver_intesect(t_ray *ray, t_map *map)
 	t_vec2i	pos;
 
 	pos.x = (ray->origin.x / map->grid_len) * map->grid_len - 1;
-	pos.x = ray->origin.y + (ray->origin.x - pos.x) * tan(ray->angle);
+	if (ray->angle > M_PI / 2.0 && ray->angle < M_PI + M_PI / 2.0)
+		pos.x = (ray->origin.x / map->grid_len) * map->grid_len + map->grid_len;
+	pos.y = (int)(ray->origin.y + (ray->origin.x - pos.x) * tan(ray->angle));
+
 	x_a = map->grid_len;
-	y_a = map->grid_len * tan((double)ray->angle);
+	if (ray->angle > M_PI / 2.0 && ray->angle < M_PI + M_PI / 2.0)
+		x_a = -map->grid_len;
+	y_a = (int)(map->grid_len * tan((double)ray->angle));
+
 	//printf("%d, %d, %lf, %d, %d\n", x_a, y_a, tan((double)ray->angle), pos.x, pos.y);
 	found = 0;
 	while ((found = check_grid(map, pos)) == 0)
@@ -73,9 +85,14 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 
 	ray_hor = *ray;
 	ray_ver = *ray;
+	found_ver = check_ver_intesect(&ray_ver, map);
 	if (ray->angle > 0.1 || ray->angle < -0.1)
 		found_hor = check_hor_intesect(&ray_hor, map);
-	found_ver = check_ver_intesect(&ray_ver, map);
+	else
+	{
+		*ray = ray_ver;
+		return (found_ver);
+	}
 	if (ray_ver.dist < ray_hor.dist)
 	{
 		*ray = ray_ver;
@@ -116,7 +133,7 @@ void		ray_cast(t_wolf *wolf)
 	t_ray	ray;
 
 	col = 0;
-	teta_cur = wolf->player.cam.angle - wolf->player.cam.fov;
+	teta_cur = wolf->player.cam.angle - wolf->player.cam.fov / 2.0;
 	teta_add = wolf->player.cam.fov / (float)wolf->display.width;
 	while (col < wolf->display.width)
 	{
