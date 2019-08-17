@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 16:04:35 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 20:33:21 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 21:02:32 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	user_event(t_wolf *wolf)
 			else if (event.key.keysym.scancode == SDL_SCANCODE_LEFT)
 			{
 				wolf->player.cam.angle -= 0.1;
-				if (wolf->player.cam.angle <= -M_PI * 2.0)
-					wolf->player.cam.angle = 0.0;
+				if (wolf->player.cam.angle <= 0.0)
+					wolf->player.cam.angle = M_PI * 2.0 - 0.1;
 			}
 			else if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
 			{
@@ -34,6 +34,14 @@ int	user_event(t_wolf *wolf)
 				if (wolf->player.cam.angle >= M_PI * 2.0)
 					wolf->player.cam.angle = 0.0;
 			}
+			else if (event.key.keysym.scancode == SDL_SCANCODE_W)
+				wolf->player.cam.pos.y -= 1;
+			else if (event.key.keysym.scancode == SDL_SCANCODE_S)
+				wolf->player.cam.pos.y += 1;
+			else if (event.key.keysym.scancode == SDL_SCANCODE_A)
+				wolf->player.cam.pos.x -= 1;
+			else if (event.key.keysym.scancode == SDL_SCANCODE_D)
+				wolf->player.cam.pos.x += 1;
 		}
 	}
 	return (0);

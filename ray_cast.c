@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:56:05 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 20:57:00 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 21:00:32 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static int	check_hor_intesect(t_ray *ray, t_map *map)
 	int		found;
 	t_vec2i	pos;
 
-	pos.y = (ray->origin.y / map->grid_len) * map->grid_len - 1;
+	pos.y = (ray->origin.y / map->grid_len) * map->grid_len + map->grid_len;
 	if (ray->angle > M_PI)
-		pos.y = (ray->origin.y / map->grid_len) * map->grid_len + map->grid_len;
+		pos.y = (ray->origin.y / map->grid_len) * map->grid_len - 1;
 	pos.x = (int)(ray->origin.x + (ray->origin.y - pos.y) / tan(ray->angle));
 
 	x_a = (int)(map->grid_len / tan((double)ray->angle));
