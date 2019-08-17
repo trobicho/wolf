@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:56:05 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 21:00:32 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 21:36:13 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ static int	check_hor_intesect(t_ray *ray, t_map *map)
 	int		found;
 	t_vec2i	pos;
 
-	pos.y = (ray->origin.y / map->grid_len) * map->grid_len + map->grid_len;
+	pos.y = (ray->origin.y / map->grid_len) * map->grid_len - 1;
 	if (ray->angle > M_PI)
-		pos.y = (ray->origin.y / map->grid_len) * map->grid_len - 1;
+		pos.y = (ray->origin.y / map->grid_len) * map->grid_len + map->grid_len;
 	pos.x = (int)(ray->origin.x + (ray->origin.y - pos.y) / tan(ray->angle));
 
 	x_a = (int)(map->grid_len / tan((double)ray->angle));
-	y_a = map->grid_len;
+	y_a = -map->grid_len;
 	if (ray->angle > M_PI)
-		y_a = -map->grid_len;
+		y_a = map->grid_len;
 
 	//printf("%d, %d, %lf, %d, %d\n", x_a, y_a, tan((double)ray->angle), pos.x, pos.y);
 	found = 0;
@@ -52,9 +52,9 @@ static int	check_ver_intesect(t_ray *ray, t_map *map)
 	int		found;
 	t_vec2i	pos;
 
-	pos.x = (ray->origin.x / map->grid_len) * map->grid_len - 1;
+	pos.x = (ray->origin.x / map->grid_len) * map->grid_len + map->grid_len;
 	if (ray->angle > M_PI / 2.0 && ray->angle < M_PI + M_PI / 2.0)
-		pos.x = (ray->origin.x / map->grid_len) * map->grid_len + map->grid_len;
+		pos.x = (ray->origin.x / map->grid_len) * map->grid_len - 1;
 	pos.y = (int)(ray->origin.y + (ray->origin.x - pos.x) * tan(ray->angle));
 
 	x_a = map->grid_len;
@@ -86,22 +86,22 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 	ray_hor = *ray;
 	ray_ver = *ray;
 	found_ver = check_ver_intesect(&ray_ver, map);
-	if (ray->angle > 0.1 || ray->angle < -0.1)
-		found_hor = check_hor_intesect(&ray_hor, map);
-	else
-	{
-		*ray = ray_ver;
-		return (found_ver);
-	}
+	found_hor = check_hor_intesect(&ray_hor, map);
 	if (ray_ver.dist < ray_hor.dist)
 	{
 		*ray = ray_ver;
-		return (found_ver);
+		if (found_ver == -1)
+			return (found_ver);
+		else
+			return (1);
 	}
 	else
 	{
 		*ray = ray_hor;
-		return (found_hor);
+		if (found_hor == -1)
+			return (found_hor);
+		else
+			return (2);
 	}
 	return (0);
 }
@@ -130,6 +130,7 @@ void		ray_cast(t_wolf *wolf)
 	int		col;
 	float	teta_cur;
 	float	teta_add;
+	int		found;
 	t_ray	ray;
 
 	col = 0;
@@ -140,9 +141,14 @@ void		ray_cast(t_wolf *wolf)
 		ray.origin = wolf->player.cam.pos;
 		ray.angle = teta_cur;
 		ray.dist = 0;
-		if (send_one_ray(&ray, &wolf->map))
+		if ((found = send_one_ray(&ray, &wolf->map)))
 		{
-			draw_unicolor_slice(wolf, ray, col, 0x00FF00);
+			if (found == -1)
+				draw_unicolor_slice(wolf, ray, col, 0x0);
+			else if (found == 1)
+				draw_unicolor_slice(wolf, ray, col, 0x0FF00);
+			else if (found == 2)
+				draw_unicolor_slice(wolf, ray, col, 0x000FF);
 		}
 		teta_cur += teta_add;
 		col++;
