@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:54:36 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 16:19:21 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 16:40:31 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int			main(int ac, char **av)
 {
 	t_wolf	wolf;
 
-	wolf_init(&wolf);
+	if (wolf_init(&wolf))
+		return (1);
 	game_loop(&wolf);
-	return (0);
+	return (wolf_quit(&wolf));
 }

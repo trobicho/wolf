@@ -6,11 +6,14 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:55:40 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 13:58:13 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 16:52:46 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RENDER_H
 # define RENDER_H
 
+# include "wolf.h"
+
+void	render_one_frame(t_wolf *wolf);
 #endif

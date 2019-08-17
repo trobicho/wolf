@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 16:19:33 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 16:34:43 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,12 @@ typedef struct	s_player
 
 typedef struct	s_display
 {
+	int				width;
+	int				height;
 	SDL_Window		*win;
 	SDL_Renderer	*renderer;
+	SDL_Texture		*texture;
+	Uint32			*pixels;
 }				t_display;
 
 typedef struct	s_wolf

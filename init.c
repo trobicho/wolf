@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 16:17:53 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 16:39:57 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,25 @@
 
 static int	wolf_init_display(t_display *display)
 {
+	int	w;
+	int	h;
+
 	display->win = SDL_CreateWindow("Wolf"
 		, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED
-		, 800, 600, SDL_WINDOW_OPENGL);
+		, display->width, display->height, SDL_WINDOW_OPENGL);
 		//SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL);
 	if (display->win == NULL)
 		return (1);
 	display->renderer = SDL_CreateRenderer(display->win, -1, 0);
 	if (display->renderer == NULL)
+		return (1);
+	display->texture = SDL_CreateTexture(display->renderer
+		, SDL_PIXELFORMAT_ARGB8888 , SDL_TEXTUREACCESS_STREAMING
+		, display->width, display->height);
+	if (display->texture == NULL)
+		return (1);
+	if ((display->pixels = malloc(sizeof(Uint32) 
+					* display->width * display->height)) == NULL)
 		return (1);
 	SDL_SetRenderDrawColor(display->renderer, 0, 0, 0, 255);
 	SDL_RenderClear(display->renderer);
@@ -31,8 +42,17 @@ static int	wolf_init_display(t_display *display)
 
 int			wolf_init(t_wolf *wolf)
 {
+	wolf->display.width = 800;
+	wolf->display.height = 600;
 	if (wolf_init_display(&wolf->display))
 		return (1);
 	wolf->quit = 0;
+	return (0);
+}
+
+int		wolf_quit(t_wolf *wolf)
+{
+	SDL_Quit();
+	free(wolf->display.pixels);
 	return (0);
 }
