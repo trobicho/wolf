@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 16:34:43 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 17:41:06 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,19 @@
 # define WOLF_H
 
 # include <SDL2/SDL.h>
+# include "map.h"
 
-typedef struct	s_vec2f
+typedef struct	s_vec2i
 {
-	float	x;
-	float	y;
-}				t_vec2f;
+	int	x;
+	int	y;
+}				t_vec2i;
 
 typedef struct	s_camera
 {
-	t_vec2f	pos;
+	t_vec2i	pos;
 	float	angle;
+	int		fov;
 }				t_camera;
 
 typedef struct	s_player
@@ -45,6 +47,8 @@ typedef struct	s_display
 
 typedef struct	s_wolf
 {
+	t_player	player;
+	t_map		map;
 	t_display	display;
 	int			quit;
 }				t_wolf;
