@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:58:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 17:41:53 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 20:10:23 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@ int		load_map_test(t_map *map)
 		while (x < map->w)
 		{
 			if (x == 0 || y == 0 || x == map->w - 1 || y == map->h -1)
-				map->buf[x + y * map->w] = '#';
+				map->buf[x + y * map->w] = 1;
 			else
-				map->buf[x + y * map->w] = '.';
+				map->buf[x + y * map->w] = 0;
 			x++;
 		}
 		y++;
 	}
+	map->buf[3 + 50] = 1;
 	return (0);
 }
 
@@ -45,4 +46,11 @@ int		init_map(t_map *map)
 	if (load_map_test(map))
 		return (1);
 	return (0);
+}
+
+int		check_grid(t_map *map, t_vec2i v)
+{
+	v.x /= map->grid_len;
+	v.y /= map->grid_len;
+	return (map->buf[v.x + v.y * map->w]);
 }

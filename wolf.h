@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 17:41:06 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 18:28:40 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,13 @@
 
 # include <SDL2/SDL.h>
 # include "map.h"
-
-typedef struct	s_vec2i
-{
-	int	x;
-	int	y;
-}				t_vec2i;
+# include "vector.h"
 
 typedef struct	s_camera
 {
 	t_vec2i	pos;
 	float	angle;
-	int		fov;
+	float	fov;
 }				t_camera;
 
 typedef struct	s_player

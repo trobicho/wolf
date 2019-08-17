@@ -6,11 +6,12 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:55:42 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 16:56:20 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 20:10:52 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
+#include "ray_cast.h"
 
 static void	test_tex(Uint32 *pix, int w, int h)
 {
@@ -24,7 +25,7 @@ static void	test_tex(Uint32 *pix, int w, int h)
 		while (x < w)
 		{
 			pix[x + y * w] = 0xFF00FF;
-			if (x > w / 2)
+			if (y >= h / 2)
 				pix[x + y * w] = 0xFFFF00;
 			x++;
 		}
@@ -35,6 +36,7 @@ static void	test_tex(Uint32 *pix, int w, int h)
 void	render_one_frame(t_wolf *wolf)
 {
 	test_tex(wolf->display.pixels, wolf->display.width, wolf->display.height);
+	ray_cast(wolf);
 	SDL_UpdateTexture(wolf->display.texture, NULL, wolf->display.pixels, wolf->display.width * sizeof (Uint32));
 	SDL_RenderClear(wolf->display.renderer);
 	SDL_RenderCopy(wolf->display.renderer, wolf->display.texture, NULL, NULL);

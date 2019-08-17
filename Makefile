@@ -6,7 +6,7 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/08/17 16:04:57 by trobicho         ###   ########.fr        #
+#    Updated: 2019/08/17 19:03:05 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ SRCS	=	main.c \
 			player.c \
 			render.c \
 			ray_cast.c \
-			map.c
+			map.c \
+			vector.c
 
 HDRS	=	init.h \
 			input.h \
@@ -28,11 +29,12 @@ HDRS	=	init.h \
 			player.h \
 			render.h \
 			ray_cast.h \
-			map.h
+			map.h \
+			vector.h
 OUTS	=	$(SRCS:.c=.o)
 NAME	=	wolf
 SDL_LOC	=	$(HOME)/.brew/Cellar/sdl2/2.0.9_1
-LFLAGS	=	-L $(SDL_LOC)/lib  -lSDL2
+LFLAGS	=	-lm -L $(SDL_LOC)/lib -lSDL2
 IFLAGS	=	-I $(SDL_LOC)/include
 
 all:		$(NAME) Makefile

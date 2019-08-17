@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 17:41:36 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/17 18:28:23 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			wolf_init(t_wolf *wolf)
 	wolf->display.height = 600;
 	if (wolf_init_display(&wolf->display))
 		return (1);
-	wolf->player.cam.fov = 60;
+	wolf->player.cam.fov = 1.0472;
 	wolf->quit = 0;
 	return (0);
 }

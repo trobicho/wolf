@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.h                                              :+:      :+:    :+:   */
+/*   vector.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/17 13:57:50 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 18:58:24 by trobicho         ###   ########.fr       */
+/*   Created: 2019/08/17 18:00:24 by trobicho          #+#    #+#             */
+/*   Updated: 2019/08/17 18:01:20 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAP
-# define MAP
+#ifndef VECTOR_H
+# define VECTOR_H
 
-# include "vector.h"
-
-typedef struct	s_map
+typedef struct	s_vec2i
 {
-	int	w;
-	int	h;
-	int	grid_len;
-	int	*buf;
-}				t_map;
-
-int		init_map(t_map *map);
-int		check_grid(t_map *map, t_vec2i v);
+	int	x;
+	int	y;
+}				t_vec2i;
 #endif
