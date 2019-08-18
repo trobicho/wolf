@@ -1,16 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_cast_redo.c                                    :+:      :+:    :+:   */
+/*   ray_cast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/18 18:10:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/18 21:11:24 by trobicho         ###   ########.fr       */
+/*   Created: 2019/08/17 13:56:05 by trobicho          #+#    #+#             */
+/*   Updated: 2019/08/18 19:53:23 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ray_cast.h"
+#include <math.h>
+
+#include <stdio.h>
 
 static int	radar[100] = {0};
 
@@ -43,51 +46,24 @@ static void	put_in_radar(t_vec2i pos, t_map *map, int c)
 		radar[pos.x / map->grid_len + (pos.y / map->grid_len) * 10] = c;
 }
 
-static t_vec2i	calc_step(t_ray *ray, t_map *map, t_vec2i *delta_dist, t_vec2i *step)
+static int	check_hor_intesect(t_ray *ray, t_map *map)
 {
 	int		x_a;
 	int		y_a;
+	int		found;
 	t_vec2i	pos;
-	t_vec2i	side_dist;
 
 	pos.y = (int)(ray->origin.y / map->grid_len) * map->grid_len - 1;
 	if (ray->angle > M_PI)
 		pos.y = (int)(ray->origin.y / map->grid_len) * map->grid_len + map->grid_len;
-	side_dist.y = pos.y - ray->origin.y;
-	if (side_dist.y < 0)
-		side_dist.y = -side_dist.y;
+	pos.x = (int)(ray->origin.x + (ray->origin.y - pos.y) / tan(ray->angle));
 
-	pos.x = (ray->origin.x / map->grid_len) * map->grid_len + map->grid_len;
-	if (ray->angle > M_PI / 2.0 && ray->angle < M_PI + M_PI / 2.0)
-		pos.x = (ray->origin.x / map->grid_len) * map->grid_len - 1;
-	side_dist.x = pos.x - ray->origin.x;
-	if (side_dist.x < 0)
-		side_dist.x = -side_dist.x;
-	
-	delta_dist->x = (int)(map->grid_len / tan((double)ray->angle));
-	step->y = -map->grid_len;
+	x_a = (int)(map->grid_len / tan((double)ray->angle));
+	y_a = -map->grid_len;
 	if (ray->angle > M_PI)
-		step->y = map->grid_len;
-	delta_dist->y = (int)(map->grid_len * tan((double)ray->angle));
-	step->x = map->grid_len;
-	if (ray->angle > M_PI / 2.0 && ray->angle < M_PI + M_PI / 2.0)
-		step->x = -map->grid_len;
-	delta_dist->x = sqrt(delta_dist->x * delta_dist->x + step->y * step->y);
-	delta_dist->y = sqrt(delta_dist->y * delta_dist->y + step->x * step->x);
-	return (side_dist);
-}
+		y_a = map->grid_len;
 
-static int	send_one_ray(t_ray *ray, t_map *map)
-{
-	t_vec2i	pos;
-	t_vec2i	step;
-	t_vec2i	delta_dist;
-	t_vec2i	side_dist;
-	int		found;
-	int		side;
-
-	side_dist = calc_step(ray, map, &delta_dist, &step);
-	pos = ray->origin;
+	//printf("%d, %d, %lf, %d, %d\n", x_a, y_a, tan((double)ray->angle), pos.x, pos.y);
 	found = 0;
 	while (1)
 	{
@@ -97,27 +73,87 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 			ray->dist = 1000;
 			return (-1);
 		}
-		if (side_dist.x < side_dist.y)
-		{
-			side_dist.x += delta_dist.x;
-			pos.x += step.x;
-			side = 1;
-		}
-		else
-		{
-			side_dist.y += delta_dist.y;
-			pos.y += step.y;
-			side = 2;
-		}
-		//printf("side_dist {%d, %d}\n", side_dist.x, side_dist.y);
 		if ((found = check_grid(map, pos)))
 			break;
 		put_in_radar(pos, map, 1);
+		pos.x += x_a;
+		pos.y += y_a;
 	}
+	//printf("pos: %d, %d\n", pos.x, pos.y);
 	ray->dist = sqrt((ray->origin.x - pos.x) * (ray->origin.x - pos.x)
 		+ (ray->origin.y - pos.y) * (ray->origin.y - pos.y));
-	found = (found == -1) ? found : side;
+	ray->pos = pos;
 	return (found);
+}
+
+static int	check_ver_intesect(t_ray *ray, t_map *map)
+{
+	int		x_a;
+	int		y_a;
+	int		found;
+	t_vec2i	pos;
+
+	pos.x = (ray->origin.x / map->grid_len) * map->grid_len + map->grid_len;
+	if (ray->angle > M_PI / 2.0 && ray->angle < M_PI + M_PI / 2.0)
+		pos.x = (ray->origin.x / map->grid_len) * map->grid_len - 1;
+	pos.y = (int)(ray->origin.y + (ray->origin.x - pos.x) * tan(ray->angle));
+
+	x_a = map->grid_len;
+	if (ray->angle > M_PI / 2.0 && ray->angle < M_PI + M_PI / 2.0)
+		x_a = -map->grid_len;
+	y_a = (int)(map->grid_len * tan((double)ray->angle));
+
+	//printf("%d, %d, %lf, %d, %d\n", x_a, y_a, tan((double)ray->angle), pos.x, pos.y);
+	found = 0;
+	while (1)
+	{
+		if (pos.x < 0 || pos.x >= map->w * map->grid_len
+			|| pos.y < 0 || pos.y >= map->h * map->grid_len)
+		{
+			ray->dist = 1000;
+			return (-1);
+		}
+		if ((found = check_grid(map, pos)))
+			break;
+		put_in_radar(pos, map, 5);
+		pos.x += x_a;
+		pos.y += y_a;
+	}
+	//printf("pos: %d, %d\n", pos.x, pos.y);
+	ray->dist = sqrt((ray->origin.x - pos.x) * (ray->origin.x - pos.x)
+		+ (ray->origin.y - pos.y) * (ray->origin.y - pos.y));
+	ray->pos = pos;
+	return (found);
+}
+
+static int	send_one_ray(t_ray *ray, t_map *map)
+{
+	t_ray	ray_hor;
+	t_ray	ray_ver;
+	int		found_hor;
+	int		found_ver;
+
+	ray_hor = *ray;
+	ray_ver = *ray;
+	found_ver = check_ver_intesect(&ray_ver, map);
+	found_hor = check_hor_intesect(&ray_hor, map);
+	if (ray_ver.dist < ray_hor.dist)
+	{
+		*ray = ray_ver;
+		if (found_ver == -1)
+			return (found_ver);
+		else
+			return (1);
+	}
+	else
+	{
+		*ray = ray_hor;
+		if (found_hor == -1)
+			return (found_hor);
+		else
+			return (2);
+	}
+	return (0);
 }
 
 static void	draw_unicolor_slice(t_wolf *wolf, t_ray ray, int col, Uint32 color)
@@ -166,9 +202,9 @@ void		ray_cast(t_wolf *wolf)
 			if (found == -1)
 				draw_unicolor_slice(wolf, ray, col, 0x0);
 			else if (found == 1)
-				draw_unicolor_slice(wolf, ray, col, 0x000FF);
-			else if (found == 2)
 				draw_unicolor_slice(wolf, ray, col, 0x0FF00);
+			else if (found == 2)
+				draw_unicolor_slice(wolf, ray, col, 0x000FF);
 		}
 		teta_cur += teta_add;
 		col++;
