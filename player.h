@@ -6,11 +6,14 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:55:12 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 13:55:35 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/18 00:27:34 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PLAYER_H
 # define PLAYER_H
 
+#include "wolf.h"
+
+void	walk(t_wolf *wolf, int x, int y); //float ? <=(1/frame)
 # endif

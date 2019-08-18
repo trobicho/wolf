@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:58:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 21:08:37 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/18 01:45:32 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,5 @@ int		check_grid(t_map *map, t_vec2i v)
 {
 	v.x /= map->grid_len;
 	v.y /= map->grid_len;
-	if (v.x < 0 || v.y < 0 || v.x >= map->w || v.y >= map->h)
-		return (-1);
 	return (map->buf[v.x + v.y * map->w]);
 }
