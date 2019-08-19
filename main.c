@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:54:36 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/18 17:25:36 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/19 02:45:24 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int			main(int ac, char **av)
 		return (1);
 	wolf.player.cam.pos.x = wolf.map.w * wolf.map.grid_len / 2;
 	wolf.player.cam.pos.y = wolf.map.h * wolf.map.grid_len / 2;
-	wolf.player.cam.angle = M_PI;
+	wolf.player.cam.angle = 0.0;
 	game_loop(&wolf);
 	return (wolf_quit(&wolf));
 }

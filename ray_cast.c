@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_cast_redo.c                                    :+:      :+:    :+:   */
+/*   ray_cast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/18 18:10:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/18 21:11:24 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/19 03:43:50 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,17 @@ static int	radar[100] = {0};
 
 static void print_radar(void)
 {
-	printf("\n\n\n\n------------------------\n");
+	printf("------------------------\n");
 	for (int y = 0; y < 10; y++)
 	{
 		for (int x = 0; x < 10; x++)
 		{
 			if (radar[x + y * 10] == 0)
 				printf(". ");
-			else
+			else if (radar[x + y * 10] < 10)
 				printf("%d ", radar[x + y * 10] % 10);
+			else
+				printf("%c ", (char)radar[x + y * 10]);
 			radar[x + y * 10] = 0;
 		}
 		printf("\n");
@@ -37,7 +39,7 @@ static void	put_in_radar(t_vec2i pos, t_map *map, int c)
 	if (radar[pos.x / map->grid_len + (pos.y / map->grid_len) * 10] != c
 		&& radar[pos.x / map->grid_len + (pos.y / map->grid_len) * 10] != 0)
 	{
-		radar[pos.x / map->grid_len + (pos.y / map->grid_len) * 10] = 6;
+		return ;
 	}
 	else
 		radar[pos.x / map->grid_len + (pos.y / map->grid_len) * 10] = c;
@@ -64,14 +66,14 @@ static t_vec2i	calc_step(t_ray *ray, t_map *map, t_vec2i *delta_dist, t_vec2i *s
 	if (side_dist.x < 0)
 		side_dist.x = -side_dist.x;
 	
-	delta_dist->x = (int)(map->grid_len / tan((double)ray->angle));
 	step->y = -map->grid_len;
 	if (ray->angle > M_PI)
 		step->y = map->grid_len;
-	delta_dist->y = (int)(map->grid_len * tan((double)ray->angle));
 	step->x = map->grid_len;
 	if (ray->angle > M_PI / 2.0 && ray->angle < M_PI + M_PI / 2.0)
 		step->x = -map->grid_len;
+	delta_dist->y = (int)(map->grid_len / tan((double)ray->angle));
+	delta_dist->x = (int)(map->grid_len * tan((double)ray->angle));
 	delta_dist->x = sqrt(delta_dist->x * delta_dist->x + step->y * step->y);
 	delta_dist->y = sqrt(delta_dist->y * delta_dist->y + step->x * step->x);
 	return (side_dist);
@@ -88,7 +90,13 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 
 	side_dist = calc_step(ray, map, &delta_dist, &step);
 	pos = ray->origin;
+	put_in_radar(pos, map, '*');
+	t_vec2i test = pos;
+	test.x += side_dist.x;
+	test.y += side_dist.y;
+	put_in_radar(test, map, '*');
 	found = 0;
+	int iter = 0;
 	while (1)
 	{
 		if (pos.x < 0 || pos.x >= map->w * map->grid_len
@@ -112,7 +120,8 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 		//printf("side_dist {%d, %d}\n", side_dist.x, side_dist.y);
 		if ((found = check_grid(map, pos)))
 			break;
-		put_in_radar(pos, map, 1);
+		put_in_radar(pos, map, iter);
+		iter++;
 	}
 	ray->dist = sqrt((ray->origin.x - pos.x) * (ray->origin.x - pos.x)
 		+ (ray->origin.y - pos.y) * (ray->origin.y - pos.y));
@@ -150,12 +159,13 @@ void		ray_cast(t_wolf *wolf)
 	t_ray	ray;
 
 	col = 0;
-	teta_cur = wolf->player.cam.angle - wolf->player.cam.fov / 2.0;
-	teta_add = wolf->player.cam.fov / (float)wolf->display.width;
+	teta_cur = wolf->player.cam.angle + wolf->player.cam.fov / 2.0;
+	teta_add = -wolf->player.cam.fov / (float)wolf->display.width;
+	printf("\n\n\n%f\n", teta_cur);
 	while (col < wolf->display.width)
 	{
-		if (teta_cur < -0.0)
-			teta_cur += M_PI * 2.0;
+		if (teta_cur <= 0.01)
+			teta_cur = (M_PI * 2.0 - teta_add) + teta_cur;
 		else if (teta_cur > M_PI * 2.0)
 			teta_cur -= M_PI * 2.0;
 		ray.origin = wolf->player.cam.pos;

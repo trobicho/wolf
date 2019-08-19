@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 16:04:35 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/18 00:42:23 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/19 02:46:44 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ int	user_event(t_wolf *wolf)
 				wolf->quit = 1;
 			else if (event.key.keysym.scancode == SDL_SCANCODE_LEFT)
 			{
-				wolf->player.cam.angle -= 0.1;
-				if (wolf->player.cam.angle <= 0.0)
-					wolf->player.cam.angle = M_PI * 2.0 - 0.1;
+				wolf->player.cam.angle += 0.1;
+				if (wolf->player.cam.angle >= M_PI * 2.0)
+					wolf->player.cam.angle = 0.1;
 			}
 			else if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
 			{
-				wolf->player.cam.angle += 0.1;
-				if (wolf->player.cam.angle >= M_PI * 2.0)
-					wolf->player.cam.angle = 0.0;
+				wolf->player.cam.angle -= 0.1;
+				if (wolf->player.cam.angle <= 0.0)
+					wolf->player.cam.angle = M_PI * 2.0 - 0.1;
 			}
 			else if (event.key.keysym.scancode == SDL_SCANCODE_W)
 			{
