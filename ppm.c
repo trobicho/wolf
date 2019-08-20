@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 18:08:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 20:09:48 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/20 21:08:24 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,17 @@
 
 static int	ppm_parse_header(int fd, ssize_t *w, ssize_t *h)
 {
-	char	magic_buf[2];
+	char	magic_buf[3];
 	ssize_t	size;
 	char	*line;
 
-	size = read(fd, magic_buf, 2);
-	if (magic_buf[0] != 'P' || magic_buf[1] != '6')
+	size = read(fd, magic_buf, 3);
+	if (magic_buf[0] != 'P' || magic_buf[1] != '6' || !ft_isspace(magic_buf[2]))
 		return (-1);
 	get_next_line(fd, &line);
+	ft_putendl(line);
+	get_next_line(fd, &line);
+	ft_putendl(line);
 	*w = 384;
 	*h = 1216;
 	free(line);
@@ -45,11 +48,11 @@ int			ppm_load_4bpp(const char *file_path, t_ppm_tex_4bpp *tex)
 		return (-1);
 	if (ppm_parse_header(fd, &tex->w, &tex->h))
 		return (-1);
-	y = 0;
 	cur_index = 0;
 	if ((tex->pixels = malloc(sizeof(*tex->pixels) * tex->w * tex->h)) == NULL)
 		return (-1);
 	size = read(fd, buf, READ_SIZE);
+	y = 0;
 	while (y < tex->h)
 	{
 		x = 0;
