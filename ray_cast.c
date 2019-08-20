@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/18 18:10:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 03:47:37 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/20 05:19:36 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,9 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 		iter++;
 	}
 	if (side == 1)
-		ray->dist = side_dist.x;
+		ray->dist = side_dist.x - delta_dist.x;
 	else
-		ray->dist = side_dist.y;
+		ray->dist = side_dist.y - delta_dist.y;
 		/*
 	ray->dist = sqrt((ray->origin.x - pos.x) * (ray->origin.x - pos.x)
 		+ (ray->origin.y - pos.y) * (ray->origin.y - pos.y));

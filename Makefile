@@ -6,7 +6,7 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/08/20 04:08:45 by trobicho         ###   ########.fr        #
+#    Updated: 2019/08/20 05:03:21 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ HDRS	=	init.h \
 OUTS	=	$(SRCS:.c=.o)
 NAME	=	wolf
 SDL_LOC	=	$(HOME)/.brew/Cellar/sdl2/2.0.9_1
-LFLAGS	=	-lm -L $(SDL_LOC)/lib -lSDL2 -L./libft -lf
+LFLAGS	=	-lm -L $(SDL_LOC)/lib -lSDL2
 IFLAGS	=	-I $(SDL_LOC)/include
 
 all:		$(NAME) Makefile
