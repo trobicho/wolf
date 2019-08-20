@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/19 02:44:37 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/20 22:52:24 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ int			wolf_init(t_wolf *wolf)
 	wolf->player.cam.fov = 1.0472;
 	//wolf->player.cam.fov = 0.600;
 	wolf->quit = 0;
+	wolf->tiles_wall.blend = 0xFF00FF;
+	if (ppm_load_4bpp("./texture/tile.pbm", &wolf->tiles_wall))
+		return (-1);
 	return (0);
 }
 
@@ -57,5 +60,6 @@ int		wolf_quit(t_wolf *wolf)
 	SDL_Quit();
 	free(wolf->display.pixels);
 	free(wolf->map.buf);
+	free(wolf->tiles_wall.pixels);
 	return (0);
 }

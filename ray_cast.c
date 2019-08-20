@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/18 18:10:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 05:19:36 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/21 00:08:40 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,32 @@ static void	draw_unicolor_slice(t_wolf *wolf, t_ray ray, int col, Uint32 color)
 	}
 }
 
+static void	draw_textured_slice(t_wolf *wolf, t_ray ray, int col, int tex_index)
+{
+	int		height;
+	int		y_slice;
+	int		y;
+	Uint32	color;
+	t_vec2i	offset;
+
+	offset.x = (tex_index % 6) * 64;
+	offset.y = (tex_index / 6) * 64;
+	height = (128.0 / ray.dist) * 255;
+	if (height > wolf->display.height)
+		height = wolf->display.height;
+	y_slice = 0;
+	y = wolf->display.height / 2 - height / 2;
+	while (y_slice < height)
+	{
+		color = wolf->tiles_wall.pixels[offset.x + 
+			+ (offset.y + (int)(((float)y_slice / height) * 64.0))
+			* wolf->tiles_wall.w];
+		wolf->display.pixels[col + y * wolf->display.width] = color;
+		y_slice++;
+		y++;
+	}
+}
+
 void		ray_cast(t_wolf *wolf)
 {
 	int		col;
@@ -196,9 +222,9 @@ void		ray_cast(t_wolf *wolf)
 			if (found == -1)
 				draw_unicolor_slice(wolf, ray, col, 0x0);
 			else if (found == 1)
-				draw_unicolor_slice(wolf, ray, col, 0x000FF);
+				draw_textured_slice(wolf, ray, col, 0);
 			else if (found == 2)
-				draw_unicolor_slice(wolf, ray, col, 0x0FF00);
+				draw_textured_slice(wolf, ray, col, 0);
 		}
 		teta_cur += teta_add;
 		col++;

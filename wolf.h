@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 19:55:00 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/20 22:50:15 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ typedef struct	s_display
 
 typedef struct	s_wolf
 {
-	t_player	player;
-	t_map		map;
-	t_display	display;
-	int			quit;
+	t_player		player;
+	t_map			map;
+	t_display		display;
+	t_ppm_tex_4bpp	tiles_wall;
+	int				quit;
 }				t_wolf;
 
 int				game_loop(t_wolf *wolf);

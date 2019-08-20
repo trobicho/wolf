@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 18:08:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 21:08:24 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/20 22:25:15 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,31 @@
 #include <sys/types.h>
 #include <fcntl.h>
 
+#include <sys/stat.h>
+
 static int	ppm_parse_header(int fd, ssize_t *w, ssize_t *h)
 {
 	char	magic_buf[3];
 	ssize_t	size;
-	char	*line;
+	char	c;
 
 	size = read(fd, magic_buf, 3);
 	if (magic_buf[0] != 'P' || magic_buf[1] != '6' || !ft_isspace(magic_buf[2]))
 		return (-1);
-	get_next_line(fd, &line);
-	ft_putendl(line);
-	get_next_line(fd, &line);
-	ft_putendl(line);
+	while ((size = read(fd, &c, 1)) > 0)
+	{
+		printf("%c", c);
+		if (c == '\n')
+			break;
+	}
+	while ((size = read(fd, &c, 1)) > 0)
+	{
+		printf("%c", c);
+		if (c == '\n')
+			break;
+	}
 	*w = 384;
 	*h = 1216;
-	free(line);
 	return (0);
 }
 
