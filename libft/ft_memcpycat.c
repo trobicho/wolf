@@ -1,31 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memcpycat.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/17 13:54:36 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 20:05:33 by trobicho         ###   ########.fr       */
+/*   Created: 2019/04/10 16:47:44 by trobicho          #+#    #+#             */
+/*   Updated: 2019/04/10 16:48:46 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf.h"
-#include "init.h"
-#include "math.h"
+#include "libft.h"
 
-int			main(int ac, char **av)
+void	*ft_memcpycat(void const *s1, void const *s2, size_t l1, size_t l2)
 {
-	t_wolf	wolf;
-
-	if (wolf_init(&wolf))
-		return (1);
-	if (init_map(&wolf.map))
-		return (1);
-	wolf.player.cam.pos.x = wolf.map.w * wolf.map.grid_len / 2;
-	wolf.player.cam.pos.y = wolf.map.h * wolf.map.grid_len / 2;
-	wolf.player.cam.angle = 0.0;
-	if (game_loop(&wolf))
-		return (1);
-	return (wolf_quit(&wolf));
 }

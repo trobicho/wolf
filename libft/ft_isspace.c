@@ -1,31 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/17 13:54:36 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 20:05:33 by trobicho         ###   ########.fr       */
+/*   Created: 2019/04/04 10:37:21 by trobicho          #+#    #+#             */
+/*   Updated: 2019/04/04 14:38:29 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf.h"
-#include "init.h"
-#include "math.h"
-
-int			main(int ac, char **av)
+int	ft_isspace(int c)
 {
-	t_wolf	wolf;
-
-	if (wolf_init(&wolf))
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v'
+		|| c == '\f' || c == '\r')
 		return (1);
-	if (init_map(&wolf.map))
-		return (1);
-	wolf.player.cam.pos.x = wolf.map.w * wolf.map.grid_len / 2;
-	wolf.player.cam.pos.y = wolf.map.h * wolf.map.grid_len / 2;
-	wolf.player.cam.angle = 0.0;
-	if (game_loop(&wolf))
-		return (1);
-	return (wolf_quit(&wolf));
+	return (0);
 }

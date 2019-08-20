@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/17 13:54:36 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 20:05:33 by trobicho         ###   ########.fr       */
+/*   Created: 2019/04/02 18:05:16 by trobicho          #+#    #+#             */
+/*   Updated: 2019/04/09 16:00:34 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf.h"
-#include "init.h"
-#include "math.h"
+#include <unistd.h>
+#include "libft.h"
 
-int			main(int ac, char **av)
+void	ft_putstr(char const *s)
 {
-	t_wolf	wolf;
+	size_t	l;
 
-	if (wolf_init(&wolf))
-		return (1);
-	if (init_map(&wolf.map))
-		return (1);
-	wolf.player.cam.pos.x = wolf.map.w * wolf.map.grid_len / 2;
-	wolf.player.cam.pos.y = wolf.map.h * wolf.map.grid_len / 2;
-	wolf.player.cam.angle = 0.0;
-	if (game_loop(&wolf))
-		return (1);
-	return (wolf_quit(&wolf));
+	if (s != NULL)
+	{
+		l = ft_strlen(s);
+		if (l)
+			write(1, s, l);
+	}
 }

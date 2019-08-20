@@ -1,31 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/17 13:54:36 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 20:05:33 by trobicho         ###   ########.fr       */
+/*   Created: 2019/04/04 13:16:08 by trobicho          #+#    #+#             */
+/*   Updated: 2019/04/05 18:44:07 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf.h"
-#include "init.h"
-#include "math.h"
+#include <unistd.h>
+#include "libft.h"
 
-int			main(int ac, char **av)
+static int	ft_logten(unsigned int n)
 {
-	t_wolf	wolf;
+	unsigned int	r;
 
-	if (wolf_init(&wolf))
-		return (1);
-	if (init_map(&wolf.map))
-		return (1);
-	wolf.player.cam.pos.x = wolf.map.w * wolf.map.grid_len / 2;
-	wolf.player.cam.pos.y = wolf.map.h * wolf.map.grid_len / 2;
-	wolf.player.cam.angle = 0.0;
-	if (game_loop(&wolf))
-		return (1);
-	return (wolf_quit(&wolf));
+	r = 1;
+	while (n >= 10)
+	{
+		n /= 10;
+		r *= 10;
+	}
+	return (r);
+}
+
+void		ft_putnbr(int n)
+{
+	int				p;
+	unsigned int	mn;
+
+	if (n < 0)
+	{
+		ft_putchar('-');
+		mn = -n;
+	}
+	else
+		mn = n;
+	p = ft_logten(mn);
+	while (p > 1)
+	{
+		ft_putchar((mn / p) % 10 + '0');
+		p /= 10;
+	}
+	ft_putchar(mn % 10 + '0');
 }

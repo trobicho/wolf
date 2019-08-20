@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ppm.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/17 13:54:36 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 20:05:33 by trobicho         ###   ########.fr       */
+/*   Created: 2019/08/20 18:04:49 by trobicho          #+#    #+#             */
+/*   Updated: 2019/08/20 19:55:18 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf.h"
-#include "init.h"
-#include "math.h"
+#ifndef PPM_H
+# define PPM_H
 
-int			main(int ac, char **av)
+# include <SDL2/SDL.h>
+# define	READ_SIZE	65535
+
+typedef struct	s_ppm_tex_1bpp
 {
-	t_wolf	wolf;
+	ssize_t	w;
+	ssize_t	h;
+	Uint8	*pixels;
+}				t_ppm_tex_1bpp;
 
-	if (wolf_init(&wolf))
-		return (1);
-	if (init_map(&wolf.map))
-		return (1);
-	wolf.player.cam.pos.x = wolf.map.w * wolf.map.grid_len / 2;
-	wolf.player.cam.pos.y = wolf.map.h * wolf.map.grid_len / 2;
-	wolf.player.cam.angle = 0.0;
-	if (game_loop(&wolf))
-		return (1);
-	return (wolf_quit(&wolf));
-}
+typedef struct	s_ppm_tex_4bpp
+{
+	ssize_t	w;
+	ssize_t	h;
+	Uint32	*pixels;
+	Uint32	blend;
+}				t_ppm_tex_4bpp;
+
+int				ppm_load_4bpp(const char *file_path, t_ppm_tex_4bpp *tex);
+#endif

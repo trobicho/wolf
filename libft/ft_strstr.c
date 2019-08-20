@@ -1,31 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/17 13:54:36 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 20:05:33 by trobicho         ###   ########.fr       */
+/*   Created: 2019/04/04 10:02:38 by trobicho          #+#    #+#             */
+/*   Updated: 2019/04/06 14:22:19 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf.h"
-#include "init.h"
-#include "math.h"
+#include <string.h>
 
-int			main(int ac, char **av)
+char	*ft_strstr(const char *s, const char *chr)
 {
-	t_wolf	wolf;
+	size_t	i;
+	size_t	i2;
+	size_t	c;
 
-	if (wolf_init(&wolf))
-		return (1);
-	if (init_map(&wolf.map))
-		return (1);
-	wolf.player.cam.pos.x = wolf.map.w * wolf.map.grid_len / 2;
-	wolf.player.cam.pos.y = wolf.map.h * wolf.map.grid_len / 2;
-	wolf.player.cam.angle = 0.0;
-	if (game_loop(&wolf))
-		return (1);
-	return (wolf_quit(&wolf));
+	i = 0;
+	i2 = 0;
+	if (chr[0] == '\0')
+		return ((char *)s);
+	while (s[i] != '\0')
+	{
+		i2 = i;
+		c = 0;
+		while (s[i2] != '\0' && chr[c] != '\0')
+		{
+			if (s[i2] != chr[c])
+				break ;
+			c++;
+			i2++;
+		}
+		if (chr[c] == '\0')
+			return ((char *)(&s[i]));
+		i++;
+	}
+	return (NULL);
 }

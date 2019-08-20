@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 18:28:40 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/20 19:55:00 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <SDL2/SDL.h>
 # include "map.h"
 # include "vector.h"
+# include "ppm.h"
 
 typedef struct	s_camera
 {
