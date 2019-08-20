@@ -6,12 +6,13 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:55:42 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/17 20:10:52 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/19 22:41:29 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 #include "ray_cast.h"
+#include "physic.h"
 
 static void	test_tex(Uint32 *pix, int w, int h)
 {
@@ -35,6 +36,7 @@ static void	test_tex(Uint32 *pix, int w, int h)
 
 void	render_one_frame(t_wolf *wolf)
 {
+	physic_check(wolf);
 	test_tex(wolf->display.pixels, wolf->display.width, wolf->display.height);
 	ray_cast(wolf);
 	SDL_UpdateTexture(wolf->display.texture, NULL, wolf->display.pixels, wolf->display.width * sizeof (Uint32));

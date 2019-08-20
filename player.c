@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:55:07 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/18 00:44:41 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/19 18:28:54 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	walk(t_wolf *wolf, int x, int y)
 
 	teta = wolf->player.cam.angle;
 	d.x = cos(teta) * y + sin(teta) * x;
-	d.y = cos(teta) * -x + sin(teta) * -y;
+	d.y = cos(teta) * x + sin(teta) * -y;
 	wolf->player.cam.pos.x += d.x;
 	wolf->player.cam.pos.y += d.y;
 }

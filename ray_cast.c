@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/18 18:10:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/19 03:43:50 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/20 03:47:37 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static t_vec2i	calc_step(t_ray *ray, t_map *map, t_vec2i *delta_dist, t_vec2i *s
 	int		y_a;
 	t_vec2i	pos;
 	t_vec2i	side_dist;
+	double	tan_calc;
+	int		wider;
 
 	pos.y = (int)(ray->origin.y / map->grid_len) * map->grid_len - 1;
 	if (ray->angle > M_PI)
@@ -72,10 +74,20 @@ static t_vec2i	calc_step(t_ray *ray, t_map *map, t_vec2i *delta_dist, t_vec2i *s
 	step->x = map->grid_len;
 	if (ray->angle > M_PI / 2.0 && ray->angle < M_PI + M_PI / 2.0)
 		step->x = -map->grid_len;
-	delta_dist->y = (int)(map->grid_len / tan((double)ray->angle));
-	delta_dist->x = (int)(map->grid_len * tan((double)ray->angle));
-	delta_dist->x = sqrt(delta_dist->x * delta_dist->x + step->y * step->y);
-	delta_dist->y = sqrt(delta_dist->y * delta_dist->y + step->x * step->x);
+	wider = ((map->w > map->h) ? map->w : map->h) * map->grid_len;
+	tan_calc = tan(ray->angle);
+	if (tan_calc < 1.0 / wider && tan_calc > -1.0 / wider)
+		delta_dist->y = (int)(wider + 1);
+	else
+		delta_dist->y = (int)(map->grid_len / tan_calc);
+	if (tan_calc > wider || tan_calc < -wider)
+		delta_dist->x = (int)(wider + 1);
+	else
+		delta_dist->x = (int)(map->grid_len * tan_calc);
+	delta_dist->x = sqrt(delta_dist->x * delta_dist->x + step->x * step->x);
+	delta_dist->y = sqrt(delta_dist->y * delta_dist->y + step->y * step->y);
+	side_dist.x = delta_dist->x * (side_dist.x / (float)map->grid_len);
+	side_dist.y = delta_dist->y * (side_dist.y / (float)map->grid_len);
 	return (side_dist);
 }
 
@@ -91,10 +103,11 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 	side_dist = calc_step(ray, map, &delta_dist, &step);
 	pos = ray->origin;
 	put_in_radar(pos, map, '*');
-	t_vec2i test = pos;
-	test.x += side_dist.x;
-	test.y += side_dist.y;
-	put_in_radar(test, map, '*');
+	if ((found = check_grid(map, pos)))
+	{
+		ray->dist = 1;
+		return (1);
+	}
 	found = 0;
 	int iter = 0;
 	while (1)
@@ -105,7 +118,8 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 			ray->dist = 1000;
 			return (-1);
 		}
-		if (side_dist.x < side_dist.y)
+		if ((unsigned int)(side_dist.x)
+			< (unsigned int)(side_dist.y))
 		{
 			side_dist.x += delta_dist.x;
 			pos.x += step.x;
@@ -123,8 +137,14 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 		put_in_radar(pos, map, iter);
 		iter++;
 	}
+	if (side == 1)
+		ray->dist = side_dist.x;
+	else
+		ray->dist = side_dist.y;
+		/*
 	ray->dist = sqrt((ray->origin.x - pos.x) * (ray->origin.x - pos.x)
 		+ (ray->origin.y - pos.y) * (ray->origin.y - pos.y));
+		*/
 	found = (found == -1) ? found : side;
 	return (found);
 }
@@ -164,9 +184,9 @@ void		ray_cast(t_wolf *wolf)
 	printf("\n\n\n%f\n", teta_cur);
 	while (col < wolf->display.width)
 	{
-		if (teta_cur <= 0.01)
-			teta_cur = (M_PI * 2.0 - teta_add) + teta_cur;
-		else if (teta_cur > M_PI * 2.0)
+		if (teta_cur <= 0.001)
+			teta_cur = (M_PI * 2.0 ) + teta_cur;
+		else if (teta_cur >= M_PI * 2.0)
 			teta_cur -= M_PI * 2.0;
 		ray.origin = wolf->player.cam.pos;
 		ray.angle = teta_cur;

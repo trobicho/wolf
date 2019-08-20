@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:56:05 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/19 03:20:40 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/19 21:02:14 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,12 @@ static int	check_hor_intesect(t_ray *ray, t_map *map)
 		pos.y = (int)(ray->origin.y / map->grid_len) * map->grid_len + map->grid_len;
 	pos.x = (int)(ray->origin.x + (ray->origin.y - pos.y) / tan(ray->angle));
 
-	x_a = (int)(map->grid_len * tan((double)ray->angle));
+	int wider = (map->w > map->h) ? map->w : map->h;
+	double tan_calc = tan(ray->angle);
+	if (tan_calc > wider || tan_calc < -wider)
+		x_a = (int)(map->grid_len * (wider + 1));
+	else
+		x_a = (int)(map->grid_len / tan((double)ray->angle));
 	y_a = -map->grid_len;
 	if (ray->angle > M_PI)
 		y_a = map->grid_len;
@@ -98,10 +103,15 @@ static int	check_ver_intesect(t_ray *ray, t_map *map)
 		pos.x = (ray->origin.x / map->grid_len) * map->grid_len - 1;
 	pos.y = (int)(ray->origin.y + (ray->origin.x - pos.x) * tan(ray->angle));
 
+	int wider = (map->w > map->h) ? map->w : map->h;
+	double tan_calc = tan(ray->angle);
+	if (tan_calc < 1.0 / wider && tan_calc > -1.0 / wider)
+		y_a = (int)(map->grid_len * (wider + 1));
+	else
+		y_a = (int)(map->grid_len * tan((double)ray->angle));
 	x_a = map->grid_len;
 	if (ray->angle > M_PI / 2.0 && ray->angle < M_PI + M_PI / 2.0)
 		x_a = -map->grid_len;
-	y_a = (int)(map->grid_len / tan((double)ray->angle));
 
 	//printf("%d, %d, %lf, %d, %d\n", x_a, y_a, tan((double)ray->angle), pos.x, pos.y);
 	found = 0;
