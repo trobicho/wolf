@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/18 18:10:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/21 05:23:00 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/21 05:39:12 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,7 @@ void		ray_cast(t_wolf *wolf)
 		wider = (wolf->map.w > wolf->map.h ? wolf->map.w : wolf->map.h)
 			* wolf->map.grid_len;
 		if (ray.tan_calc < 1.0 / wider && ray.tan_calc > -1.0 / wider)
-			ray.tan_calc = (ray.tan_calc < -0.0) ? -1 / wider : 1 / wider;
+			ray.tan_calc = (ray.tan_calc < -0.0) ? -1.0 / wider : 1.0 / wider;
 		if (ray.tan_calc > wider || ray.tan_calc < -wider)
 			ray.tan_calc = (ray.tan_calc < -0.0) ? -wider : wider;
 		if ((found = send_one_ray(&ray, &wolf->map)))
