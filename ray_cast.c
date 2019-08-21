@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/18 18:10:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/21 00:17:11 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/21 02:11:19 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,19 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 		iter++;
 	}
 	if (side == 1)
+	{
 		ray->dist = side_dist.x - delta_dist.x;
+		//pos.y = ray->origin.y + ((pos.x - ray->origin.x) * 64) / side_dist.x;
+		pos.y = ray->origin.y;
+		ray->wall_w = pos.y % 64;
+		if (ray->wall_w < 0)
+			ray->wall_w = -ray->wall_w;
+	}
 	else
+	{
 		ray->dist = side_dist.y - delta_dist.y;
+		ray->wall_w = 0;
+	}
 		/*
 	ray->dist = sqrt((ray->origin.x - pos.x) * (ray->origin.x - pos.x)
 		+ (ray->origin.y - pos.y) * (ray->origin.y - pos.y));
@@ -170,7 +180,7 @@ static void	draw_unicolor_slice(t_wolf *wolf, t_ray ray, int col, Uint32 color)
 	}
 }
 
-static void	draw_textured_slice(t_wolf *wolf, t_ray ray, int col, int tex_index)
+static void	draw_textured_slice(t_wolf *wolf, t_ray *ray, int col, int tex_index)
 {
 	int		height;
 	int		y_slice;
@@ -178,9 +188,9 @@ static void	draw_textured_slice(t_wolf *wolf, t_ray ray, int col, int tex_index)
 	Uint32	color;
 	t_vec2i	offset;
 
-	offset.x = (tex_index % 6) * 64;
+	offset.x = (tex_index % 6) * 64 + ray->wall_w;
 	offset.y = (tex_index / 6) * 64;
-	height = (128.0 / ray.dist) * 255;
+	height = (128.0 / ray->dist) * 255;
 	y_slice = 0;
 	y = wolf->display.height / 2 - height / 2;
 	if (height > wolf->display.height)
@@ -225,9 +235,9 @@ void		ray_cast(t_wolf *wolf)
 			if (found == -1)
 				draw_unicolor_slice(wolf, ray, col, 0x0);
 			else if (found == 1)
-				draw_textured_slice(wolf, ray, col, 0);
+				draw_textured_slice(wolf, &ray, col, 0);
 			else if (found == 2)
-				draw_textured_slice(wolf, ray, col, 0);
+				draw_textured_slice(wolf, &ray, col, 12);
 		}
 		teta_cur += teta_add;
 		col++;
