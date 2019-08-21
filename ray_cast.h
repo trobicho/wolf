@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:56:22 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/21 01:51:37 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/21 02:33:00 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct	s_ray
 	float	angle;
 	int		dist;
 	int		wall_w;
+	float	tan_calc;
 }				t_ray;
 
 void			ray_cast(t_wolf *wolf);
