@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/18 18:10:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/21 03:24:21 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/21 05:23:00 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 	if (side == 1)
 	{
 		ray->dist = side_dist.x - delta_dist.x;
-		//pos.y = ray->origin.y + ((pos.x - ray->origin.x) * 64) / side_dist.x;
+		ray->dist *= cos(ray->beta);
 		if (pos.x - ray->origin.x < 0)
 			dx = ray->origin.x - (pos.x / 64) * 64 - 63;
 		else
@@ -144,6 +144,7 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 	else
 	{
 		ray->dist = side_dist.y - delta_dist.y;
+		ray->dist *= cos(ray->beta);
 		if (pos.y - ray->origin.y < 0)
 			dy = ray->origin.y - (pos.y / 64) * 64 - 63;
 		else
@@ -221,9 +222,9 @@ void		ray_cast(t_wolf *wolf)
 	int		wider;
 
 	col = 0;
+	ray.beta = wolf->player.cam.fov / 2.0;
 	teta_cur = wolf->player.cam.angle + wolf->player.cam.fov / 2.0;
 	teta_add = -wolf->player.cam.fov / (float)wolf->display.width;
-	printf("\n\n\n%f\n", teta_cur);
 	while (col < wolf->display.width)
 	{
 		if (teta_cur <= 0.001)
@@ -249,6 +250,7 @@ void		ray_cast(t_wolf *wolf)
 			else if (found == 2)
 				draw_textured_slice(wolf, &ray, col, 12);
 		}
+		ray.beta += teta_add;
 		teta_cur += teta_add;
 		col++;
 	}
