@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/23 08:38:44 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/23 09:12:18 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int			wolf_init(t_wolf *wolf)
 	wolf->display.height = 600;
 	if (wolf_init_display(&wolf->display))
 		return (1);
-	if ((wolf->menu.font = TTF_OpenFont("texture/long_shot.ttf", 25)) == NULL)
+	if ((wolf->menu.font = TTF_OpenFont("texture/long_shot.ttf", 30)) == NULL)
 		return (1);
 	wolf->player.fov = 1.0472;
 	//wolf->player.cam.fov = 0.600;
@@ -56,7 +56,7 @@ int			wolf_init(t_wolf *wolf)
 	if (ppm_load_4bpp("./texture/tile.pbm", &wolf->tiles_wall))
 		return (1);
 	wolf->state = state_menu;
-	wolf->menu.nb_entrie = 2;
+	wolf->menu.nb_entrie = 3;
 	wolf->menu.select = 0;
 	wolf->menu.w = 200;
 	wolf->menu.h = 300;

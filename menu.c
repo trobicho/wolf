@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 06:29:17 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/23 08:58:34 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/23 09:10:54 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,18 @@ static void	menu_place_text(t_wolf *wolf, const char *str, int id)
 	SDL_Texture	*texture;
 	int			space_h_per_text;
 
-	color = (SDL_Color){255, 255, 255};
+	if (id == wolf->menu.select)
+		color = (SDL_Color){200, 200, 200};
+	else
+		color = (SDL_Color){100, 100, 100};
 	surface = TTF_RenderText_Solid(wolf->menu.font, str, color);
 	texture = SDL_CreateTextureFromSurface(wolf->display.renderer, surface);
 	SDL_QueryTexture(texture, NULL, NULL, &tex_w, &tex_h);
 	dst_rect = (SDL_Rect){0 , 0, tex_w, tex_h};
-	space_h_per_text = (wolf->menu.h / wolf->menu.nb_entrie) - tex_h;
+	space_h_per_text = (wolf->menu.h / wolf->menu.nb_entrie);
 	dst_rect.x = wolf->display.width / 2 - tex_w / 2;
 	dst_rect.y = wolf->display.height / 2 - wolf->menu.h / 2
-		+ (id + 1) * space_h_per_text / 2;
+		+ id * space_h_per_text + space_h_per_text / 2 - tex_h / 2;
 	SDL_RenderCopy(wolf->display.renderer, texture, NULL, &dst_rect);
 	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(surface);
@@ -100,7 +103,7 @@ void		menu_display(t_wolf *wolf)
 	menu_draw_border(wolf, 0x0, 10);
 	render_texture_apply(wolf);
 	menu_place_text(wolf, "Game", 0);
-	menu_place_text(wolf, "Editor", 0);
-	menu_place_text(wolf, "Quit", 0);
+	menu_place_text(wolf, "Editor", 1);
+	menu_place_text(wolf, "Quit", 2);
 	SDL_RenderPresent(wolf->display.renderer);
 }

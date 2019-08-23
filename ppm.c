@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 18:08:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 22:25:15 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/23 11:36:24 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <fcntl.h>
-
-#include <sys/stat.h>
 
 static int	ppm_parse_header(int fd, ssize_t *w, ssize_t *h)
 {
@@ -83,5 +81,60 @@ int			ppm_load_4bpp(const char *file_path, t_ppm_tex_4bpp *tex)
 		}
 		y++;
 	}
+	return (0);
+}
+
+int			ppm_load_1bpp(const char *file_path, t_ppm_tex_1bpp *tex)
+{
+	int				fd;
+	int				x;
+	int				y;
+	int				cur_index;
+	ssize_t			size;
+	unsigned char	buf[READ_SIZE];
+
+	if ((fd = open(file_path, O_RDONLY)) <= 0)
+		return (-1);
+	if (ppm_parse_header(fd, &tex->w, &tex->h))
+		return (-1);
+	cur_index = 0;
+	if ((tex->pixels = malloc(sizeof(*tex->pixels) * tex->w * tex->h)) == NULL)
+		return (-1);
+	size = read(fd, buf, READ_SIZE);
+	y = 0;
+	while (y < tex->h)
+	{
+		x = 0;
+		while (x < tex->w)
+		{
+			if (cur_index == size)
+			{
+				size = read(fd, buf, READ_SIZE);
+				cur_index = 0;
+			}
+			tex->pixels[x + y * tex->w] = ((Uint8)buf[cur_index]);
+			x++;
+			cur_index++;
+		}
+		y++;
+	}
+	return (0);
+}
+
+int			ppm_write_1bpp(const char *file_path, t_ppm_tex_1bpp *tex)
+{
+	int				fd;
+	int				x;
+	int				y;
+	int				color;
+
+	if ((fd = open(file_path, O_WRONLY)) <= 0)
+		return (-1);
+	write(fd, "P6", 2);
+	ft_putnbr_fd(tex->w, fd);
+	write(fd, "\n", 1);
+	ft_putnbr_fd(tex->h, fd);
+	write(fd, "\n", 1);
+	write(fd, &tex->pixels, tex->w * tex->h);
 	return (0);
 }
