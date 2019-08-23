@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:55:42 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 21:35:01 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/23 08:25:44 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,11 @@ void	render_one_frame(t_wolf *wolf)
 	SDL_RenderClear(wolf->display.renderer);
 	SDL_RenderCopy(wolf->display.renderer, wolf->display.texture, NULL, NULL);
 	SDL_RenderPresent(wolf->display.renderer);
+}
+
+void	render_texture_apply(t_wolf *wolf)
+{
+	SDL_UpdateTexture(wolf->display.texture, NULL, wolf->display.pixels, wolf->display.width * sizeof (Uint32));
+	SDL_RenderClear(wolf->display.renderer);
+	SDL_RenderCopy(wolf->display.renderer, wolf->display.texture, NULL, NULL);
 }

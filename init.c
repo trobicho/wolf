@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 22:52:24 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/23 08:38:44 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static int	wolf_init_display(t_display *display)
 	if ((display->pixels = malloc(sizeof(Uint32) 
 					* display->width * display->height)) == NULL)
 		return (1);
+	TTF_Init();
 	SDL_SetRenderDrawColor(display->renderer, 0, 0, 0, 255);
 	SDL_RenderClear(display->renderer);
 	SDL_RenderPresent(display->renderer);
@@ -46,17 +47,27 @@ int			wolf_init(t_wolf *wolf)
 	wolf->display.height = 600;
 	if (wolf_init_display(&wolf->display))
 		return (1);
-	wolf->player.cam.fov = 1.0472;
+	if ((wolf->menu.font = TTF_OpenFont("texture/long_shot.ttf", 25)) == NULL)
+		return (1);
+	wolf->player.fov = 1.0472;
 	//wolf->player.cam.fov = 0.600;
 	wolf->quit = 0;
 	wolf->tiles_wall.blend = 0xFF00FF;
 	if (ppm_load_4bpp("./texture/tile.pbm", &wolf->tiles_wall))
-		return (-1);
+		return (1);
+	wolf->state = state_menu;
+	wolf->menu.nb_entrie = 2;
+	wolf->menu.select = 0;
+	wolf->menu.w = 200;
+	wolf->menu.h = 300;
 	return (0);
 }
 
 int		wolf_quit(t_wolf *wolf)
 {
+	SDL_DestroyTexture(wolf->display.texture);
+	TTF_CloseFont(wolf->menu.font);
+	TTF_Quit();
 	SDL_Quit();
 	free(wolf->display.pixels);
 	free(wolf->map.buf);

@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/20 22:50:15 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/23 08:28:56 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,25 @@
 # define WOLF_H
 
 # include <SDL2/SDL.h>
+# include <SDL2//SDL_ttf.h>
 # include "map.h"
 # include "vector.h"
 # include "ppm.h"
 
-typedef struct	s_camera
+typedef enum	s_state
 {
-	t_vec2i	pos;
-	float	angle;
-	float	fov;
-}				t_camera;
+	state_game,
+	state_menu,
+	state_dead,
+	state_editor,
+	state_option,
+}				t_state;
 
 typedef struct	s_player
 {
-	t_camera		cam;
+	t_vec2i			pos;
+	float			angle;
+	float			fov;
 	unsigned int	health;
 }				t_player;
 
@@ -41,14 +46,25 @@ typedef struct	s_display
 	Uint32			*pixels;
 }				t_display;
 
+typedef struct	s_menu
+{
+	int			nb_entrie;
+	int			select;
+	TTF_Font	*font;
+	int			w;
+	int			h;
+}				t_menu;
+
 typedef struct	s_wolf
 {
 	t_player		player;
 	t_map			map;
 	t_display		display;
 	t_ppm_tex_4bpp	tiles_wall;
+	t_state			state;
+	t_menu			menu;
 	int				quit;
 }				t_wolf;
 
-int				game_loop(t_wolf *wolf);
+int				state_loop(t_wolf *wolf);
 #endif

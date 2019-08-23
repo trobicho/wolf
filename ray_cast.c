@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/18 18:10:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/21 05:39:12 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/23 06:39:17 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,16 +222,16 @@ void		ray_cast(t_wolf *wolf)
 	int		wider;
 
 	col = 0;
-	ray.beta = wolf->player.cam.fov / 2.0;
-	teta_cur = wolf->player.cam.angle + wolf->player.cam.fov / 2.0;
-	teta_add = -wolf->player.cam.fov / (float)wolf->display.width;
+	ray.beta = wolf->player.fov / 2.0;
+	teta_cur = wolf->player.angle + wolf->player.fov / 2.0;
+	teta_add = -wolf->player.fov / (float)wolf->display.width;
 	while (col < wolf->display.width)
 	{
 		if (teta_cur <= 0.001)
 			teta_cur = (M_PI * 2.0 ) + teta_cur;
 		else if (teta_cur >= M_PI * 2.0)
 			teta_cur -= M_PI * 2.0;
-		ray.origin = wolf->player.cam.pos;
+		ray.origin = wolf->player.pos;
 		ray.angle = teta_cur;
 		ray.dist = 0;
 		ray.tan_calc = tan(teta_cur);

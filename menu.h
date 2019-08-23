@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.h                                            :+:      :+:    :+:   */
+/*   menu.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/17 16:04:17 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/23 07:10:44 by trobicho         ###   ########.fr       */
+/*   Created: 2019/08/23 06:29:10 by trobicho          #+#    #+#             */
+/*   Updated: 2019/08/23 07:58:53 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INPUT_H
-# define INPUT_H
-
+#ifndef MENU_H
+# define MENU_H
 # include "wolf.h"
 
-int	game_event(t_wolf *wolf);
-int	menu_event(t_wolf *wolf);
+void	menu_state(t_wolf *wolf);
+void	menu_display(t_wolf *wolf);
 #endif

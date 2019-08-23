@@ -6,14 +6,14 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 16:04:35 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/19 02:46:44 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/23 07:17:56 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 #include "player.h"
 
-int	user_event(t_wolf *wolf)
+int	game_event(t_wolf *wolf)
 {
 	SDL_Event	event;
 
@@ -24,41 +24,42 @@ int	user_event(t_wolf *wolf)
 			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 				wolf->quit = 1;
 			else if (event.key.keysym.scancode == SDL_SCANCODE_LEFT)
-			{
-				wolf->player.cam.angle += 0.1;
-				if (wolf->player.cam.angle >= M_PI * 2.0)
-					wolf->player.cam.angle = 0.1;
-			}
+				player_rotate(&wolf->player, 0.1);
 			else if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
-			{
-				wolf->player.cam.angle -= 0.1;
-				if (wolf->player.cam.angle <= 0.0)
-					wolf->player.cam.angle = M_PI * 2.0 - 0.1;
-			}
+				player_rotate(&wolf->player, -0.1);
 			else if (event.key.keysym.scancode == SDL_SCANCODE_W)
-			{
-				walk(wolf, 0, 6);
-				printf("pos (%d, %d)\n", wolf->player.cam.pos.x, wolf->player.cam.pos.y);
-				printf("pos (%d, %d)\n", wolf->player.cam.pos.x / 64, wolf->player.cam.pos.y / 64);
-			}
+				player_walk(wolf, 0, 6);
 			else if (event.key.keysym.scancode == SDL_SCANCODE_S)
-			{
-				walk(wolf, 0, -6);
-				printf("pos (%d, %d)\n", wolf->player.cam.pos.x, wolf->player.cam.pos.y);
-				printf("pos (%d, %d)\n", wolf->player.cam.pos.x / 64, wolf->player.cam.pos.y / 64);
-			}
+				player_walk(wolf, 0, -6);
 			else if (event.key.keysym.scancode == SDL_SCANCODE_A)
-			{
-				walk(wolf, -6, 0);
-				printf("pos (%d, %d)\n", wolf->player.cam.pos.x, wolf->player.cam.pos.y);
-				printf("pos (%d, %d)\n", wolf->player.cam.pos.x / 64, wolf->player.cam.pos.y / 64);
-			}
+				player_walk(wolf, -6, 0);
 			else if (event.key.keysym.scancode == SDL_SCANCODE_D)
-			{
-				walk(wolf, 6, 0);
-				printf("pos (%d, %d)\n", wolf->player.cam.pos.x, wolf->player.cam.pos.y);
-				printf("pos (%d, %d)\n", wolf->player.cam.pos.x / 64, wolf->player.cam.pos.y / 64);
-			}
+				player_walk(wolf, 6, 0);
+		}
+	}
+	return (0);
+}
+
+int	menu_event(t_wolf *wolf)
+{
+	SDL_Event	event;
+
+	SDL_WaitEvent(&event);
+	if (event.type == SDL_KEYDOWN)
+	{
+		if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+			wolf->quit = 1;
+		if (event.key.keysym.scancode == SDL_SCANCODE_DOWN)
+		{
+			wolf->menu.select++;
+			if (wolf->menu.select >= wolf->menu.nb_entrie)
+				wolf->menu.select = 0;
+		}
+		if (event.key.keysym.scancode == SDL_SCANCODE_UP)
+		{
+			wolf->menu.select--;
+			if (wolf->menu.select >= wolf->menu.nb_entrie)
+				wolf->menu.select = wolf->menu.nb_entrie-1;
 		}
 	}
 	return (0);

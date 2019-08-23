@@ -6,7 +6,7 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/08/20 20:01:58 by trobicho         ###   ########.fr        #
+#    Updated: 2019/08/23 08:16:02 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRCS	=	main.c \
 			physic.c \
 			map.c \
 			vector.c \
+			menu.c \
 			ppm.c
 
 HDRS	=	init.h \
@@ -34,13 +35,15 @@ HDRS	=	init.h \
 			physic.h \
 			map.h \
 			vector.h \
+			menu.h \
 			ppm.h
 
 OUTS	=	$(SRCS:.c=.o)
 NAME	=	wolf3d
 SDL_LOC	=	$(HOME)/.brew/Cellar/sdl2/2.0.9_1
-LFLAGS	=	-lm -L $(SDL_LOC)/lib -lSDL2 -L./libft -lft
-IFLAGS	=	-I $(SDL_LOC)/include -I ./libft
+TTF_LOC	=	$(HOME)/.brew/Cellar/sdl2_ttf/2.0.15
+LFLAGS	=	-lm -L $(SDL_LOC)/lib -lSDL2 -L$(TTF_LOC)/lib -lSDL2_ttf -L./libft -lft
+IFLAGS	=	-I $(SDL_LOC)/include/SDL2 -I $(SDL_LOC)/include -I $(TTF_LOC)/include -I ./libft
 
 all:		$(NAME) Makefile
 
