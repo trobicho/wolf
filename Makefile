@@ -6,7 +6,7 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/08/23 08:16:02 by trobicho         ###   ########.fr        #
+#    Updated: 2019/08/24 18:21:01 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,8 @@ SRCS	=	main.c \
 			map.c \
 			vector.c \
 			menu.c \
+			editor.c \
+			editor_utils.c \
 			ppm.c
 
 HDRS	=	init.h \
@@ -36,6 +38,8 @@ HDRS	=	init.h \
 			map.h \
 			vector.h \
 			menu.h \
+			editor.h \
+			editor_utils.h \
 			ppm.h
 
 OUTS	=	$(SRCS:.c=.o)

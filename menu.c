@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 06:29:17 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/23 09:10:54 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/24 12:09:28 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	menu_place_text(t_wolf *wolf, const char *str, int id)
 	if (id == wolf->menu.select)
 		color = (SDL_Color){200, 200, 200};
 	else
-		color = (SDL_Color){100, 100, 100};
+		color = (SDL_Color){130, 130, 130};
 	surface = TTF_RenderText_Solid(wolf->menu.font, str, color);
 	texture = SDL_CreateTextureFromSurface(wolf->display.renderer, surface);
 	SDL_QueryTexture(texture, NULL, NULL, &tex_w, &tex_h);

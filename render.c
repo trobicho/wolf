@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:55:42 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/23 08:25:44 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/24 10:38:41 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ static void	test_tex(Uint32 *pix, int w, int h)
 		x = 0;
 		while (x < w)
 		{
-			pix[x + y * w] = 0xFF00FF;
+			pix[x + y * w] = 0x505050;
 			if (y >= h / 2)
-				pix[x + y * w] = 0xFFFF00;
+				pix[x + y * w] = 0x808080;
 			x++;
 		}
 		y++;

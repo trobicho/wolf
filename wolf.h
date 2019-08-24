@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/23 08:28:56 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/23 13:50:58 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define WOLF_H
 
 # include <SDL2/SDL.h>
-# include <SDL2//SDL_ttf.h>
+# include <SDL2/SDL_ttf.h>
 # include "map.h"
 # include "vector.h"
 # include "ppm.h"

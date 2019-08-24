@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/18 18:10:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/23 06:39:17 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/24 17:50:13 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ static void print_radar(void)
 		{
 			if (radar[x + y * 10] == 0)
 				printf(". ");
-			else if (radar[x + y * 10] < 10)
-				printf("%d ", radar[x + y * 10] % 10);
+			else if (radar[x + y * 10] == '*')
+				printf("* ");
 			else
-				printf("%c ", (char)radar[x + y * 10]);
+				printf("%d ", radar[x + y * 10] % 10);
 			radar[x + y * 10] = 0;
 		}
 		printf("\n");
@@ -36,13 +36,13 @@ static void print_radar(void)
 
 static void	put_in_radar(t_vec2i pos, t_map *map, int c)
 {
-	if (radar[pos.x / map->grid_len + (pos.y / map->grid_len) * 10] != c
-		&& radar[pos.x / map->grid_len + (pos.y / map->grid_len) * 10] != 0)
+	if (radar[pos.x / 64 + (pos.y / 64) * 10] != c
+		&& radar[pos.x / 64 + (pos.y / 64) * 10] != 0)
 	{
 		return ;
 	}
 	else
-		radar[pos.x / map->grid_len + (pos.y / map->grid_len) * 10] = c;
+		radar[pos.x / 64 + (pos.y / 64) * 10] = c;
 }
 
 static t_vec2i	calc_step(t_ray *ray, t_map *map, t_vec2i *delta_dist, t_vec2i *step)
@@ -52,32 +52,32 @@ static t_vec2i	calc_step(t_ray *ray, t_map *map, t_vec2i *delta_dist, t_vec2i *s
 	t_vec2i	pos;
 	t_vec2i	side_dist;
 
-	pos.y = (int)(ray->origin.y / map->grid_len) * map->grid_len - 1;
+	pos.y = (int)(ray->origin.y / 64) * 64 - 1;
 	if (ray->angle > M_PI)
-		pos.y = (int)(ray->origin.y / map->grid_len) * map->grid_len + map->grid_len;
+		pos.y = (int)(ray->origin.y / 64) * 64 + 64;
 	side_dist.y = pos.y - ray->origin.y;
 	if (side_dist.y < 0)
 		side_dist.y = -side_dist.y;
 
-	pos.x = (ray->origin.x / map->grid_len) * map->grid_len + map->grid_len;
+	pos.x = (ray->origin.x / 64) * 64 + 64;
 	if (ray->angle > M_PI / 2.0 && ray->angle < M_PI + M_PI / 2.0)
-		pos.x = (ray->origin.x / map->grid_len) * map->grid_len - 1;
+		pos.x = (ray->origin.x / 64) * 64 - 1;
 	side_dist.x = pos.x - ray->origin.x;
 	if (side_dist.x < 0)
 		side_dist.x = -side_dist.x;
 	
-	step->y = -map->grid_len;
+	step->y = -64;
 	if (ray->angle > M_PI)
-		step->y = map->grid_len;
-	step->x = map->grid_len;
+		step->y = 64;
+	step->x = 64;
 	if (ray->angle > M_PI / 2.0 && ray->angle < M_PI + M_PI / 2.0)
-		step->x = -map->grid_len;
-	delta_dist->y = (int)(map->grid_len / ray->tan_calc);
-	delta_dist->x = (int)(map->grid_len * ray->tan_calc);
+		step->x = -64;
+	delta_dist->y = (int)(64 / ray->tan_calc);
+	delta_dist->x = (int)(64 * ray->tan_calc);
 	delta_dist->x = sqrt(delta_dist->x * delta_dist->x + step->x * step->x);
 	delta_dist->y = sqrt(delta_dist->y * delta_dist->y + step->y * step->y);
-	side_dist.x = delta_dist->x * (side_dist.x / (float)map->grid_len);
-	side_dist.y = delta_dist->y * (side_dist.y / (float)map->grid_len);
+	side_dist.x = delta_dist->x * (side_dist.x / (float)64);
+	side_dist.y = delta_dist->y * (side_dist.y / (float)64);
 	return (side_dist);
 }
 
@@ -103,8 +103,8 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 	int iter = 0;
 	while (1)
 	{
-		if (pos.x < 0 || pos.x >= map->w * map->grid_len
-			|| pos.y < 0 || pos.y >= map->h * map->grid_len)
+		if (pos.x < 0 || pos.x >= map->w * 64
+			|| pos.y < 0 || pos.y >= map->h * 64)
 		{
 			ray->dist = 1000;
 			return (-1);
@@ -236,7 +236,7 @@ void		ray_cast(t_wolf *wolf)
 		ray.dist = 0;
 		ray.tan_calc = tan(teta_cur);
 		wider = (wolf->map.w > wolf->map.h ? wolf->map.w : wolf->map.h)
-			* wolf->map.grid_len;
+			* 64;
 		if (ray.tan_calc < 1.0 / wider && ray.tan_calc > -1.0 / wider)
 			ray.tan_calc = (ray.tan_calc < -0.0) ? -1.0 / wider : 1.0 / wider;
 		if (ray.tan_calc > wider || ray.tan_calc < -wider)

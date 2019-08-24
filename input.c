@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 16:04:35 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/23 09:18:19 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/24 18:53:48 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	menu_event(t_wolf *wolf)
 		}
 		if (event.key.keysym.sym == SDLK_RETURN)
 		{
-			printf("test\n");
 			if (wolf->menu.select == 0)
 				wolf->state = state_game;
 			else if (wolf->menu.select == 1)
@@ -71,6 +70,33 @@ int	menu_event(t_wolf *wolf)
 			else if (wolf->menu.select == 2)
 				wolf->quit = 1;
 		}
+	}
+	return (0);
+}
+
+int	editor_event(t_wolf *wolf, t_edit_cursor *cursor)
+{
+	SDL_Event	event;
+
+	SDL_WaitEvent(&event);
+	if (event.type == SDL_KEYDOWN)
+	{
+		if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+			wolf->state = state_menu;
+	}
+	else if(event.type == SDL_MOUSEBUTTONDOWN)
+	{
+		if (event.button.button == SDL_BUTTON_RIGHT)
+			cursor->state = cur_state_right_click;
+		else if (event.button.button == SDL_BUTTON_LEFT)
+			cursor->state = cur_state_left_click;
+	}
+	else if(event.type == SDL_MOUSEBUTTONUP)
+		cursor->state = cur_state_none;
+	else if(event.type == SDL_MOUSEMOTION)
+	{
+		cursor->x = event.button.x;
+		cursor->y = event.button.y;
 	}
 	return (0);
 }

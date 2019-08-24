@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:18:33 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/23 08:06:47 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/24 11:24:48 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "physic.h"
 #include "libft.h"
 #include "menu.h"
+#include "editor.h"
 
 static int		game_loop(t_wolf *wolf)
 {
@@ -34,8 +35,10 @@ int				state_loop(t_wolf *wolf)
 	{
 		if (wolf->state == state_game)
 			game_loop(wolf);
-		if (wolf->state == state_menu)
+		else if (wolf->state == state_menu)
 			menu_state(wolf);
+		else if (wolf->state == state_editor)
+			editor_state(wolf);
 	}
 	return (0);
 }

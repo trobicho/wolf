@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 22:00:02 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/23 06:39:39 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/24 14:22:38 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ static t_vec2i	calc_normal(t_vec2i pos, t_map *map, int push)
 	int		dy;
 	t_vec2i	pos_temp;
 
-	dx = pos.x - (int)(pos.x / map->grid_len) * map->grid_len;
-	if (dx < map->grid_len / 2)
+	dx = pos.x - (int)(pos.x / 64) * 64;
+	if (dx < 64 / 2)
 		dx = -(dx + push);
 	else
-		dx = (map->grid_len - dx) + push;
-	dy = pos.y - (int)(pos.y / map->grid_len) * map->grid_len;
-	if (dy < map->grid_len / 2)
+		dx = (64 - dx) + push;
+	dy = pos.y - (int)(pos.y / 64) * 64;
+	if (dy < 64 / 2)
 		dy = -(dy + push);
 	else
-		dy = (map->grid_len - dy) + push;
+		dy = (64 - dy) + push;
 	normal.x = 0;
 	normal.y = 0;
 	pos_temp = pos;

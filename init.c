@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/23 09:12:18 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/24 19:04:35 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static int	wolf_init_display(t_display *display)
 		//SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL);
 	if (display->win == NULL)
 		return (1);
-	display->renderer = SDL_CreateRenderer(display->win, -1, 0);
+	display->renderer = SDL_CreateRenderer(display->win, -1
+		, SDL_RENDERER_PRESENTVSYNC);
 	if (display->renderer == NULL)
 		return (1);
 	display->texture = SDL_CreateTexture(display->renderer
@@ -34,7 +35,6 @@ static int	wolf_init_display(t_display *display)
 	if ((display->pixels = malloc(sizeof(Uint32) 
 					* display->width * display->height)) == NULL)
 		return (1);
-	TTF_Init();
 	SDL_SetRenderDrawColor(display->renderer, 0, 0, 0, 255);
 	SDL_RenderClear(display->renderer);
 	SDL_RenderPresent(display->renderer);
@@ -44,10 +44,11 @@ static int	wolf_init_display(t_display *display)
 int			wolf_init(t_wolf *wolf)
 {
 	wolf->display.width = 800;
-	wolf->display.height = 600;
+	wolf->display.height = 700;
 	if (wolf_init_display(&wolf->display))
 		return (1);
-	if ((wolf->menu.font = TTF_OpenFont("texture/long_shot.ttf", 30)) == NULL)
+	TTF_Init();
+	if ((wolf->menu.font = TTF_OpenFont("texture/long_shot.ttf", 35)) == NULL)
 		return (1);
 	wolf->player.fov = 1.0472;
 	//wolf->player.cam.fov = 0.600;
@@ -66,11 +67,13 @@ int			wolf_init(t_wolf *wolf)
 int		wolf_quit(t_wolf *wolf)
 {
 	SDL_DestroyTexture(wolf->display.texture);
+	SDL_DestroyRenderer(wolf->display.renderer);
+	SDL_DestroyWindow(wolf->display.win);
 	TTF_CloseFont(wolf->menu.font);
 	TTF_Quit();
 	SDL_Quit();
 	free(wolf->display.pixels);
-	free(wolf->map.buf);
+	free(wolf->map.pixels);
 	free(wolf->tiles_wall.pixels);
 	return (0);
 }
