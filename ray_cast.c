@@ -6,12 +6,13 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/18 18:10:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/24 17:50:13 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/25 16:39:34 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ray_cast.h"
 
+/*
 static int	radar[100] = {0};
 
 static void print_radar(void)
@@ -44,6 +45,7 @@ static void	put_in_radar(t_vec2i pos, t_map *map, int c)
 	else
 		radar[pos.x / 64 + (pos.y / 64) * 10] = c;
 }
+*/
 
 static t_vec2i	calc_step(t_ray *ray, t_map *map, t_vec2i *delta_dist, t_vec2i *step)
 {
@@ -93,7 +95,7 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 
 	side_dist = calc_step(ray, map, &delta_dist, &step);
 	pos = ray->origin;
-	put_in_radar(pos, map, '*');
+	//put_in_radar(pos, map, '*');
 	if ((found = check_grid(map, pos)))
 	{
 		ray->dist = 1;
@@ -114,21 +116,21 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 		{
 			side_dist.x += delta_dist.x;
 			pos.x += step.x;
-			side = 1;
+			side = 0;
 		}
 		else
 		{
 			side_dist.y += delta_dist.y;
 			pos.y += step.y;
-			side = 2;
+			side = 1;
 		}
 		//printf("side_dist {%d, %d}\n", side_dist.x, side_dist.y);
 		if ((found = check_grid(map, pos)))
 			break;
-		put_in_radar(pos, map, iter);
+		//put_in_radar(pos, map, iter);
 		iter++;
 	}
-	if (side == 1)
+	if (side == 0)
 	{
 		ray->dist = side_dist.x - delta_dist.x;
 		ray->dist *= cos(ray->beta);
@@ -158,7 +160,7 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 	ray->dist = sqrt((ray->origin.x - pos.x) * (ray->origin.x - pos.x)
 		+ (ray->origin.y - pos.y) * (ray->origin.y - pos.y));
 		*/
-	found = (found == -1) ? found : side;
+	found = (found == -1) ? found : found + side;
 	return (found);
 }
 
@@ -245,14 +247,12 @@ void		ray_cast(t_wolf *wolf)
 		{
 			if (found == -1)
 				draw_unicolor_slice(wolf, ray, col, 0x0);
-			else if (found == 1)
-				draw_textured_slice(wolf, &ray, col, 0);
-			else if (found == 2)
-				draw_textured_slice(wolf, &ray, col, 12);
+			else
+				draw_textured_slice(wolf, &ray, col, found);
 		}
 		ray.beta += teta_add;
 		teta_cur += teta_add;
 		col++;
 	}
-	print_radar();
+	//print_radar();
 }

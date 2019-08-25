@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 18:08:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/25 15:40:50 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/25 16:32:50 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,26 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <fcntl.h>
+
+static ssize_t	read_unsigned_nb_until_endl(int fd, ssize_t max)
+{
+	int		r;
+	char	c;
+
+	r = 0;
+	while (read(fd, &c, 1) > 0)
+	{
+		if (r > max)
+			return (-1);
+		if (ft_isdigit(c))
+			r = r * 10 + c - '0';
+		else if (ft_isspace(c))
+			break;
+		else
+			return (-1);
+	}
+	return (r);
+}
 
 static int	ppm_parse_header(int fd, ssize_t *w, ssize_t *h)
 {
@@ -25,20 +45,12 @@ static int	ppm_parse_header(int fd, ssize_t *w, ssize_t *h)
 	size = read(fd, magic_buf, 3);
 	if (magic_buf[0] != 'P' || magic_buf[1] != '6' || !ft_isspace(magic_buf[2]))
 		return (-1);
-	while ((size = read(fd, &c, 1)) > 0)
-	{
-		printf("%c", c);
-		if (c == '\n')
-			break;
-	}
-	while ((size = read(fd, &c, 1)) > 0)
-	{
-		printf("%c", c);
-		if (c == '\n')
-			break;
-	}
-	*w = 384;
-	*h = 1216;
+	if ((*w = read_unsigned_nb_until_endl(fd, 10000)) == -1)
+		return (-1);
+	if ((*h = read_unsigned_nb_until_endl(fd, 10000)) == -1)
+		return (-1);
+	if ((size = read_unsigned_nb_until_endl(fd, 10000)) != 255)
+		return (-1);
 	return (0);
 }
 
@@ -103,6 +115,8 @@ int			ppm_load_1bpp(const char *file_path, t_ppm_tex_1bpp *tex)
 	cur_index = 0;
 	if ((tex->pixels = malloc(sizeof(*tex->pixels) * 64 * 64)) == NULL)
 		return (-1);
+	tex->w = 64;
+	tex->h = 64;
 	ft_memset(tex->pixels, 1, 64 * 64);
 	size = read(fd, buf, READ_SIZE);
 	y = 1;
@@ -142,6 +156,7 @@ int			ppm_write_1bpp(const char *file_path, t_ppm_tex_1bpp *tex)
 	write(fd, "\n", 1);
 	ft_putnbr_fd(tex->h, fd);
 	write(fd, "\n", 1);
+	write(fd, "255\n", 4);
 	write(fd, (void*)tex->pixels, tex->w * tex->h);
 	close(fd);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:58:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/24 17:46:21 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/25 16:29:47 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		load_map_test(t_map *map)
 
 int		init_map(t_map *map)
 {
-	if (load_map_test(map))
+	if (ppm_load_1bpp("./maps/save_map.ppm", map))
 		return (1);
 	return (0);
 }
