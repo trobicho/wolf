@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:18:33 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/24 11:24:48 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/25 13:24:30 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ int				state_loop(t_wolf *wolf)
 		else if (wolf->state == state_menu)
 			menu_state(wolf);
 		else if (wolf->state == state_editor)
-			editor_state(wolf);
+		{
+			if (editor_state(wolf))
+				return (1);
+		}
 	}
 	return (0);
 }

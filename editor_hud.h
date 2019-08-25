@@ -1,19 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   editor.h                                           :+:      :+:    :+:   */
+/*   editor_hud.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/24 10:26:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/25 13:24:03 by trobicho         ###   ########.fr       */
+/*   Created: 2019/08/25 14:31:23 by trobicho          #+#    #+#             */
+/*   Updated: 2019/08/25 14:36:14 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EDITOR_H
-# define EDITOR_H
+#ifndef EDITOR_HUD_H
+# define EDITOR_HUD_H
 
 # include "wolf.h"
+# include "input.h"
+# include "editor_utils.h"
 
-int		editor_state(t_wolf *wolf);
+void	editor_display_reset(t_wolf *wolf);
+void	editor_display_hud(t_wolf *wolf, t_editor_inf *edit);
 #endif

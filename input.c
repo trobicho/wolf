@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 16:04:35 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/24 18:53:48 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/25 13:46:18 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	game_event(t_wolf *wolf)
 
 	while (SDL_PollEvent(&event))
 	{
+		if (event.type == SDL_QUIT)
+			wolf->quit = 1;
 		if (event.type == SDL_KEYDOWN)
 		{
 			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
@@ -45,6 +47,8 @@ int	menu_event(t_wolf *wolf)
 	SDL_Event	event;
 
 	SDL_WaitEvent(&event);
+	if (event.type == SDL_QUIT)
+		wolf->quit = 1;
 	if (event.type == SDL_KEYDOWN)
 	{
 		if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
@@ -79,21 +83,23 @@ int	editor_event(t_wolf *wolf, t_edit_cursor *cursor)
 	SDL_Event	event;
 
 	SDL_WaitEvent(&event);
-	if (event.type == SDL_KEYDOWN)
+	if (event.type == SDL_QUIT)
+		wolf->quit = 1;
+	else if (event.type == SDL_KEYDOWN)
 	{
 		if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 			wolf->state = state_menu;
 	}
-	else if(event.type == SDL_MOUSEBUTTONDOWN)
+	else if (event.type == SDL_MOUSEBUTTONDOWN)
 	{
 		if (event.button.button == SDL_BUTTON_RIGHT)
 			cursor->state = cur_state_right_click;
 		else if (event.button.button == SDL_BUTTON_LEFT)
 			cursor->state = cur_state_left_click;
 	}
-	else if(event.type == SDL_MOUSEBUTTONUP)
+	else if (event.type == SDL_MOUSEBUTTONUP)
 		cursor->state = cur_state_none;
-	else if(event.type == SDL_MOUSEMOTION)
+	else if (event.type == SDL_MOUSEMOTION)
 	{
 		cursor->x = event.button.x;
 		cursor->y = event.button.y;
