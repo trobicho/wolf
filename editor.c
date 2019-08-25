@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 10:26:47 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/25 14:36:20 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/25 15:22:52 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static int	editor_init(t_wolf *wolf, t_editor_inf *edit_inf)
 	edit_inf->panel.y = 10;
 	edit_inf->panel.w = 128;
 	edit_inf->panel.h = 14 * 32;
+	edit_inf->save_select = 0;
 	return (0);
 }
 
@@ -43,6 +44,22 @@ static int	editor(t_wolf *wolf, t_editor_inf *edit)
 	SDL_Rect	rect;
 	SDL_Rect	map_rect;
 
+	if (edit->cursor.x >= edit->save_button.x
+		&& edit->cursor.y >= edit->save_button.y
+		&& edit->cursor.x < edit->save_button.x + edit->save_button.w
+		&& edit->cursor.y < edit->save_button.y + edit->save_button.h)
+	{
+		if (edit->cursor.state == cur_state_none && edit->save_select)
+		{
+			edit->save_select = 0;
+			if (ppm_write_1bpp("./maps/save_map.ppm", &edit->map))
+				ft_putstr("cannot save the map\n");
+		}
+		else if (edit->cursor.state == cur_state_left_click)
+			edit->save_select = 1;
+	}
+	else
+		edit->save_select = 0;
 	if (edit->cursor.state == cur_state_left_click
 			|| edit->cursor.state == cur_state_right_click)
 	{
@@ -50,7 +67,7 @@ static int	editor(t_wolf *wolf, t_editor_inf *edit)
 	}
 	editor_map_display(wolf, edit);
 	editor_draw_grid(wolf, edit);
-	return (1);
+	return (0);
 }
 
 int			editor_state(t_wolf *wolf)
@@ -61,7 +78,6 @@ int			editor_state(t_wolf *wolf)
 	if (editor_init(wolf, &edit))
 		return (1);
 	editor_display_reset(wolf);
-	editor_display_hud(wolf, &edit);
 	while (!wolf->quit && wolf->state == state_editor)
 	{
 		editor_event(wolf, &edit.cursor);
@@ -76,11 +92,10 @@ int			editor_state(t_wolf *wolf)
 				edit.cursor.tex_select = tex_select * 2 + 1;
 			printf("select = %d\n", edit.cursor.tex_select);
 		}
-		if (editor(wolf, &edit) == 1)
-		{
-			render_texture_apply(wolf);
-			SDL_RenderPresent(wolf->display.renderer);
-		}
+		editor(wolf, &edit);
+		editor_display_hud(wolf, &edit);
+		render_texture_apply(wolf);
+		SDL_RenderPresent(wolf->display.renderer);
 	}
 	free(edit.map.pixels);
 	return (0);

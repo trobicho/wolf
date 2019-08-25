@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 18:08:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/25 13:59:28 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/25 15:40:50 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int			ppm_load_4bpp(const char *file_path, t_ppm_tex_4bpp *tex)
 		}
 		y++;
 	}
+	close(fd);
 	return (0);
 }
 
@@ -121,6 +122,7 @@ int			ppm_load_1bpp(const char *file_path, t_ppm_tex_1bpp *tex)
 		}
 		y++;
 	}
+	close(fd);
 	return (0);
 }
 
@@ -131,13 +133,16 @@ int			ppm_write_1bpp(const char *file_path, t_ppm_tex_1bpp *tex)
 	int				y;
 	int				color;
 
-	if ((fd = open(file_path, O_WRONLY)) <= 0)
+	ft_putstr(file_path);
+	ft_putstr("\n");
+	if ((fd = open(file_path, O_WRONLY | O_CREAT, S_IWUSR | S_IRUSR)) < 0)
 		return (-1);
-	write(fd, "P6", 2);
+	write(fd, "P6\n", 3);
 	ft_putnbr_fd(tex->w, fd);
 	write(fd, "\n", 1);
 	ft_putnbr_fd(tex->h, fd);
 	write(fd, "\n", 1);
-	write(fd, &tex->pixels, tex->w * tex->h);
+	write(fd, (void*)tex->pixels, tex->w * tex->h);
+	close(fd);
 	return (0);
 }

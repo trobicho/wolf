@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 18:18:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/25 13:21:45 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/25 14:48:54 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ typedef struct	s_editor_inf
 	SDL_Rect		map_box;
 	SDL_Rect		map_pos;
 	SDL_Rect		panel;
+	SDL_Rect		save_button;
+	int				save_select;
 }				t_editor_inf;
 
 void	draw_tex(t_wolf *wolf, SDL_Rect rect, int tex_index);
