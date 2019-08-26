@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 16:04:35 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/25 13:46:18 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/27 01:02:52 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	game_event(t_wolf *wolf)
 	{
 		if (event.type == SDL_QUIT)
 			wolf->quit = 1;
-		if (event.type == SDL_KEYDOWN)
+		if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
 		{
 			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 				wolf->state = state_menu;
@@ -51,7 +51,8 @@ int	menu_event(t_wolf *wolf)
 		wolf->quit = 1;
 	if (event.type == SDL_KEYDOWN)
 	{
-		if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+		if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE
+			&& event.key.repeat == 0)
 			wolf->quit = 1;
 		if (event.key.keysym.scancode == SDL_SCANCODE_DOWN)
 		{
@@ -65,7 +66,8 @@ int	menu_event(t_wolf *wolf)
 			if (wolf->menu.select < 0)
 				wolf->menu.select = wolf->menu.nb_entrie-1;
 		}
-		if (event.key.keysym.sym == SDLK_RETURN)
+		if (event.key.keysym.sym == SDLK_RETURN
+			&& event.key.repeat == 0)
 		{
 			if (wolf->menu.select == 0)
 				wolf->state = state_game;

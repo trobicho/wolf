@@ -6,30 +6,13 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/25 14:31:29 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/26 14:48:04 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/27 00:53:36 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "editor_hud.h"
 #include <SDL2/SDL.h>
-
-void	draw_button(t_wolf *wolf, SDL_Rect button, Uint32 color)
-{
-	int			x;
-	int			y;
-
-	y = button.y;
-	while (y < button.h + button.y)
-	{
-		x = button.x;
-		while (x < button.w + button.x)
-		{
-			wolf->display.pixels[x + y * wolf->display.width] = color;
-			x++;
-		}
-		y++;
-	}
-}
+#include "editor_hud.h"
+#include "draw.h"
 
 void	editor_display_reset(t_wolf *wolf)
 {
@@ -74,7 +57,7 @@ void	editor_display_hud(t_wolf *wolf, t_editor_inf *edit)
 		i++;
 	}
 	if (edit->save_select)
-		draw_button(wolf, edit->save_button, 0x225500);
+		draw_full_rect(&wolf->display, edit->save_button, 0x225500);
 	else
-		draw_button(wolf, edit->save_button, 0x00AA00);
+		draw_full_rect(&wolf->display, edit->save_button, 0x00AA00);
 }

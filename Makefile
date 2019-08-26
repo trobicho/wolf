@@ -6,7 +6,7 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/08/25 14:35:19 by trobicho         ###   ########.fr        #
+#    Updated: 2019/08/27 00:34:02 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRCS	=	main.c \
 			editor.c \
 			editor_utils.c \
 			editor_hud.c \
-			ppm.c
+			ppm.c \
+			draw.c
 
 HDRS	=	init.h \
 			input.h \
@@ -42,7 +43,8 @@ HDRS	=	init.h \
 			editor.h \
 			editor_utils.h \
 			editor_hud.h \
-			ppm.h
+			ppm.h \
+			draw.h
 
 OUTS	=	$(SRCS:.c=.o)
 NAME	=	wolf3d

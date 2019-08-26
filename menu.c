@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 06:29:17 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/24 12:09:28 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/27 00:39:11 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,7 @@
 #include "menu.h"
 #include "render.h"
 #include "libft.h"
-
-static void	menu_draw_border(t_wolf *wolf, Uint32 color, int w)
-{
-	int		i;
-	t_vec2i	pos;
-	t_vec2i	pos_cur;
-
-	pos.x = wolf->display.width / 2 - wolf->menu.w / 2;
-	pos.y = wolf->display.height / 2 - wolf->menu.h / 2;
-	pos_cur = (t_vec2i){0, 0};
-	while (pos_cur.x < wolf->menu.w)
-	{
-		i = 0;
-		while (i < w)
-		{
-			wolf->display.pixels[pos_cur.x + pos.x + (pos.y + i)
-					* wolf->display.width] = color;
-			wolf->display.pixels[pos_cur.x + pos.x
-					+ (pos.y + (wolf->menu.h - 1) - i)
-					* wolf->display.width] = color;
-			i++;
-		}
-		pos_cur.x++;
-	}
-	pos_cur = (t_vec2i){0, 0};
-	while (pos_cur.y < wolf->menu.h)
-	{
-		i = 0;
-		while (i < w)
-		{
-			wolf->display.pixels[pos.x + i + (pos.y + pos_cur.y)
-					* wolf->display.width] = color;
-			wolf->display.pixels[pos.x + (wolf->menu.w - 1) - i
-					+ (pos.y + pos_cur.y) * wolf->display.width] = color;
-			i++;
-		}
-		pos_cur.y++;
-	}
-}
+#include "draw.h"
 
 static void	menu_place_text(t_wolf *wolf, const char *str, int id)
 {
@@ -92,7 +54,8 @@ void		menu_state(t_wolf *wolf)
 
 void		menu_display(t_wolf *wolf)
 {
-	int	p;
+	int			p;
+	SDL_Rect	menu_border;
 
 	p = 0;
 	while (p < wolf->display.width * wolf->display.height)
@@ -100,7 +63,12 @@ void		menu_display(t_wolf *wolf)
 		wolf->display.pixels[p] = 0xFF0000;
 		p++;
 	}
-	menu_draw_border(wolf, 0x0, 10);
+	//menu_draw_border(wolf, 0x0, 10);
+	menu_border.x = wolf->display.width / 2 - wolf->menu.w / 2;
+	menu_border.y = wolf->display.height / 2 - wolf->menu.h / 2;
+	menu_border.w = wolf->menu.w;
+	menu_border.h = wolf->menu.h;
+	draw_border(&wolf->display, menu_border, 0x0, 10);
 	render_texture_apply(wolf);
 	menu_place_text(wolf, "Game", 0);
 	menu_place_text(wolf, "Editor", 1);
