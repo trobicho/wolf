@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/18 18:10:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/25 16:39:34 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/26 14:12:47 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ static int	send_one_ray(t_ray *ray, t_map *map)
 	ray->dist = sqrt((ray->origin.x - pos.x) * (ray->origin.x - pos.x)
 		+ (ray->origin.y - pos.y) * (ray->origin.y - pos.y));
 		*/
-	found = (found == -1) ? found : found + side;
+	found = (found == -1) ? -1 : found + side;
 	return (found);
 }
 
@@ -237,8 +237,7 @@ void		ray_cast(t_wolf *wolf)
 		ray.angle = teta_cur;
 		ray.dist = 0;
 		ray.tan_calc = tan(teta_cur);
-		wider = (wolf->map.w > wolf->map.h ? wolf->map.w : wolf->map.h)
-			* 64;
+		wider = (wolf->map.w > wolf->map.h ? wolf->map.w : wolf->map.h) * 64;
 		if (ray.tan_calc < 1.0 / wider && ray.tan_calc > -1.0 / wider)
 			ray.tan_calc = (ray.tan_calc < -0.0) ? -1.0 / wider : 1.0 / wider;
 		if (ray.tan_calc > wider || ray.tan_calc < -wider)
@@ -248,7 +247,7 @@ void		ray_cast(t_wolf *wolf)
 			if (found == -1)
 				draw_unicolor_slice(wolf, ray, col, 0x0);
 			else
-				draw_textured_slice(wolf, &ray, col, found);
+				draw_textured_slice(wolf, &ray, col, found - 1);
 		}
 		ray.beta += teta_add;
 		teta_cur += teta_add;

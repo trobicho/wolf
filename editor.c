@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 10:26:47 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/25 15:22:52 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/26 15:00:27 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ static int	editor_init(t_wolf *wolf, t_editor_inf *edit_inf)
 	edit_inf->panel.x = wolf->display.width - 128;
 	edit_inf->panel.y = 10;
 	edit_inf->panel.w = 128;
-	edit_inf->panel.h = 14 * 32;
+	edit_inf->panel.h = 16 * 32;
 	edit_inf->save_select = 0;
+	edit_inf->max_id = 110;
 	return (0);
 }
 
@@ -61,7 +62,7 @@ static int	editor(t_wolf *wolf, t_editor_inf *edit)
 	else
 		edit->save_select = 0;
 	if (edit->cursor.state == cur_state_left_click
-			|| edit->cursor.state == cur_state_right_click)
+		|| edit->cursor.state == cur_state_right_click)
 	{
 		place_to_map(edit);
 	}
@@ -70,10 +71,30 @@ static int	editor(t_wolf *wolf, t_editor_inf *edit)
 	return (0);
 }
 
+static int	editor_click(t_wolf *wolf, t_editor_inf *edit)
+{
+	int				tex_select;
+
+	if (edit->cursor.state == cur_state_left_click
+		&& edit->cursor.x >= edit->panel.x && edit->cursor.y >= edit->panel.y
+		&& edit->cursor.x < edit->panel.x + edit->panel.w
+		&& edit->cursor.y < edit->panel.y + edit->panel.h)
+	{
+		tex_select = (edit->cursor.x - edit->panel.x) / 32
+			+ ((edit->cursor.y - edit->panel.y) / 32) * 4;
+		if (tex_select < edit->max_id / 2)
+			edit->cursor.tex_select = tex_select * 2 + 1;
+		if (edit->cursor.y >= edit->panel.y + edit->panel.h - 32)
+			edit->cursor.tex_select = edit->max_id
+				+ (edit->cursor.x - edit->panel.x) / 32 + 1;
+		printf("select = %d\n", edit->cursor.tex_select);
+	}
+	return (0);
+}
+
 int			editor_state(t_wolf *wolf)
 {
 	t_editor_inf	edit;
-	int				tex_select;
 
 	if (editor_init(wolf, &edit))
 		return (1);
@@ -81,17 +102,7 @@ int			editor_state(t_wolf *wolf)
 	while (!wolf->quit && wolf->state == state_editor)
 	{
 		editor_event(wolf, &edit.cursor);
-		if (edit.cursor.state == cur_state_left_click
-			&& edit.cursor.x >= edit.panel.x && edit.cursor.y >= edit.panel.y
-			&& edit.cursor.x < edit.panel.x + edit.panel.w
-			&& edit.cursor.y < edit.panel.y + edit.panel.h)
-		{
-			tex_select = (edit.cursor.x - edit.panel.x) / 32
-				+ ((edit.cursor.y - edit.panel.y) / 32) * 4;
-			if (tex_select < 54)
-				edit.cursor.tex_select = tex_select * 2 + 1;
-			printf("select = %d\n", edit.cursor.tex_select);
-		}
+		editor_click(wolf, &edit);
 		editor(wolf, &edit);
 		editor_display_hud(wolf, &edit);
 		render_texture_apply(wolf);
