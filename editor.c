@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 10:26:47 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/26 15:00:27 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/26 16:33:29 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,27 +40,19 @@ static int	editor_init(t_wolf *wolf, t_editor_inf *edit_inf)
 	return (0);
 }
 
+static int	cursor_in_rect(t_edit_cursor *cursor, SDL_Rect rect)
+{
+	if (cursor->x >= rect.x && cursor->x < rect.x + rect.w 
+		&& cursor->y >= rect.y && cursor->y < rect.y + rect.h)
+		return (1);
+	return (0);
+}
+
 static int	editor(t_wolf *wolf, t_editor_inf *edit)
 {
 	SDL_Rect	rect;
 	SDL_Rect	map_rect;
 
-	if (edit->cursor.x >= edit->save_button.x
-		&& edit->cursor.y >= edit->save_button.y
-		&& edit->cursor.x < edit->save_button.x + edit->save_button.w
-		&& edit->cursor.y < edit->save_button.y + edit->save_button.h)
-	{
-		if (edit->cursor.state == cur_state_none && edit->save_select)
-		{
-			edit->save_select = 0;
-			if (ppm_write_1bpp("./maps/save_map.ppm", &edit->map))
-				ft_putstr("cannot save the map\n");
-		}
-		else if (edit->cursor.state == cur_state_left_click)
-			edit->save_select = 1;
-	}
-	else
-		edit->save_select = 0;
 	if (edit->cursor.state == cur_state_left_click
 		|| edit->cursor.state == cur_state_right_click)
 	{
@@ -76,9 +68,7 @@ static int	editor_click(t_wolf *wolf, t_editor_inf *edit)
 	int				tex_select;
 
 	if (edit->cursor.state == cur_state_left_click
-		&& edit->cursor.x >= edit->panel.x && edit->cursor.y >= edit->panel.y
-		&& edit->cursor.x < edit->panel.x + edit->panel.w
-		&& edit->cursor.y < edit->panel.y + edit->panel.h)
+		&& cursor_in_rect(&edit->cursor, edit->panel))
 	{
 		tex_select = (edit->cursor.x - edit->panel.x) / 32
 			+ ((edit->cursor.y - edit->panel.y) / 32) * 4;
@@ -89,6 +79,19 @@ static int	editor_click(t_wolf *wolf, t_editor_inf *edit)
 				+ (edit->cursor.x - edit->panel.x) / 32 + 1;
 		printf("select = %d\n", edit->cursor.tex_select);
 	}
+	if (cursor_in_rect(&edit->cursor, edit->save_button))
+	{
+		if (edit->cursor.state == cur_state_none && edit->save_select)
+		{
+			edit->save_select = 0;
+			if (ppm_write_1bpp("./maps/save_map.ppm", &edit->map))
+				ft_putstr("cannot save the map\n");
+		}
+		else if (edit->cursor.state == cur_state_left_click)
+			edit->save_select = 1;
+	}
+	else
+		edit->save_select = 0;
 	return (0);
 }
 

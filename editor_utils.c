@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 18:19:27 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/25 13:41:48 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/26 16:14:37 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ void	draw_tex(t_wolf *wolf, SDL_Rect rect, int tex_index)
 			if (tex_index > 0)
 			{
 				color = wolf->tiles_wall.pixels[
-					offset.x + (int)(((float)x / rect.w) * 64.0)
-					+ (offset.y + (int)(((float)y / rect.h) * 64.0))
-					* wolf->tiles_wall.w];
+						offset.x + (int)(((float)x / rect.w) * 64.0)
+						+ (offset.y + (int)(((float)y / rect.h) * 64.0))
+						* wolf->tiles_wall.w];
 			}
 			else
 				color = 0x909090;
@@ -48,11 +48,7 @@ void	editor_draw_grid(t_wolf *wolf, t_editor_inf *edit)
 {
 	int			x;
 	int			y;
-	int			x_add;
-	int			y_add;
 
-	x_add = edit->map_box.w / edit->map_pos.w;
-	y_add = edit->map_box.h / edit->map_pos.h;
 	y = edit->map_box.y;
 	while (y <= edit->map_box.y + edit->map_box.h)
 	{
@@ -62,7 +58,7 @@ void	editor_draw_grid(t_wolf *wolf, t_editor_inf *edit)
 			wolf->display.pixels[x + y * wolf->display.width] = 0x0;
 			x++;
 		}
-		y += y_add;
+		y += edit->map_box.h / edit->map_pos.h;
 	}
 	x = edit->map_box.x;
 	while (x <= edit->map_box.x + edit->map_box.w)
@@ -73,7 +69,7 @@ void	editor_draw_grid(t_wolf *wolf, t_editor_inf *edit)
 			wolf->display.pixels[x + y * wolf->display.width] = 0x0;
 			y++;
 		}
-		x += x_add;
+		x += edit->map_box.w / edit->map_pos.w;
 	}
 }
 
@@ -105,8 +101,8 @@ void	editor_map_display(t_wolf *wolf, t_editor_inf *edit)
 
 void	place_to_map(t_editor_inf *edit)
 {
-	int	x; 
-	int	y; 
+	int	x;
+	int	y;
 	int	apply;
 
 	if (edit->cursor.x >= edit->map_box.x
