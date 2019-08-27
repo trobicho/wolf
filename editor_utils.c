@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 18:19:27 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/26 16:14:37 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/27 13:43:47 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	draw_tex(t_wolf *wolf, SDL_Rect rect, int tex_index)
 
 void	editor_draw_grid(t_wolf *wolf, t_editor_inf *edit)
 {
-	int			x;
-	int			y;
+	int	x;
+	int	y;
 
 	y = edit->map_box.y;
 	while (y <= edit->map_box.y + edit->map_box.h)

@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 22:00:02 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/24 14:22:38 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/27 14:31:45 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static t_vec2i	calc_normal(t_vec2i pos, t_map *map, int push)
 	normal.y = 0;
 	pos_temp = pos;
 	pos_temp.x += dx;
-	if((dx < 0 ? -dx : dx) < (dy < 0 ? -dy : dy) && check_grid(map, pos_temp) == 0)
+	if ((dx < 0 ? -dx : dx) < (dy < 0 ? -dy : dy)
+		&& check_grid(map, pos_temp) == 0)
 		normal.x = dx;
 	else
 		normal.y = dy;

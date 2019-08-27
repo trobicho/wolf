@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 10:26:47 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 00:55:35 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/27 16:38:10 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "libft.h"
 #include "editor_hud.h"
 #include "editor_utils.h"
+#include "map.h"
 
 static int	editor_init(t_wolf *wolf, t_editor_inf *edit_inf)
 {
@@ -42,7 +43,7 @@ static int	editor_init(t_wolf *wolf, t_editor_inf *edit_inf)
 
 static int	cursor_in_rect(t_edit_cursor *cursor, SDL_Rect rect)
 {
-	if (cursor->x >= rect.x && cursor->x < rect.x + rect.w 
+	if (cursor->x >= rect.x && cursor->x < rect.x + rect.w
 		&& cursor->y >= rect.y && cursor->y < rect.y + rect.h)
 		return (1);
 	return (0);
@@ -84,8 +85,7 @@ static int	editor_click(t_wolf *wolf, t_editor_inf *edit)
 		if (edit->cursor.state == cur_state_none && edit->save_select)
 		{
 			edit->save_select = 0;
-			if (ppm_write_1bpp("./maps/save_map.ppm", &edit->map))
-				ft_putstr("cannot save the map\n");
+			save_map(&edit->map);
 		}
 		else if (edit->cursor.state == cur_state_left_click)
 			edit->save_select = 1;

@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 01:00:14 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/27 14:39:24 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ static int	wolf_init_display(t_display *display)
 	if (display->renderer == NULL)
 		return (1);
 	display->texture = SDL_CreateTexture(display->renderer
-		, SDL_PIXELFORMAT_ARGB8888 , SDL_TEXTUREACCESS_STREAMING
+		, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING
 		, display->width, display->height);
 	if (display->texture == NULL)
 		return (1);
-	if ((display->pixels = malloc(sizeof(Uint32) 
+	if ((display->pixels = malloc(sizeof(Uint32)
 					* display->width * display->height)) == NULL)
 		return (1);
 	SDL_SetRenderDrawColor(display->renderer, 0, 0, 0, 255);
@@ -50,8 +50,7 @@ int			wolf_init(t_wolf *wolf)
 	TTF_Init();
 	if ((wolf->menu.font = TTF_OpenFont("texture/long_shot.ttf", 35)) == NULL)
 		return (1);
-	wolf->player.fov = 1.0472;
-	//wolf->player.cam.fov = 0.600;
+	wolf->player.fov = 1.3472;
 	wolf->quit = 0;
 	wolf->tiles_wall.blend = 0xFF00FF;
 	if (ppm_load_4bpp("./texture/tile.pbm", &wolf->tiles_wall))
@@ -64,7 +63,7 @@ int			wolf_init(t_wolf *wolf)
 	return (0);
 }
 
-int		wolf_quit(t_wolf *wolf)
+int			wolf_quit(t_wolf *wolf)
 {
 	SDL_DestroyTexture(wolf->display.texture);
 	SDL_DestroyRenderer(wolf->display.renderer);

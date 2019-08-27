@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/23 13:50:58 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/27 15:23:11 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@
 # include "map.h"
 # include "vector.h"
 # include "ppm.h"
+
+# define	P_FORWARD	1
+# define	P_BACKWARD	2
+# define	P_STRAFE_R	4
+# define	P_STRAFE_L	8
 
 typedef enum	s_state
 {
@@ -34,6 +39,9 @@ typedef struct	s_player
 	float			angle;
 	float			fov;
 	unsigned int	health;
+	int				state;
+	int				speed;
+	int				strafe_speed;
 }				t_player;
 
 typedef struct	s_display

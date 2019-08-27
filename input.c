@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 16:04:35 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 01:02:52 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/27 16:13:38 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	game_event(t_wolf *wolf)
 	{
 		if (event.type == SDL_QUIT)
 			wolf->quit = 1;
-		if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
+		if (event.type == SDL_KEYDOWN)
 		{
 			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 				wolf->state = state_menu;
@@ -30,13 +30,24 @@ int	game_event(t_wolf *wolf)
 			else if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
 				player_rotate(&wolf->player, -0.1);
 			else if (event.key.keysym.scancode == SDL_SCANCODE_W)
-				player_walk(wolf, 0, 6);
+				wolf->player.state |= P_FORWARD;
 			else if (event.key.keysym.scancode == SDL_SCANCODE_S)
-				player_walk(wolf, 0, -6);
+				wolf->player.state |= P_BACKWARD;
 			else if (event.key.keysym.scancode == SDL_SCANCODE_A)
-				player_walk(wolf, -6, 0);
+				wolf->player.state |= P_STRAFE_L;
 			else if (event.key.keysym.scancode == SDL_SCANCODE_D)
-				player_walk(wolf, 6, 0);
+				wolf->player.state |= P_STRAFE_R;
+		}
+		if (event.type == SDL_KEYUP)
+		{
+			if (event.key.keysym.scancode == SDL_SCANCODE_W)
+				wolf->player.state &= (~P_FORWARD);
+			else if (event.key.keysym.scancode == SDL_SCANCODE_S)
+				wolf->player.state &= (~P_BACKWARD);
+			else if (event.key.keysym.scancode == SDL_SCANCODE_A)
+				wolf->player.state &= (~P_STRAFE_L);
+			else if (event.key.keysym.scancode == SDL_SCANCODE_D)
+				wolf->player.state &= (~P_STRAFE_R);
 		}
 	}
 	return (0);

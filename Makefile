@@ -6,7 +6,7 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/08/27 00:34:02 by trobicho         ###   ########.fr        #
+#    Updated: 2019/08/27 14:21:51 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRCS	=	main.c \
 			player.c \
 			render.c \
 			ray_cast.c \
+			ray_cast_utils.c \
 			physic.c \
 			map.c \
 			vector.c \
@@ -28,6 +29,7 @@ SRCS	=	main.c \
 			editor_utils.c \
 			editor_hud.c \
 			ppm.c \
+			ppm_utils.c \
 			draw.c
 
 HDRS	=	init.h \
@@ -44,6 +46,7 @@ HDRS	=	init.h \
 			editor_utils.h \
 			editor_hud.h \
 			ppm.h \
+			ppm_utils.h \
 			draw.h
 
 OUTS	=	$(SRCS:.c=.o)

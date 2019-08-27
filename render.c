@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:55:42 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/24 10:38:41 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/27 12:04:52 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "ray_cast.h"
 #include "physic.h"
 
-static void	test_tex(Uint32 *pix, int w, int h)
+static void	bg_tex(Uint32 *pix, int w, int h)
 {
 	int	x;
 	int	y;
@@ -34,19 +34,21 @@ static void	test_tex(Uint32 *pix, int w, int h)
 	}
 }
 
-void	render_one_frame(t_wolf *wolf)
+void		render_one_frame(t_wolf *wolf)
 {
-	test_tex(wolf->display.pixels, wolf->display.width, wolf->display.height);
+	bg_tex(wolf->display.pixels, wolf->display.width, wolf->display.height);
 	ray_cast(wolf);
-	SDL_UpdateTexture(wolf->display.texture, NULL, wolf->display.pixels, wolf->display.width * sizeof (Uint32));
+	SDL_UpdateTexture(wolf->display.texture, NULL
+		, wolf->display.pixels, wolf->display.width * sizeof(Uint32));
 	SDL_RenderClear(wolf->display.renderer);
 	SDL_RenderCopy(wolf->display.renderer, wolf->display.texture, NULL, NULL);
 	SDL_RenderPresent(wolf->display.renderer);
 }
 
-void	render_texture_apply(t_wolf *wolf)
+void		render_texture_apply(t_wolf *wolf)
 {
-	SDL_UpdateTexture(wolf->display.texture, NULL, wolf->display.pixels, wolf->display.width * sizeof (Uint32));
+	SDL_UpdateTexture(wolf->display.texture
+		, NULL, wolf->display.pixels, wolf->display.width * sizeof(Uint32));
 	SDL_RenderClear(wolf->display.renderer);
 	SDL_RenderCopy(wolf->display.renderer, wolf->display.texture, NULL, NULL);
 }

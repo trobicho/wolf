@@ -6,23 +6,33 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:55:07 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 00:05:54 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/27 16:14:19 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "player.h"
 #include "vector.h"
 
-void	player_walk(t_wolf *wolf, int x, int y)
+void	player_move(t_player *player)
 {
-	float	teta;
+	int		x;
+	int		y;
 	t_vec2i	d;
 
-	teta = wolf->player.angle;
-	d.x = cos(teta) * y + sin(teta) * x;
-	d.y = cos(teta) * x + sin(teta) * -y;
-	wolf->player.pos.x += d.x;
-	wolf->player.pos.y += d.y;
+	y = 0;
+	x = 0;
+	if (player->state & P_FORWARD)
+		y += player->speed;
+	if (player->state & P_BACKWARD)
+		y += -player->speed;
+	if (player->state & P_STRAFE_R)
+		x += player->strafe_speed;
+	if (player->state & P_STRAFE_L)
+		x -= player->strafe_speed;
+	d.x = cos(player->angle) * y + sin(player->angle) * x;
+	d.y = cos(player->angle) * x + sin(player->angle) * -y;
+	player->pos.x += d.x;
+	player->pos.y += d.y;
 }
 
 void	player_rotate(t_player *player, float teta)
