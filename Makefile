@@ -6,7 +6,7 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/08/27 14:21:51 by trobicho         ###   ########.fr        #
+#    Updated: 2019/08/27 22:16:13 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,7 @@ SRCS	=	main.c \
 			wolf.c \
 			player.c \
 			render.c \
-			ray_cast.c \
-			ray_cast_utils.c \
+			ray_cast_new.c \
 			physic.c \
 			map.c \
 			vector.c \
@@ -37,7 +36,7 @@ HDRS	=	init.h \
 			wolf.h \
 			player.h \
 			render.h \
-			ray_cast.h \
+			ray_cast_new.h \
 			physic.h \
 			map.h \
 			vector.h \
