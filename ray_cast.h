@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/17 13:56:22 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 14:48:26 by trobicho         ###   ########.fr       */
+/*   Created: 2019/08/28 13:24:11 by trobicho          #+#    #+#             */
+/*   Updated: 2019/08/28 13:24:12 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,15 @@
 
 typedef struct	s_ray
 {
-	t_vec2i	origin;
+	t_vec2f	origin;
 	t_vec2i	pos;
-	float	angle;
+	t_vec2f	vec;
+	t_vec2f	delta_dist;
+	t_vec2f	side_dist;
+	t_vec2f	plane;
+	t_vec2i	step;
 	float	dist;
-	int		wall_w;
-	float	tan_calc;
-	float	beta;
+	float	wall_col;
 }				t_ray;
 
 void			ray_cast(t_wolf *wolf);

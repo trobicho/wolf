@@ -5,86 +5,92 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/18 18:10:55 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 14:27:20 by trobicho         ###   ########.fr       */
+/*   Created: 2019/08/28 13:24:06 by trobicho          #+#    #+#             */
+/*   Updated: 2019/08/28 13:36:20 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ray_cast.h"
 #include "draw.h"
+#include "libft.h"
 
-static int	send_one_ray(t_ray *ray, t_map *map)
+static void	create_ray(t_ray *ray, t_vec2f dir, float col, t_vec2f pos)
 {
-	t_vec2i	pos;
-	t_vec2i	step;
-	t_vec2i	delta_dist;
-	t_vec2i	side_dist;
+	ray->vec.x = dir.x + ray->plane.x * (2.0 * col - 1.0);
+	ray->vec.y = dir.y + ray->plane.y * (2.0 * col - 1.0);
+	ray->dist = 0;
+	ray->delta_dist.x = ft_abs(1.0 / ray->vec.x);
+	ray->delta_dist.y = ft_abs(1.0 / ray->vec.y);
+	ray->origin = pos;
+	ray->wall_col = 0;
+	ray->step.x = 1;
+	ray->step.y = 1;
+	if (ray->vec.x < 0)
+	{
+		ray->step.x = -1;
+		ray->side_dist.x = (pos.x - (int)pos.x) * ray->delta_dist.x;
+	}
+	else
+		ray->side_dist.x = ((int)pos.x + 1.0 - pos.x) * ray->delta_dist.x;
+	if (ray->vec.y < 0)
+	{
+		ray->step.y = -1;
+		ray->side_dist.y = (pos.y - (int)pos.y) * ray->delta_dist.y;
+	}
+	else
+		ray->side_dist.y = ((int)pos.y + 1.0 - pos.y) * ray->delta_dist.y;
+}
+
+static int	calc_dist(t_ray *ray, t_vec2i pos, int side, int found)
+{
+	if (side == 0)
+	{
+		ray->dist = (pos.x - ray->origin.x + (1 - ray->step.x) / 2.0)
+			/ ray->vec.x;
+		ray->wall_col = ray->origin.y + ray->dist * ray->vec.y;
+	}
+	else
+	{
+		ray->dist = (pos.y - ray->origin.y + (1 - ray->step.y) / 2.0)
+			/ ray->vec.y;
+		ray->wall_col = ray->origin.x + ray->dist * ray->vec.x;
+	}
+	if (found < 0)
+		return (-1);
+	ray->wall_col -= (int)ray->wall_col;
+	return (found + side);
+}
+
+static int	launch_one_ray(t_ray *ray, t_map *map)
+{
 	int		found;
 	int		side;
-	int		dx, dy;
+	t_vec2i	pos;
 
-	side_dist = calc_step(ray, map, &delta_dist, &step);
-	pos = ray->origin;
-	if ((found = check_grid(map, pos)))
+	pos = (t_vec2i){(int)ray->origin.x, (int)ray->origin.y};
+	if ((found = (map->pixels[pos.x + pos.y * map->w])) > 0)
 	{
-		ray->dist = 1;
-		return (1);
+		ray->dist = 0.015;
+		return (found);
 	}
-	found = 0;
-	int iter = 0;
 	while (1)
 	{
-		if (pos.x < 0 || pos.x >= map->w * 64
-			|| pos.y < 0 || pos.y >= map->h * 64)
+		if (ray->side_dist.x < ray->side_dist.y)
 		{
-			ray->dist = 1000;
-			return (-1);
-		}
-		if ((unsigned int)(side_dist.x)
-			< (unsigned int)(side_dist.y))
-		{
-			side_dist.x += delta_dist.x;
-			pos.x += step.x;
+			ray->side_dist.x += ray->delta_dist.x;
+			pos.x += ray->step.x;
 			side = 0;
 		}
 		else
 		{
-			side_dist.y += delta_dist.y;
-			pos.y += step.y;
+			ray->side_dist.y += ray->delta_dist.y;
+			pos.y += ray->step.y;
 			side = 1;
 		}
-		if ((found = check_grid(map, pos)))
-			break;
-		iter++;
+		if ((found = (map->pixels[pos.x + pos.y * map->w])) > 0)
+			break ;
 	}
-	if (side == 0)
-	{
-		ray->dist = side_dist.x - delta_dist.x;
-		ray->dist *= cos(ray->beta);
-		if (pos.x - ray->origin.x < 0)
-			dx = ray->origin.x - (pos.x / 64) * 64 - 63;
-		else
-			dx = ray->origin.x - (pos.x / 64) * 64;
-		pos.y = ray->origin.y + dx * ray->tan_calc;
-		ray->wall_w = pos.y % 64;
-		if (ray->wall_w < 0)
-			ray->wall_w = -ray->wall_w;
-	}
-	else
-	{
-		ray->dist = side_dist.y - delta_dist.y;
-		ray->dist *= cos(ray->beta);
-		if (pos.y - ray->origin.y < 0)
-			dy = ray->origin.y - (pos.y / 64) * 64 - 63;
-		else
-			dy = ray->origin.y - (pos.y / 64) * 64;
-		pos.x = ray->origin.x + dy / ray->tan_calc;
-		ray->wall_w = pos.x % 64;
-		if (ray->wall_w < 0)
-			ray->wall_w = -ray->wall_w;
-	}
-	found = (found == -1) ? -1 : found + side;
-	return (found);
+	return (calc_dist(ray, pos, side, found));
 }
 
 void		ray_cast(t_wolf *wolf)
@@ -94,35 +100,27 @@ void		ray_cast(t_wolf *wolf)
 	float	teta_add;
 	int		found;
 	t_ray	ray;
-	int		wider;
+	t_vec2f	dir;
 
 	col = 0;
-	ray.beta = wolf->player.fov / 2.0;
-	teta_cur = wolf->player.angle + wolf->player.fov / 2.0;
-	teta_add = -wolf->player.fov / (float)wolf->display.width;
+	dir.x = cos(wolf->player.angle);
+	dir.y = -sin(wolf->player.angle);
+	ray.plane.x = (dir.x * cos(M_PI / 2.0) + dir.y * -sin(M_PI / 2.0))
+		* (wolf->player.fov / M_PI);
+	ray.plane.y = (dir.y * cos(M_PI / 2.0) + dir.x * sin(M_PI / 2.0))
+		* (wolf->player.fov / M_PI);
 	while (col < wolf->display.width)
 	{
-		if (teta_cur <= 0.001)
-			teta_cur = (M_PI * 2.0 ) + teta_cur;
-		else if (teta_cur >= M_PI * 2.0)
-			teta_cur -= M_PI * 2.0;
-		ray.origin = wolf->player.pos;
-		ray.angle = teta_cur;
-		ray.dist = 0;
-		ray.tan_calc = tan(teta_cur);
-		wider = (wolf->map.w > wolf->map.h ? wolf->map.w : wolf->map.h) * 64;
-		if (ray.tan_calc < 1.0 / wider && ray.tan_calc > -1.0 / wider)
-			ray.tan_calc = (ray.tan_calc < -0.0) ? -1.0 / wider : 1.0 / wider;
-		if (ray.tan_calc > wider || ray.tan_calc < -wider)
-			ray.tan_calc = (ray.tan_calc < -0.0) ? -wider : wider;
-		if ((found = send_one_ray(&ray, &wolf->map)))
+		create_ray(&ray, dir, col / (float)wolf->display.width
+			, (t_vec2f){wolf->player.pos.x / 64.0, wolf->player.pos.y / 64.0});
+		if ((found = launch_one_ray(&ray, &wolf->map)))
 		{
+			ray.dist *= 64.0;
 			if (found == -1)
 				draw_unicolor_slice(wolf, ray, col, 0x0);
 			else
 				draw_textured_slice(wolf, &ray, col, found - 1);
 		}
-		ray.beta += teta_add;
 		teta_cur += teta_add;
 		col++;
 	}

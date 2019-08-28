@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 00:07:27 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/28 02:38:02 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/28 15:33:45 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ void	draw_textured_slice(t_wolf *wolf, t_ray *ray, int col, int tex_index)
 	int		y_slice;
 	int		y;
 	Uint32	color;
-	t_vec2i	offset;
+	int		offset;
 
-	offset.x = (tex_index % 6) * 64 + (int)(ray->wall_col * 64);
-	offset.y = (tex_index / 6) * 64;
+	offset = (tex_index % 6) * 64 + (int)(ray->wall_col * 64)
+		+ (tex_index / 6) * 64 * wolf->tiles_wall.w;
 	height = (128.0 / ray->dist) * wolf->display.height * 0.7;
 	y_slice = 0;
 	y = wolf->display.height / 2.0 - height / 2.0;
@@ -83,9 +83,8 @@ void	draw_textured_slice(t_wolf *wolf, t_ray *ray, int col, int tex_index)
 	}
 	while (y_slice < height && y < wolf->display.height)
 	{
-		color = wolf->tiles_wall.pixels[offset.x
-			+ (offset.y + (int)(((float)y_slice / height) * 64))
-			* wolf->tiles_wall.w];
+		color = wolf->tiles_wall.pixels[offset
+			+ (int)((y_slice << 6) / height) * wolf->tiles_wall.w];
 		wolf->display.pixels[col + y * wolf->display.width] = color;
 		y_slice++;
 		y++;

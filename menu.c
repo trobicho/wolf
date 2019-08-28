@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 06:29:17 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 16:08:30 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/28 13:58:15 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	menu_place_text(t_wolf *wolf, const char *str, int id)
 	surface = TTF_RenderText_Solid(wolf->menu.font, str, color);
 	texture = SDL_CreateTextureFromSurface(wolf->display.renderer, surface);
 	SDL_QueryTexture(texture, NULL, NULL, &tex_w, &tex_h);
-	dst_rect = (SDL_Rect){0 , 0, tex_w, tex_h};
+	dst_rect = (SDL_Rect){0, 0, tex_w, tex_h};
 	space_h_per_text = (wolf->menu.h / wolf->menu.nb_entrie);
 	dst_rect.x = wolf->display.width / 2 - tex_w / 2;
 	dst_rect.y = wolf->display.height / 2 - wolf->menu.h / 2
@@ -63,7 +63,6 @@ void		menu_display(t_wolf *wolf)
 		wolf->display.pixels[p] = 0xFF0000;
 		p++;
 	}
-	//menu_draw_border(wolf, 0x0, 10);
 	menu_border.x = wolf->display.width / 2 - wolf->menu.w / 2;
 	menu_border.y = wolf->display.height / 2 - wolf->menu.h / 2;
 	menu_border.w = wolf->menu.w;
