@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:55:07 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 16:14:19 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/28 02:28:16 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ void	player_move(t_player *player)
 		x += player->strafe_speed;
 	if (player->state & P_STRAFE_L)
 		x -= player->strafe_speed;
+	if (player->state & P_ROTATE_L)
+		player_rotate(player, 0.04);
+	if (player->state & P_ROTATE_R)
+		player_rotate(player, -0.04);
 	d.x = cos(player->angle) * y + sin(player->angle) * x;
 	d.y = cos(player->angle) * x + sin(player->angle) * -y;
 	player->pos.x += d.x;

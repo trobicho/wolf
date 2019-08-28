@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 00:07:27 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 22:23:17 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/28 02:38:02 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ void	draw_textured_slice(t_wolf *wolf, t_ray *ray, int col, int tex_index)
 	Uint32	color;
 	t_vec2i	offset;
 
-	offset.x = (tex_index % 6) * 64 + ray->wall_col;
+	offset.x = (tex_index % 6) * 64 + (int)(ray->wall_col * 64);
 	offset.y = (tex_index / 6) * 64;
-	height = (128.0 / ray->dist) * 255;
+	height = (128.0 / ray->dist) * wolf->display.height * 0.7;
 	y_slice = 0;
 	y = wolf->display.height / 2.0 - height / 2.0;
 	if (height > wolf->display.height)

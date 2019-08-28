@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 18:19:27 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 13:43:47 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/28 03:46:03 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	editor_draw_grid(t_wolf *wolf, t_editor_inf *edit)
 			wolf->display.pixels[x + y * wolf->display.width] = 0x0;
 			x++;
 		}
-		y += edit->map_box.h / edit->map_pos.h;
+		y += edit->map_box.h / (float)edit->map_pos.h;
 	}
 	x = edit->map_box.x;
 	while (x <= edit->map_box.x + edit->map_box.w)
@@ -69,7 +69,7 @@ void	editor_draw_grid(t_wolf *wolf, t_editor_inf *edit)
 			wolf->display.pixels[x + y * wolf->display.width] = 0x0;
 			y++;
 		}
-		x += edit->map_box.w / edit->map_pos.w;
+		x += edit->map_box.w / (float)edit->map_pos.w;
 	}
 }
 
@@ -113,7 +113,7 @@ void	place_to_map(t_editor_inf *edit)
 		x = (edit->cursor.x - edit->map_box.x)
 			/ (float)edit->map_box.w * edit->map_pos.w + edit->map_pos.x;
 		y = (edit->cursor.y - edit->map_box.y)
-			/ (float)edit->map_box.h * edit->map_pos.h + edit->map_pos.x;
+			/ (float)edit->map_box.h * edit->map_pos.h + edit->map_pos.y;
 		if (edit->cursor.state == cur_state_left_click)
 			apply = edit->cursor.tex_select;
 		else

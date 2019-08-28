@@ -63,9 +63,17 @@ static int	launch_one_ray(t_ray *ray, t_map *map)
 			break;
 	}
 	if (side == 0)
+	{	
 		ray->dist = (pos.x - ray->origin.x + (1 - ray->step.x) / 2.0) / ray->vec.x;
+		ray->wall_col = ray->origin.y + ray->dist * ray->vec.y;
+	}
 	else
+	{
 		ray->dist = (pos.y - ray->origin.y + (1 - ray->step.y) / 2.0) / ray->vec.y;
+		ray->wall_col = ray->origin.x + ray->dist * ray->vec.x;
+	}
+	found = (found == -1) ? -1 : found + side;
+	ray->wall_col -= (int)ray->wall_col;
 	return (found);
 }
 
@@ -82,8 +90,8 @@ void		ray_cast(t_wolf *wolf)
 	dir.x = cos(wolf->player.angle);
 	dir.y = -sin(wolf->player.angle);
 	printf("dir = {%f, %f}\n", dir.x, dir.y);
-	ray.plane.x = dir.y * (wolf->player.fov / M_PI);
-	ray.plane.y = dir.x * (wolf->player.fov / M_PI);
+	ray.plane.x = (dir.x * cos(M_PI / 2.0) + dir.y * -sin(M_PI / 2.0)) * (wolf->player.fov / M_PI);
+	ray.plane.y = (dir.y * cos(M_PI / 2.0) + dir.x * sin(M_PI / 2.0)) * (wolf->player.fov / M_PI);
 	printf("plane = {%f, %f}\n\n", ray.plane.x, ray.plane.y);
 	while (col < wolf->display.width)
 	{

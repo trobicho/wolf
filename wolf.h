@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 15:23:11 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/28 02:24:17 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # define	P_BACKWARD	2
 # define	P_STRAFE_R	4
 # define	P_STRAFE_L	8
+# define	P_ROTATE_R	16
+# define	P_ROTATE_L	32
 
 typedef enum	s_state
 {

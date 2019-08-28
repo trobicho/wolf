@@ -6,18 +6,32 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:58:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 22:13:44 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/28 03:20:06 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map.h"
 #include <stdlib.h>
+#include "libft.h"
 
 int	map_alloc(t_map *map, int w, int h)
 {
 	map->w = w;
 	map->h = h;
 	if ((map->pixels = malloc(sizeof(*map->pixels) * map->w * map->h)) == NULL)
+		return (1);
+	map->player_pos = (t_vec2i){-1, -1};
+	return (0);
+}
+
+int	map_copy(t_map *map, t_map *cpy)
+{
+	map->w = cpy->w;
+	map->h = cpy->h;
+	if ((map->pixels = malloc(sizeof(*map->pixels) * map->w * map->h)) == NULL)
+		return (1);
+	if ((map->pixels = ft_memcpy(map->pixels, cpy->pixels
+					, sizeof(*map->pixels) * map->w * map->h)) == NULL)
 		return (1);
 	map->player_pos = (t_vec2i){-1, -1};
 	return (0);

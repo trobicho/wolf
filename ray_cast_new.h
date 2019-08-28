@@ -14,7 +14,7 @@ typedef struct	s_ray
 	t_vec2f	plane;
 	t_vec2i	step;
 	float	dist;
-	int		wall_col;
+	float	wall_col;
 }				t_ray;
 
 void			ray_cast(t_wolf *wolf);

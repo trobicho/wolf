@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 16:04:35 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 16:13:38 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/28 02:27:14 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	game_event(t_wolf *wolf)
 			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 				wolf->state = state_menu;
 			else if (event.key.keysym.scancode == SDL_SCANCODE_LEFT)
-				player_rotate(&wolf->player, 0.1);
+				wolf->player.state |= P_ROTATE_L;
 			else if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
-				player_rotate(&wolf->player, -0.1);
+				wolf->player.state |= P_ROTATE_R;
 			else if (event.key.keysym.scancode == SDL_SCANCODE_W)
 				wolf->player.state |= P_FORWARD;
 			else if (event.key.keysym.scancode == SDL_SCANCODE_S)
@@ -48,6 +48,10 @@ int	game_event(t_wolf *wolf)
 				wolf->player.state &= (~P_STRAFE_L);
 			else if (event.key.keysym.scancode == SDL_SCANCODE_D)
 				wolf->player.state &= (~P_STRAFE_R);
+			else if (event.key.keysym.scancode == SDL_SCANCODE_LEFT)
+				wolf->player.state &= (~P_ROTATE_L);
+			else if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
+				wolf->player.state &= (~P_ROTATE_R);
 		}
 	}
 	return (0);
