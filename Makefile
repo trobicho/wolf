@@ -6,7 +6,7 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/08/28 13:34:17 by trobicho         ###   ########.fr        #
+#    Updated: 2019/08/29 01:45:35 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS	=	main.c \
 			menu.c \
 			editor.c \
 			editor_utils.c \
+			editor_map.c \
 			editor_hud.c \
 			ppm.c \
 			ppm_utils.c \

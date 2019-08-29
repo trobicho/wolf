@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 10:26:47 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/28 03:46:50 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/29 01:45:43 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,6 @@ static int	editor_init(t_wolf *wolf, t_editor_inf *edit_inf)
 	edit_inf->panel.h = 16 * 32;
 	edit_inf->save_select = 0;
 	edit_inf->max_id = 110;
-	return (0);
-}
-
-static int	cursor_in_rect(t_edit_cursor *cursor, SDL_Rect rect)
-{
-	if (cursor->x >= rect.x && cursor->x < rect.x + rect.w
-		&& cursor->y >= rect.y && cursor->y < rect.y + rect.h)
-		return (1);
 	return (0);
 }
 

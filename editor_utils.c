@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 18:19:27 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/28 03:46:03 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/29 01:45:00 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,25 +99,10 @@ void	editor_map_display(t_wolf *wolf, t_editor_inf *edit)
 	}
 }
 
-void	place_to_map(t_editor_inf *edit)
+int			cursor_in_rect(t_edit_cursor *cursor, SDL_Rect rect)
 {
-	int	x;
-	int	y;
-	int	apply;
-
-	if (edit->cursor.x >= edit->map_box.x
-		&& edit->cursor.x < edit->map_box.x + edit->map_box.w
-		&& edit->cursor.y >= edit->map_box.y
-		&& edit->cursor.y < edit->map_box.y + edit->map_box.h)
-	{
-		x = (edit->cursor.x - edit->map_box.x)
-			/ (float)edit->map_box.w * edit->map_pos.w + edit->map_pos.x;
-		y = (edit->cursor.y - edit->map_box.y)
-			/ (float)edit->map_box.h * edit->map_pos.h + edit->map_pos.y;
-		if (edit->cursor.state == cur_state_left_click)
-			apply = edit->cursor.tex_select;
-		else
-			apply = 0;
-		edit->map.pixels[x + y * edit->map.w] = apply;
-	}
+	if (cursor->x >= rect.x && cursor->x < rect.x + rect.w
+		&& cursor->y >= rect.y && cursor->y < rect.y + rect.h)
+		return (1);
+	return (0);
 }
