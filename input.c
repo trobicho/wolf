@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 16:04:35 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 05:32:35 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/29 05:43:42 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,33 +25,12 @@ int	game_event(t_wolf *wolf)
 		{
 			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 				wolf->state = state_menu;
-			else if (event.key.keysym.scancode == SDL_SCANCODE_LEFT)
-				wolf->player.state |= P_ROTATE_L;
-			else if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
-				wolf->player.state |= P_ROTATE_R;
-			else if (event.key.keysym.scancode == SDL_SCANCODE_W)
-				wolf->player.state |= P_FORWARD;
-			else if (event.key.keysym.scancode == SDL_SCANCODE_S)
-				wolf->player.state |= P_BACKWARD;
-			else if (event.key.keysym.scancode == SDL_SCANCODE_A)
-				wolf->player.state |= P_STRAFE_L;
-			else if (event.key.keysym.scancode == SDL_SCANCODE_D)
-				wolf->player.state |= P_STRAFE_R;
+			else
+				player_handle_event_keydown(wolf, &event);
 		}
 		if (event.type == SDL_KEYUP)
 		{
-			if (event.key.keysym.scancode == SDL_SCANCODE_W)
-				wolf->player.state &= (~P_FORWARD);
-			else if (event.key.keysym.scancode == SDL_SCANCODE_S)
-				wolf->player.state &= (~P_BACKWARD);
-			else if (event.key.keysym.scancode == SDL_SCANCODE_A)
-				wolf->player.state &= (~P_STRAFE_L);
-			else if (event.key.keysym.scancode == SDL_SCANCODE_D)
-				wolf->player.state &= (~P_STRAFE_R);
-			else if (event.key.keysym.scancode == SDL_SCANCODE_LEFT)
-				wolf->player.state &= (~P_ROTATE_L);
-			else if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
-				wolf->player.state &= (~P_ROTATE_R);
+			player_handle_event_keydup(wolf, &event);
 		}
 	}
 	return (0);
@@ -69,19 +48,11 @@ int	menu_event(t_wolf *wolf)
 		if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE
 			&& event.key.repeat == 0)
 			wolf->quit = 1;
-		if (event.key.keysym.scancode == SDL_SCANCODE_DOWN)
-		{
+		else if (event.key.keysym.scancode == SDL_SCANCODE_DOWN)
 			wolf->menu.select++;
-			if (wolf->menu.select >= wolf->menu.nb_entrie)
-				wolf->menu.select = 0;
-		}
-		if (event.key.keysym.scancode == SDL_SCANCODE_UP)
-		{
+		else if (event.key.keysym.scancode == SDL_SCANCODE_UP)
 			wolf->menu.select--;
-			if (wolf->menu.select < 0)
-				wolf->menu.select = wolf->menu.nb_entrie-1;
-		}
-		if (event.key.keysym.sym == SDLK_RETURN
+		else if (event.key.keysym.sym == SDLK_RETURN
 			&& event.key.repeat == 0)
 		{
 			if (wolf->menu.select == 0)
@@ -91,6 +62,10 @@ int	menu_event(t_wolf *wolf)
 			else if (wolf->menu.select == 2)
 				wolf->quit = 1;
 		}
+		if (wolf->menu.select < 0)
+			wolf->menu.select = wolf->menu.nb_entrie - 1;
+		else if (wolf->menu.select >= wolf->menu.nb_entrie)
+			wolf->menu.select = 0;
 	}
 	return (0);
 }
