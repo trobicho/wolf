@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:54:36 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/28 14:02:31 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/29 05:03:08 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ int	main(int ac, char **av)
 	wolf.player.pos.y = wolf.map.player_pos.y * 64 + 32;
 	wolf.player.angle = (M_PI / 2.0) * ((wolf.map.player_dir + 1) % 4);
 	wolf.player.state = 0;
-	wolf.player.speed = 11;
+	wolf.player.speed = 10;
 	wolf.player.strafe_speed = 6;
+	wolf.player.hb = 16;
 	if (state_loop(&wolf))
 		return (1);
 	return (wolf_quit(&wolf));

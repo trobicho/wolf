@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 16:04:35 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/28 02:27:14 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/29 05:32:35 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	game_event(t_wolf *wolf)
 	{
 		if (event.type == SDL_QUIT)
 			wolf->quit = 1;
-		if (event.type == SDL_KEYDOWN)
+		if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
 		{
 			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 				wolf->state = state_menu;

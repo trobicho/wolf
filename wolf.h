@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/28 02:24:17 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/29 04:10:58 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct	s_player
 	int				state;
 	int				speed;
 	int				strafe_speed;
+	int				hb;
 }				t_player;
 
 typedef struct	s_display
