@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:18:33 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 05:57:00 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 16:33:55 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static int	game_loop(t_wolf *wolf)
 	{
 		game_event(wolf);
 		player_move(&wolf->player);
+		handle_door_state(wolf);
 		physic_check(wolf);
 		render_one_frame(wolf);
 	}

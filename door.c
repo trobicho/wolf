@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 04:34:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 06:27:05 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 17:21:16 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_door	*add_door_to_list(t_wolf *wolf, t_vec2i pos)
 	t_list	*ptr;
 
 	door.pos = pos;
-	door.state = door_state_open;
+	door.state = door_state_opening;
 	door.timer = 64;
 	if (wolf->door_list == NULL)
 	{
@@ -74,5 +74,50 @@ int				handle_action_event(t_wolf *wolf)
 		if (is_found_door(check_grid(&wolf->map, pos)))
 			open_door(wolf, pos);
 		i++;
+	}
+}
+
+static t_list *del_a_door(t_wolf *wolf, t_list *ptr, t_list *ptr_last)
+{
+	if (ptr_last == NULL)
+	{
+		wolf->door_list = ptr->next;
+		ptr_last = ptr->next;
+	}
+	else
+		ptr_last->next = ptr->next;
+	free(ptr->content);
+	free(ptr);
+	return (ptr_last);
+}
+
+void			handle_door_state(t_wolf *wolf)
+{
+	t_list	*ptr;
+	t_list	*ptr_last;
+	t_door	*door;
+
+	ptr = wolf->door_list;
+	ptr_last = NULL;
+	while(ptr != NULL)
+	{
+		door = (t_door*)ptr->content;
+		door->timer--;
+		printf("timer = %d\n", door->timer);
+		if (door->timer <= 0)
+		{
+			if (door->state == door_state_opening)
+				door->state = door_state_open;
+			else if (door->state == door_state_open)
+				door->state = door_state_closing;
+			else if (door->state == door_state_closing)
+			{
+				ptr = del_a_door(wolf, ptr, ptr_last);
+				continue ;
+			}
+			door->timer = 64;
+		}
+		ptr_last = ptr;
+		ptr = ptr->next;
 	}
 }

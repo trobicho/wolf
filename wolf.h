@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 06:14:55 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 16:34:37 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef enum	s_door_state
 {
 	door_state_close = 0,
 	door_state_open = 1,
-	door_state_openening,
+	door_state_opening,
 	door_state_closing,
 }				t_door_state;
 
@@ -98,4 +98,5 @@ int				state_loop(t_wolf *wolf);
 int				is_found_door(int id);
 t_door*			find_that_door(t_wolf *wolf, t_vec2i pos);
 int				handle_action_event(t_wolf *wolf);
+void			handle_door_state(t_wolf *wolf);
 #endif
