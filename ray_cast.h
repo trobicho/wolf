@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 13:24:11 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 06:17:22 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 20:47:55 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,5 @@ typedef struct	s_ray
 
 void			ray_cast(t_wolf *wolf);
 int				launch_one_ray(t_wolf *wolf, t_ray *ray, t_map *map);
+int				handle_door_ray(t_wolf *wolf, t_ray *ray, t_map *map);
 #endif

@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 01:35:54 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 06:19:47 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 21:20:31 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ int			handle_ray_search(t_wolf *wolf, t_ray *ray, t_map *map)
 	int		found;
 	int		side_save;
 	t_door	*door;
+	t_ray	ray_copy = *ray;
 
+	door = NULL;
 	side_save = ray->side;
 	if ((found = map->pixels[ray->pos.x + ray->pos.y * map->w]) == 0)
 		return (0);
@@ -59,7 +61,8 @@ int			handle_ray_search(t_wolf *wolf, t_ray *ray, t_map *map)
 	if (is_found_door(found))
 	{
 		t_vec2i pos = ray->pos;
-		if ((door = find_that_door(wolf, pos)) != NULL)
+		if ((door = find_that_door(wolf, pos)) != NULL
+			&& door->state == door_state_open)
 			return (launch_one_ray(wolf, ray, map));
 		else
 		{
@@ -76,5 +79,20 @@ int			handle_ray_search(t_wolf *wolf, t_ray *ray, t_map *map)
 		}
 	}
 	calc_dist(ray);
+	if (door && door->state != door_state_close && side_save == ray->side)
+	{
+			float timer; 
+		if (door->state == door_state_opening)
+			timer = 1.0 - door->timer / 64.0;
+		else
+			timer = door->timer / 64.0;
+		if (ray->wall_col < timer)
+		{
+			*ray = ray_copy;
+			return (launch_one_ray(wolf, ray, map));
+		}
+		else
+			ray->wall_col -= timer;
+	}
 	return (found + ray->side);
 }
