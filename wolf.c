@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:18:33 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 03:45:44 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 05:57:00 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int			is_found_door(int id)
 	return (0);
 }
 
-t_list*		find_that_door(t_wolf *wolf, t_vec2i pos)
+t_door*		find_that_door(t_wolf *wolf, t_vec2i pos)
 {
 	t_list	*ptr;
 	t_vec2i	pos_door;
@@ -64,7 +64,7 @@ t_list*		find_that_door(t_wolf *wolf, t_vec2i pos)
 	{
 		pos_door = ((t_door*)ptr->content)->pos;
 		if (pos.x == pos_door.x && pos.y == pos_door.y)
-			return (ptr);
+			return ((t_door*)ptr->content);
 		ptr = ptr->next;
 	}
 	return (NULL);

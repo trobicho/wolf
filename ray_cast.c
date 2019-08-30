@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 13:24:06 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 02:58:03 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 06:17:10 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	create_ray(t_ray *ray, t_vec2f dir, float col, t_vec2f pos)
 	ray->wall_col = 0;
 	ray->step.x = 1.0;
 	ray->step.y = 1.0;
+	ray->pos = (t_vec2i){(int)ray->origin.x, (int)ray->origin.y};
 	if (ray->vec.x < 0)
 	{
 		ray->step.x = -1.0;
@@ -42,15 +43,14 @@ static void	create_ray(t_ray *ray, t_vec2f dir, float col, t_vec2f pos)
 		ray->side_dist.y = ((int)pos.y + 1.0 - pos.y) * ray->delta_dist.y;
 }
 
-int	launch_one_ray(t_ray *ray, t_map *map)
+int	launch_one_ray(t_wolf *wolf, t_ray *ray, t_map *map)
 {
 	int		found;
 
-	ray->pos = (t_vec2i){(int)ray->origin.x, (int)ray->origin.y};
 	while (1)
 	{
 		ray_step(ray);
-		if ((found = handle_ray_search(ray, map)) > 0)
+		if ((found = handle_ray_search(wolf, ray, map)) > 0)
 		{
 			break ;
 		}
@@ -78,7 +78,7 @@ void		ray_cast(t_wolf *wolf)
 	{
 		create_ray(&ray, dir, col / (float)wolf->display.width
 			, (t_vec2f){wolf->player.pos.x / 64.0, wolf->player.pos.y / 64.0});
-		if ((found = launch_one_ray(&ray, &wolf->map)))
+		if ((found = launch_one_ray(wolf, &ray, &wolf->map)))
 		{
 			ray.dist *= 64.0;
 			if (found == -1)

@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 03:37:02 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 06:14:55 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,9 @@ typedef enum	s_door_state
 
 typedef struct	s_door
 {
-	t_vec2i	pos;
-	int		timer;
+	t_vec2i			pos;
+	t_door_state	state;
+	int				timer;
 }				t_door;
 
 typedef struct	s_player
@@ -95,4 +96,6 @@ typedef struct	s_wolf
 
 int				state_loop(t_wolf *wolf);
 int				is_found_door(int id);
+t_door*			find_that_door(t_wolf *wolf, t_vec2i pos);
+int				handle_action_event(t_wolf *wolf);
 #endif

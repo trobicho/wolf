@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 01:35:54 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 03:27:39 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 06:19:47 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,11 @@ void		ray_step(t_ray *ray)
 	}
 }
 
-int			handle_ray_search(t_ray *ray, t_map *map)
+int			handle_ray_search(t_wolf *wolf, t_ray *ray, t_map *map)
 {
-	int	found;
-	int	side_save;
+	int		found;
+	int		side_save;
+	t_door	*door;
 
 	side_save = ray->side;
 	if ((found = map->pixels[ray->pos.x + ray->pos.y * map->w]) == 0)
@@ -57,16 +58,22 @@ int			handle_ray_search(t_ray *ray, t_map *map)
 		return (-1);
 	if (is_found_door(found))
 	{
-		if (ray->side == 0)
-			ray->side_dist.x -= ray->delta_dist.x / 1.8;
+		t_vec2i pos = ray->pos;
+		if ((door = find_that_door(wolf, pos)) != NULL)
+			return (launch_one_ray(wolf, ray, map));
 		else
-			ray->side_dist.y -= ray->delta_dist.y / 1.8;
-		ray_step(ray);
-		found = 99 + (side_save != ray->side ? 2 : 0);
-		if (side_save == ray->side && ray->side == 0)
-			ray->origin.x += ray->step.x / 1.8;
-		if (side_save == ray->side && ray->side == 1)
-			ray->origin.y += ray->step.y / 1.8;
+		{
+			if (ray->side == 0)
+				ray->side_dist.x -= ray->delta_dist.x / 1.8;
+			else
+				ray->side_dist.y -= ray->delta_dist.y / 1.8;
+			ray_step(ray);
+			if (side_save == ray->side && ray->side == 0)
+				ray->origin.x += ray->step.x / 1.8;
+			if (side_save == ray->side && ray->side == 1)
+				ray->origin.y += ray->step.y / 1.8;
+			found = 99 + (side_save != ray->side ? 2 : 0);
+		}
 	}
 	calc_dist(ray);
 	return (found + ray->side);

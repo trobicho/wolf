@@ -6,7 +6,7 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/08/30 02:20:04 by trobicho         ###   ########.fr        #
+#    Updated: 2019/08/30 04:52:55 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRCS	=	main.c \
 			input.c \
 			init.c \
 			wolf.c \
+			door.c \
 			player.c \
 			render.c \
 			ray_cast.c \

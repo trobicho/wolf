@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 22:00:02 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 05:30:10 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 06:28:50 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,18 @@ void			physic_check(t_wolf *wolf)
 			pos.x += (i == 0) ? -wolf->player.hb : wolf->player.hb;
 		else
 			pos.y += (i == 1) ? -wolf->player.hb : wolf->player.hb;
-		if (check_grid(&wolf->map, pos))
+		if ((found = check_grid(&wolf->map, pos)))
+		{
 			normal[i] = calc_normal(pos, &wolf->map, (int)((i % 2) == 0));
+			t_vec2i	pos_door = pos;
+			pos_door.x /= 64;
+			pos_door.y /= 64;
+			if (is_found_door(found) && find_that_door(wolf, pos_door))
+			{
+				printf("test\n");
+				normal[i] = (t_vec2i){0, 0};
+			}
+		}
 		i++;
 	}
 	apply_physic_to_player(wolf, normal);

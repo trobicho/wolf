@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:55:07 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 05:41:14 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 05:00:20 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	player_rotate(t_player *player, float teta)
 
 int		player_handle_event_keydown(t_wolf *wolf, SDL_Event *event)
 {
-	if (event->key.keysym.scancode == SDL_SCANCODE_LEFT)
+	if (event->key.keysym.sym == SDLK_LEFT)
 		wolf->player.state |= P_ROTATE_L;
-	else if (event->key.keysym.scancode == SDL_SCANCODE_RIGHT)
+	else if (event->key.keysym.sym == SDLK_RIGHT)
 		wolf->player.state |= P_ROTATE_R;
 	else if (event->key.keysym.scancode == SDL_SCANCODE_W)
 		wolf->player.state |= P_FORWARD;
@@ -63,6 +63,8 @@ int		player_handle_event_keydown(t_wolf *wolf, SDL_Event *event)
 		wolf->player.state |= P_BACKWARD;
 	else if (event->key.keysym.scancode == SDL_SCANCODE_D)
 		wolf->player.state |= P_STRAFE_R;
+	else if (event->key.keysym.sym == SDLK_SPACE)
+		handle_action_event(wolf);
 	else
 		return (0);
 	return (1);
@@ -78,9 +80,9 @@ int		player_handle_event_keydup(t_wolf *wolf, SDL_Event *event)
 		wolf->player.state &= (~P_BACKWARD);
 	else if (event->key.keysym.scancode == SDL_SCANCODE_D)
 		wolf->player.state &= (~P_STRAFE_R);
-	else if (event->key.keysym.scancode == SDL_SCANCODE_LEFT)
+	else if (event->key.keysym.sym == SDLK_LEFT)
 		wolf->player.state &= (~P_ROTATE_L);
-	else if (event->key.keysym.scancode == SDL_SCANCODE_RIGHT)
+	else if (event->key.keysym.sym == SDLK_RIGHT)
 		wolf->player.state &= (~P_ROTATE_R);
 	else
 		return (0);
