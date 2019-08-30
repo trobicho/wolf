@@ -6,23 +6,18 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 18:08:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 06:36:06 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/29 20:32:52 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ppm.h"
+#include "ppm_load.h"
 #include "libft.h"
+#include "map.h"
 #include <unistd.h>
 #include <sys/types.h>
 #include <fcntl.h>
 
-static int	ppm_4bbp_load_error(int fd, t_ppm_tex_4bpp *tex)
-{
-	free(map->pixels);
-	close(fd);
-	ft_putstr("invalid map/tex file\n");
-	return (-1);
-}
 
 int			ppm_load_4bpp(const char *file_path, t_ppm_tex_4bpp *tex)
 {
@@ -31,12 +26,11 @@ int			ppm_load_4bpp(const char *file_path, t_ppm_tex_4bpp *tex)
 	int		y;
 	Uint32	byte;
 
-	get_next_byte(-1, 0, NULL);
+	get_next_byte(-1, NULL);
 	if ((fd = open(file_path, O_RDONLY)) <= 0)
 		return (-1);
 	if (ppm_parse_header(fd, &tex->w, &tex->h))
 		return (-1);
-	cur_index = 0;
 	if ((tex->pixels = malloc(sizeof(*tex->pixels) * tex->w * tex->h)) == NULL)
 		return (-1);
 	y = 0;
@@ -45,14 +39,11 @@ int			ppm_load_4bpp(const char *file_path, t_ppm_tex_4bpp *tex)
 		x = 0;
 		while (x < tex->w)
 		{
-			if (get_next_byte(fd, tex->w * tex->h, ((Uint8*)&byte)) == 0
-				&& get_next_byte(fd, tex->w * tex->h, ((Uint8*)&byte)) == 0
-				&& get_next_byte(fd, tex->w * tex->h, ((Uint8*)&byte)) == 0
-				&& get_next_byte(fd, tex->w * tex->h, ((Uint8*)&byte)) == 0)
-				tex->pixels[x + y * tex->w] =
-					((Uint32)buf[cur_index]) << 16
-					| ((Uint32)buf[cur_index + 1]) << 8
-					| ((Uint32)buf[cur_index + 2]);
+			byte = 0;
+			if (get_next_byte(fd,((Uint8*)&byte) + 2) == 0
+				&& get_next_byte(fd,((Uint8*)&byte) + 1) == 0
+				&& get_next_byte(fd,((Uint8*)&byte)) == 0)
+				tex->pixels[x + y * tex->w] = byte;
 			else
 				return (ppm_4bbp_load_error(fd, tex));
 			if (tex->pixels[x + y * tex->w] == tex->blend)
@@ -65,68 +56,37 @@ int			ppm_load_4bpp(const char *file_path, t_ppm_tex_4bpp *tex)
 	return (0);
 }
 
-static int	map_load_error(int fd, t_ppm_tex_1bpp *map)
+int			ppm_load_1bpp_map(const char *file_path, t_ppm_tex_1bpp *map)
 {
-	free(map->pixels);
-	close(fd);
-	ft_putstr("invalid map/tex file\n");
-	return (-1);
-}
+	int		fd;
+	int		x;
+	int		y;
+	Uint8	byte;
 
-int			ppm_load_1bpp_map(const char *file_path, t_ppm_tex_1bpp *tex
-	, int max_id)
-{
-	int				fd;
-	int				x;
-	int				y;
-	int				cur_index;
-	ssize_t			size;
-	unsigned char	buf[READ_SIZE];
-
+	get_next_byte(-1, NULL);
 	if ((fd = open(file_path, O_RDONLY)) <= 0)
 		return (-1);
-	if (ppm_parse_header(fd, &tex->w, &tex->h))
+	if (ppm_parse_header(fd, &map->w, &map->h))
 		return (-1);
-	if (tex->w != 62 || tex->h != 62)
+	if (map_alloc(map, map->w, map->h, 1))
 		return (-1);
-	cur_index = 0;
-	if ((tex->pixels = malloc(sizeof(*tex->pixels) * 64 * 64)) == NULL)
-		return (-1);
-	tex->w = 64;
-	tex->h = 64;
-	tex->player_pos = (t_vec2i){-1, -1};
-	ft_memset(tex->pixels, 1, 64 * 64);
-	size = read(fd, buf, READ_SIZE);
 	y = 1;
-	while (y < 63)
+	printf("map %d, %d\n", map->w, map->h);
+	while (y < map->h - 1)
 	{
 		x = 1;
-		while (x < 63)
+		while (x < map->w - 1)
 		{
-			if (cur_index == size)
-			{
-				size = read(fd, buf, READ_SIZE);
-				cur_index = 0;
-			}
-			if (buf[cur_index] > max_id + 4)
-				return (map_load_error(fd, tex));
-			else if (buf[cur_index] > max_id)
-			{
-				if (tex->player_pos.x != -1 || tex->player_pos.y != -1)
-					return (map_load_error(fd, tex));
-				tex->pixels[x + y * 64] = 0;
-				tex->player_pos = (t_vec2i){x, y};
-				tex->player_dir = buf[cur_index] - (max_id + 1);
-			}
-			else
-				tex->pixels[x + y * 64] = ((Uint8)buf[cur_index]);
+			if (get_next_byte(fd, &byte))
+				return (map_load_error(fd, map));
+			if (map_id_add(map, x, y, byte))
+				return (map_load_error(fd, map));
 			x++;
-			cur_index++;
 		}
 		y++;
 	}
-	if (tex->player_pos.x < 0 || tex->player_pos.y < 0)
-		return (map_load_error(fd, tex));
+	if (map->player_pos.x < 0 || map->player_pos.y < 0)
+		return (map_load_error(fd, map));
 	close(fd);
 	return (0);
 }

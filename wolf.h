@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 04:10:58 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 03:37:02 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "map.h"
 # include "vector.h"
 # include "ppm.h"
+# include "libft.h"
 
 # define	P_FORWARD	1
 # define	P_BACKWARD	2
@@ -34,6 +35,20 @@ typedef enum	s_state
 	state_editor,
 	state_option,
 }				t_state;
+
+typedef enum	s_door_state
+{
+	door_state_close = 0,
+	door_state_open = 1,
+	door_state_openening,
+	door_state_closing,
+}				t_door_state;
+
+typedef struct	s_door
+{
+	t_vec2i	pos;
+	int		timer;
+}				t_door;
 
 typedef struct	s_player
 {
@@ -74,8 +89,10 @@ typedef struct	s_wolf
 	t_ppm_tex_4bpp	tiles_wall;
 	t_state			state;
 	t_menu			menu;
+	t_list			*door_list;
 	int				quit;
 }				t_wolf;
 
 int				state_loop(t_wolf *wolf);
+int				is_found_door(int id);
 #endif

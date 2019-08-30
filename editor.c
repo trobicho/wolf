@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 10:26:47 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 01:45:43 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/29 19:37:16 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 static int	editor_init(t_wolf *wolf, t_editor_inf *edit_inf)
 {
 	//if (map_copy(&edit_inf->map, &wolf->map))
-	if (map_alloc(&edit_inf->map, 62, 62))
+	if (map_alloc(&edit_inf->map, 62, 62, 0))
 		return (1);
 	ft_memset(edit_inf->map.pixels, 0, edit_inf->map.w * edit_inf->map.h);
 	edit_inf->cursor = (t_edit_cursor){0, 0, 0, 1};

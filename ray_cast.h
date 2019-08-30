@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 13:24:11 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/28 13:24:12 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 02:42:18 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ typedef struct	s_ray
 	t_vec2f	side_dist;
 	t_vec2f	plane;
 	t_vec2i	step;
+	int		side;
 	float	dist;
 	float	wall_col;
 }				t_ray;
 
 void			ray_cast(t_wolf *wolf);
-t_vec2i			calc_step(t_ray *ray, t_map *map, t_vec2i *delta_dist
-	, t_vec2i *step);
+int				launch_one_ray(t_ray *ray, t_map *map);
 #endif

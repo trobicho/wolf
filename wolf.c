@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:18:33 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 15:32:18 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 03:45:44 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "menu.h"
 #include "editor.h"
 
-static int		game_loop(t_wolf *wolf)
+static int	game_loop(t_wolf *wolf)
 {
 	while (!wolf->quit && wolf->state == state_game)
 	{
@@ -30,7 +30,7 @@ static int		game_loop(t_wolf *wolf)
 	return (0);
 }
 
-int				state_loop(t_wolf *wolf)
+int			state_loop(t_wolf *wolf)
 {
 	while (!wolf->quit)
 	{
@@ -45,4 +45,27 @@ int				state_loop(t_wolf *wolf)
 		}
 	}
 	return (0);
+}
+
+int			is_found_door(int id)
+{
+	if (id >= 99 && id <= 102)
+		return 99;
+	return (0);
+}
+
+t_list*		find_that_door(t_wolf *wolf, t_vec2i pos)
+{
+	t_list	*ptr;
+	t_vec2i	pos_door;
+
+	ptr = wolf->door_list;
+	while (ptr != NULL)
+	{
+		pos_door = ((t_door*)ptr->content)->pos;
+		if (pos.x == pos_door.x && pos.y == pos_door.y)
+			return (ptr);
+		ptr = ptr->next;
+	}
+	return (NULL);
 }

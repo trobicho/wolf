@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 01:48:42 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 03:38:54 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int			wolf_init(t_wolf *wolf)
 	wolf->menu.select = 0;
 	wolf->menu.w = 200;
 	wolf->menu.h = 300;
+	wolf->door_list = NULL;
 	return (0);
 }
 

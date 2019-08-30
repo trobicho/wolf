@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 18:04:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 14:30:21 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/29 19:50:48 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct	s_ppm_tex_4bpp
 }				t_ppm_tex_4bpp;
 
 int				ppm_load_4bpp(const char *file_path, t_ppm_tex_4bpp *tex);
-int				ppm_load_1bpp_map(const char *file_path, t_ppm_tex_1bpp *tex
-	, int max_id);
+int				ppm_load_1bpp_map(const char *file_path, t_ppm_tex_1bpp *tex);
 int				ppm_write_1bpp(const char *file_path, t_ppm_tex_1bpp *tex);
 #endif
