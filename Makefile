@@ -6,7 +6,7 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/08/31 21:49:08 by trobicho         ###   ########.fr        #
+#    Updated: 2019/08/31 21:53:01 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,6 +75,7 @@ IFLAGS	=	-I $(HDRS_PATH) -I $(SDL_LOC)/include/SDL2 -I $(SDL_LOC)/include -I $(T
 all:		$(NAME) Makefile
 
 $(NAME):	$(OBJS) Makefile
+	make -C ./libft
 	echo $(OBJS)
 	$(CC) $(OBJS) $(CFLAGS) $(LFLAGS) -o $(NAME)
 
@@ -83,9 +84,11 @@ $(OBJS_PATH)/%.o: $(SRCS_PATH)/%.c $(HDRS) Makefile
 
 clean:
 	rm -f $(OBJS)
+	make -C ./libft clean
 
 fclean: clean
 	rm -f $(NAME)
+	make -C ./libft fclean
 
 re: fclean all
 
