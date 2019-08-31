@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 01:35:54 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 00:08:12 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 16:52:10 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int		handle_ray_search(t_wolf *wolf, t_ray *ray, t_map *map)
 {
 	int		found;
 	t_door	*door;
-	t_ray	ray_copy = *ray;
 
 	door = NULL;
 	if ((found = map->pixels[ray->pos.x + ray->pos.y * map->w]) == 0)

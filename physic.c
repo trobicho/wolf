@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 22:00:02 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 16:24:06 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 21:23:34 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ static void		apply_physic_to_player(t_wolf *wolf, t_vec2i normal_tab[4])
 	wolf->player.pos.y += normal.y;
 }
 
-static int		physic_check_door(t_wolf *wolf, t_vec2i pos, int found)
+static int		physic_check_door(t_wolf *wolf, t_vec2i pos, int found
+	, int closing)
 {
 	t_door	*door;
 	t_vec2i	pos_door;
@@ -71,8 +72,15 @@ static int		physic_check_door(t_wolf *wolf, t_vec2i pos, int found)
 		pos_door = (t_vec2i){pos.x / 64, pos.y / 64};
 		if ((door = find_that_door(wolf, pos_door)) != NULL)
 		{
-			if (door->state == door_state_open)
+			if (door->state == door_state_open
+				|| door->state == door_state_waiting_for_player_to_move_is_ass)
 				return (0);
+			else if (door->state == door_state_closing && closing)
+			{
+				door->state = door_state_waiting_for_player_to_move_is_ass;
+				door->timer = 2;
+				return (0);
+			}
 		}
 	}
 	return (1);
@@ -85,6 +93,8 @@ void			physic_check(t_wolf *wolf)
 	t_vec2i	pos;
 	int		i;
 
+	if ((found = check_grid(&wolf->map, wolf->player.pos)))
+		physic_check_door(wolf, wolf->player.pos, found, 1);
 	i = 0;
 	while (i < 4)
 	{
@@ -96,7 +106,7 @@ void			physic_check(t_wolf *wolf)
 			pos.y += (i == 1) ? -wolf->player.hb : wolf->player.hb;
 		if ((found = check_grid(&wolf->map, pos)))
 		{
-			if (physic_check_door(wolf, pos, found))
+			if (physic_check_door(wolf, pos, found, 0))
 				normal[i] = calc_normal(pos, &wolf->map, (int)((i % 2) == 0));
 		}
 		i++;

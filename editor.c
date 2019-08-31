@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 10:26:47 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 19:37:16 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 17:22:59 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 
 static int	editor_init(t_wolf *wolf, t_editor_inf *edit_inf)
 {
-	//if (map_copy(&edit_inf->map, &wolf->map))
 	if (map_alloc(&edit_inf->map, 62, 62, 0))
 		return (1);
 	ft_memset(edit_inf->map.pixels, 0, edit_inf->map.w * edit_inf->map.h);
@@ -72,7 +71,6 @@ static int	editor_click(t_wolf *wolf, t_editor_inf *edit)
 		if (edit->cursor.y >= edit->panel.y + edit->panel.h - 32)
 			edit->cursor.tex_select = edit->max_id
 				+ (edit->cursor.x - edit->panel.x) / 32 + 1;
-		printf("select = %d\n", edit->cursor.tex_select);
 	}
 	if (cursor_in_rect(&edit->cursor, edit->save_button))
 	{
@@ -83,10 +81,9 @@ static int	editor_click(t_wolf *wolf, t_editor_inf *edit)
 		}
 		else if (edit->cursor.state == cur_state_left_click)
 			edit->save_select = 1;
+		return (0);
 	}
-	else
-		edit->save_select = 0;
-	return (0);
+	return (edit->save_select = 0);
 }
 
 int			editor_state(t_wolf *wolf)

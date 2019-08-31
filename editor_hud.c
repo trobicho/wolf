@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/25 14:31:29 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/27 11:58:37 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 16:55:56 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,18 @@ void		editor_display_hud(t_wolf *wolf, t_editor_inf *edit)
 	edit->save_button.h = 50;
 	if (edit->save_select)
 	{
-		draw_full_rect(&wolf->display, edit->save_button, 0x225500);
+		if (edit->map.player_pos.x > 0 && edit->map.player_pos.y > 0)
+			draw_full_rect(&wolf->display, edit->save_button, 0x225500);
+		else
+			draw_full_rect(&wolf->display, edit->save_button, 0x552200);
 		draw_border(&wolf->display, edit->save_button, 0x0, 3);
 	}
 	else
 	{
-		draw_full_rect(&wolf->display, edit->save_button, 0x00AA00);
+		if (edit->map.player_pos.x > 0 && edit->map.player_pos.y > 0)
+			draw_full_rect(&wolf->display, edit->save_button, 0x00AA00);
+		else
+			draw_full_rect(&wolf->display, edit->save_button, 0xAA0000);
 		draw_border(&wolf->display, edit->save_button, 0x0, 3);
 	}
 }

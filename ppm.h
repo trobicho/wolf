@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 18:04:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 19:50:48 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 18:34:10 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <SDL2/SDL.h>
 # include "vector.h"
-# define	READ_SIZE	65535
+# define READ_SIZE	65535
 
 typedef struct	s_ppm_tex_1bpp
 {

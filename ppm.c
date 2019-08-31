@@ -6,18 +6,30 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 18:08:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 02:05:29 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 21:24:03 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ppm.h"
 #include "ppm_load.h"
+#include "ppm_utils.h"
 #include "libft.h"
 #include "map.h"
 #include <unistd.h>
 #include <sys/types.h>
 #include <fcntl.h>
 
+static int	ppm_load_begin(const char *file_path, ssize_t *w, ssize_t *h)
+{
+	int	fd;
+
+	get_next_byte(-1, NULL);
+	if ((fd = open(file_path, O_RDONLY)) < 0)
+		return (-1);
+	if (ppm_parse_header(fd, w, h))
+		return (-1);
+	return (fd);
+}
 
 int			ppm_load_4bpp(const char *file_path, t_ppm_tex_4bpp *tex)
 {
@@ -26,34 +38,26 @@ int			ppm_load_4bpp(const char *file_path, t_ppm_tex_4bpp *tex)
 	int		y;
 	Uint32	byte;
 
-	get_next_byte(-1, NULL);
-	if ((fd = open(file_path, O_RDONLY)) <= 0)
+	if ((fd = ppm_load_begin(file_path, &tex->w, &tex->h)) < 0
+		|| (tex->pixels = malloc(sizeof(*tex->pixels) * tex->w * tex->h))
+		== NULL)
 		return (-1);
-	if (ppm_parse_header(fd, &tex->w, &tex->h))
-		return (-1);
-	if ((tex->pixels = malloc(sizeof(*tex->pixels) * tex->w * tex->h)) == NULL)
-		return (-1);
-	y = 0;
-	while (y < tex->h)
+	y = -1;
+	while (++y < tex->h)
 	{
-		x = 0;
-		while (x < tex->w)
+		x = -1;
+		while (++x < tex->w)
 		{
-			byte = 0;
-			if (get_next_byte(fd,((Uint8*)&byte) + 2) == 0
-				&& get_next_byte(fd,((Uint8*)&byte) + 1) == 0
-				&& get_next_byte(fd,((Uint8*)&byte)) == 0)
-				tex->pixels[x + y * tex->w] = byte;
-			else
+			if (get_next_byte(fd, ((Uint8*)&byte) + 2) != 0
+				|| get_next_byte(fd, ((Uint8*)&byte) + 1) != 0
+				|| get_next_byte(fd, ((Uint8*)&byte)) != 0)
 				return (ppm_4bbp_load_error(fd, tex));
+			tex->pixels[x + y * tex->w] = byte;
 			if (tex->pixels[x + y * tex->w] == tex->blend)
 				tex->pixels[x + y * tex->w] = 0xFF000000;
-			x++;
 		}
-		y++;
 	}
-	close(fd);
-	return (0);
+	return (close(fd));
 }
 
 int			ppm_load_1bpp_map(const char *file_path, t_ppm_tex_1bpp *map)
@@ -63,34 +67,24 @@ int			ppm_load_1bpp_map(const char *file_path, t_ppm_tex_1bpp *map)
 	int		y;
 	Uint8	byte;
 
-	get_next_byte(-1, NULL);
-	if ((fd = open(file_path, O_RDONLY)) <= 0)
+	if ((fd = ppm_load_begin(file_path, &map->w, &map->h)) < 0
+		|| map_alloc(map, map->w, map->h, 1))
 		return (-1);
-	if (ppm_parse_header(fd, &map->w, &map->h))
-		return (-1);
-	if (map_alloc(map, map->w, map->h, 1))
-		return (-1);
-	y = 1;
-	printf("map %d, %d\n", map->w, map->h);
-	while (y < map->h - 1)
+	y = 0;
+	while (++y < map->h - 1)
 	{
-		x = 1;
-		while (x < map->w - 1)
+		x = 0;
+		while (++x < map->w - 1)
 		{
 			if (get_next_byte(fd, &byte))
 				return (map_load_error(fd, map));
 			if (map_id_add(map, x, y, byte))
 				return (map_load_error(fd, map));
-			x++;
 		}
-		y++;
 	}
 	if (map->player_pos.x < 0 || map->player_pos.y < 0)
-	{
-		map->player_pos = (t_vec2i){64, 64};
-	}
-	close(fd);
-	return (0);
+		return (map_load_error(fd, map));
+	return (close(fd));
 }
 
 int			ppm_write_1bpp(const char *file_path, t_ppm_tex_1bpp *tex)

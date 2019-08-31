@@ -6,14 +6,35 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 16:04:35 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 05:43:42 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 21:22:47 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 #include "player.h"
 
-int	game_event(t_wolf *wolf)
+static void	set_editor_cur_pos(t_wolf *wolf, t_edit_cursor *cursor
+	, SDL_Event *event)
+{
+	int	win_w;
+	int	win_h;
+
+	SDL_GetWindowSize(wolf->display.win, &win_w, &win_h);
+	cursor->x = (event->button.x / (float)win_w) * wolf->display.width;
+	cursor->y = (event->button.y / (float)win_h) * wolf->display.height;
+}
+
+static void	menu_press_return_change_state(t_wolf *wolf)
+{
+	if (wolf->menu.select == 0)
+		wolf->state = state_game;
+	else if (wolf->menu.select == 1)
+		wolf->state = state_editor;
+	else if (wolf->menu.select == 2)
+		wolf->quit = 1;
+}
+
+int			game_event(t_wolf *wolf)
 {
 	SDL_Event	event;
 
@@ -36,7 +57,7 @@ int	game_event(t_wolf *wolf)
 	return (0);
 }
 
-int	menu_event(t_wolf *wolf)
+int			menu_event(t_wolf *wolf)
 {
 	SDL_Event	event;
 
@@ -54,14 +75,7 @@ int	menu_event(t_wolf *wolf)
 			wolf->menu.select--;
 		else if (event.key.keysym.sym == SDLK_RETURN
 			&& event.key.repeat == 0)
-		{
-			if (wolf->menu.select == 0)
-				wolf->state = state_game;
-			else if (wolf->menu.select == 1)
-				wolf->state = state_editor;
-			else if (wolf->menu.select == 2)
-				wolf->quit = 1;
-		}
+			menu_press_return_change_state(wolf);
 		if (wolf->menu.select < 0)
 			wolf->menu.select = wolf->menu.nb_entrie - 1;
 		else if (wolf->menu.select >= wolf->menu.nb_entrie)
@@ -70,7 +84,7 @@ int	menu_event(t_wolf *wolf)
 	return (0);
 }
 
-int	editor_event(t_wolf *wolf, t_edit_cursor *cursor)
+int			editor_event(t_wolf *wolf, t_edit_cursor *cursor)
 {
 	SDL_Event	event;
 
@@ -92,9 +106,6 @@ int	editor_event(t_wolf *wolf, t_edit_cursor *cursor)
 	else if (event.type == SDL_MOUSEBUTTONUP)
 		cursor->state = cur_state_none;
 	else if (event.type == SDL_MOUSEMOTION)
-	{
-		cursor->x = event.button.x;
-		cursor->y = event.button.y;
-	}
+		set_editor_cur_pos(wolf, cursor, &event);
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/08/30 20:43:24 by trobicho         ###   ########.fr        #
+#    Updated: 2019/08/31 20:02:08 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRCS	=	main.c \
 			ray_door.c \
 			physic.c \
 			map.c \
+			map_alloc.c \
 			vector.c \
 			menu.c \
 			editor.c \

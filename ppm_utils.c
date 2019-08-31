@@ -6,11 +6,14 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 14:04:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 02:24:25 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 19:07:12 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ppm.h"
+#include "libft.h"
+#include <unistd.h>
+#include <sys/types.h>
 
 ssize_t	read_unsigned_nb_until_space(int fd, ssize_t max)
 {

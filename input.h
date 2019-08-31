@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 16:04:17 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/24 18:53:24 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 18:32:42 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "wolf.h"
 # include "vector.h"
 
-typedef enum	s_cursor_state
+typedef enum	e_cursor_state
 {
 	cur_state_none = 0,
 	cur_state_left_click,

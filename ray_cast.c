@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 13:24:06 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 00:05:33 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 17:38:26 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,20 @@ static void	create_ray(t_ray *ray, t_vec2f dir, float col, t_vec2f pos)
 		ray->side_dist.y = ((int)pos.y + 1.0 - pos.y) * ray->delta_dist.y;
 }
 
-int	launch_one_ray(t_wolf *wolf, t_ray *ray, t_map *map)
+static void	handle_ray_draw(t_wolf *wolf, t_ray *ray, int col, int found)
+{
+	if (found)
+	{
+		found += 1 - ray->side;
+		ray->dist *= 64.0;
+		if (found == -1)
+			draw_unicolor_slice(wolf, ray, col, 0x0);
+		else
+			draw_textured_slice(wolf, ray, col, found - 1);
+	}
+}
+
+int			launch_one_ray(t_wolf *wolf, t_ray *ray, t_map *map)
 {
 	int		found;
 
@@ -52,23 +65,20 @@ int	launch_one_ray(t_wolf *wolf, t_ray *ray, t_map *map)
 	{
 		ray_step(ray);
 		if ((found = handle_ray_search(wolf, ray, map)) > 0)
-		{
 			break ;
-		}
 	}
 	if (ray->dist <= 0.0)
-	calc_dist(ray);
+		calc_dist(ray);
 	return (found);
 }
 
 void		ray_cast(t_wolf *wolf)
 {
-	int		col;
 	float	teta_cur;
 	float	teta_add;
-	int		found;
 	t_ray	ray;
 	t_vec2f	dir;
+	int		col;
 
 	col = 0;
 	dir.x = cos(wolf->player.angle);
@@ -81,15 +91,8 @@ void		ray_cast(t_wolf *wolf)
 	{
 		create_ray(&ray, dir, col / (float)wolf->display.width
 			, (t_vec2f){wolf->player.pos.x / 64.0, wolf->player.pos.y / 64.0});
-		if ((found = launch_one_ray(wolf, &ray, &wolf->map)))
-		{
-			found += 1 - ray.side;
-			ray.dist *= 64.0;
-			if (found == -1)
-				draw_unicolor_slice(wolf, ray, col, 0x0);
-			else
-				draw_textured_slice(wolf, &ray, col, found - 1);
-		}
+		handle_ray_draw(wolf, &ray, col
+			, launch_one_ray(wolf, &ray, &wolf->map));
 		teta_cur += teta_add;
 		col++;
 	}

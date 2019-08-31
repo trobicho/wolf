@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 05:53:57 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 20:25:45 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 17:09:27 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,14 @@ int	get_next_byte(int fd, Uint8 *byte)
 	static ssize_t			size = 0;
 	static unsigned char	buf[READ_SIZE];
 	static int				last_fd = -1;
-	static int				total_size = 0;
 
 	if (last_fd != fd || fd < 0)
 	{
 		cur_index = 0;
+		size = 0;
 		last_fd = fd;
-		if (fd > 0)
-			size = read(fd, buf, READ_SIZE);
-		else
-			return (total_size = 0);
-		total_size = size;
+		if (fd < 0)
+			return (0);
 	}
 	if (cur_index == size)
 	{
@@ -54,7 +51,6 @@ int	get_next_byte(int fd, Uint8 *byte)
 		size = read(fd, buf, READ_SIZE);
 		if (size <= 0)
 			return (-1);
-		total_size += size;
 	}
 	if (byte != NULL)
 		*byte = (Uint8)buf[cur_index++];

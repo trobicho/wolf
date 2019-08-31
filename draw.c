@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 00:07:27 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 02:10:16 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 17:30:48 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ void	draw_border(t_display *display, SDL_Rect border, Uint32 color, int w)
 	draw_full_rect(display, rect, color);
 }
 
-void	draw_unicolor_slice(t_wolf *wolf, t_ray ray, int col, Uint32 color)
+void	draw_unicolor_slice(t_wolf *wolf, t_ray *ray, int col, Uint32 color)
 {
 	int	height;
 	int	y_slice;
 	int	y;
 
-	height = (128.0 / ray.dist) * 255;
+	height = (128.0 / ray->dist) * 255;
 	if (height > wolf->display.height)
 		height = wolf->display.height;
 	y_slice = 0;

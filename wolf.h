@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 16:34:37 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 18:33:50 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@
 # include "ppm.h"
 # include "libft.h"
 
-# define	P_FORWARD	1
-# define	P_BACKWARD	2
-# define	P_STRAFE_R	4
-# define	P_STRAFE_L	8
-# define	P_ROTATE_R	16
-# define	P_ROTATE_L	32
+# define P_FORWARD		1
+# define P_BACKWARD		2
+# define P_STRAFE_R		4
+# define P_STRAFE_L		8
+# define P_ROTATE_R		16
+# define P_ROTATE_L		32
 
-typedef enum	s_state
+typedef enum	e_state
 {
 	state_game,
 	state_menu,
@@ -36,12 +36,13 @@ typedef enum	s_state
 	state_option,
 }				t_state;
 
-typedef enum	s_door_state
+typedef enum	e_door_state
 {
 	door_state_close = 0,
 	door_state_open = 1,
 	door_state_opening,
 	door_state_closing,
+	door_state_waiting_for_player_to_move_is_ass,
 }				t_door_state;
 
 typedef struct	s_door
@@ -96,7 +97,7 @@ typedef struct	s_wolf
 
 int				state_loop(t_wolf *wolf);
 int				is_found_door(int id);
-t_door*			find_that_door(t_wolf *wolf, t_vec2i pos);
+t_door			*find_that_door(t_wolf *wolf, t_vec2i pos);
 int				handle_action_event(t_wolf *wolf);
 void			handle_door_state(t_wolf *wolf);
 #endif

@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:18:33 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 16:33:55 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 19:07:33 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "libft.h"
 #include "menu.h"
 #include "editor.h"
+#include "player.h"
 
 static int	game_loop(t_wolf *wolf)
 {
@@ -51,11 +52,11 @@ int			state_loop(t_wolf *wolf)
 int			is_found_door(int id)
 {
 	if (id >= 99 && id <= 102)
-		return 99;
+		return (99);
 	return (0);
 }
 
-t_door*		find_that_door(t_wolf *wolf, t_vec2i pos)
+t_door		*find_that_door(t_wolf *wolf, t_vec2i pos)
 {
 	t_list	*ptr;
 	t_vec2i	pos_door;

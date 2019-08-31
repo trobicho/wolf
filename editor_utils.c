@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 18:19:27 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 01:45:00 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 17:19:38 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,26 @@ void	draw_tex(t_wolf *wolf, SDL_Rect rect, int tex_index)
 	int		x;
 	int		y;
 	Uint32	color;
-	t_vec2i	offset;
+	int		offset;
 
-	offset.x = ((tex_index - 1) % 6) * 64;
-	offset.y = ((tex_index - 1) / 6) * 64;
-	y = 0;
-	while (y < rect.h)
+	offset = ((tex_index - 1) % 6) * 64
+		+ ((tex_index - 1) / 6) * 64 * wolf->tiles_wall.w;
+	y = -1;
+	while (++y < rect.h)
 	{
-		x = 0;
-		while (x < rect.w)
+		x = -1;
+		while (++x < rect.w)
 		{
+			color = 0x909090;
 			if (tex_index > 0)
 			{
-				color = wolf->tiles_wall.pixels[
-						offset.x + (int)(((float)x / rect.w) * 64.0)
-						+ (offset.y + (int)(((float)y / rect.h) * 64.0))
-						* wolf->tiles_wall.w];
+				color = wolf->tiles_wall.pixels[offset
+						+ (int)(((float)x / rect.w) * 64)
+						+ (int)(((float)y / rect.h) * 64) * wolf->tiles_wall.w];
 			}
-			else
-				color = 0x909090;
 			wolf->display.pixels[rect.x + x
-					+ (rect.y + y) * wolf->display.width] = color;
-			x++;
+				+ (rect.y + y) * wolf->display.width] = color;
 		}
-		y++;
 	}
 }
 
@@ -99,7 +95,7 @@ void	editor_map_display(t_wolf *wolf, t_editor_inf *edit)
 	}
 }
 
-int			cursor_in_rect(t_edit_cursor *cursor, SDL_Rect rect)
+int		cursor_in_rect(t_edit_cursor *cursor, SDL_Rect rect)
 {
 	if (cursor->x >= rect.x && cursor->x < rect.x + rect.w
 		&& cursor->y >= rect.y && cursor->y < rect.y + rect.h)

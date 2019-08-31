@@ -6,11 +6,17 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 03:38:54 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 21:13:55 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "init.h"
+#include "libft.h"
+
+static void	del_door_list(void *content, size_t content_size)
+{
+	free(content);
+}
 
 static int	wolf_init_display(t_display *display)
 {
@@ -19,8 +25,8 @@ static int	wolf_init_display(t_display *display)
 
 	display->win = SDL_CreateWindow("Wolf"
 		, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED
-		, display->width, display->height, SDL_WINDOW_OPENGL);
-		//| SDL_WINDOW_FULLSCREEN);
+		, display->width, display->height, SDL_WINDOW_OPENGL
+		| SDL_WINDOW_FULLSCREEN);
 	if (display->win == NULL)
 		return (1);
 	display->renderer = SDL_CreateRenderer(display->win, -1
@@ -43,18 +49,23 @@ static int	wolf_init_display(t_display *display)
 
 int			wolf_init(t_wolf *wolf)
 {
-	wolf->display.width = 900;
-	wolf->display.height = 800;
+	wolf->display.width = 1920;
+	wolf->display.height = 1080;
 	if (wolf_init_display(&wolf->display))
 		return (1);
 	TTF_Init();
 	if ((wolf->menu.font = TTF_OpenFont("texture/long_shot.ttf", 35)) == NULL)
 		return (1);
-	wolf->player.fov = 1.3472;
+	wolf->player.fov = 2.3472;
 	wolf->quit = 0;
 	wolf->tiles_wall.blend = 0xFF00FF;
 	if (ppm_load_4bpp("./texture/tile.pbm", &wolf->tiles_wall))
 		return (1);
+	if (wolf->tiles_wall.w != 384 || wolf->tiles_wall.h != 1216)
+	{
+		ft_putstr("invalid texture file\n");
+		return (wolf_quit(wolf) + 1);
+	}
 	wolf->state = state_menu;
 	wolf->menu.nb_entrie = 3;
 	wolf->menu.select = 0;
@@ -66,6 +77,7 @@ int			wolf_init(t_wolf *wolf)
 
 int			wolf_quit(t_wolf *wolf)
 {
+	ft_lstdel(&wolf->door_list, del_door_list);
 	SDL_DestroyTexture(wolf->display.texture);
 	SDL_DestroyRenderer(wolf->display.renderer);
 	SDL_DestroyWindow(wolf->display.win);

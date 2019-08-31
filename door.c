@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 04:34:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 23:40:07 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 20:42:10 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,14 @@ static void		open_door(t_wolf *wolf, t_vec2i pos)
 	pos.y /= 64;
 	if ((door_ptr = find_that_door(wolf, pos)) == NULL)
 	{
-		if (door_ptr = add_door_to_list(wolf, pos) == -1)
+		if ((door_ptr = add_door_to_list(wolf, pos)) == NULL)
 			return ;
-		printf("opening a door at [%d, %d]\n", pos.x, pos.y);
 	}
-	else
-		printf("a door is open at [%d, %d]\n", pos.x, pos.y);
+	if (door_ptr->state == door_state_closing)
+	{
+		door_ptr->state = door_state_opening;
+		door_ptr->timer = 64 - door_ptr->timer;
+	}
 }
 
 int				handle_action_event(t_wolf *wolf)
@@ -66,7 +68,7 @@ int				handle_action_event(t_wolf *wolf)
 
 	i = 0;
 	range = 20;
-	while(i < 4)
+	while (i < 4)
 	{
 		pos = wolf->player.pos;
 		pos.x += (i % 2 == 1 ? 0 : range - range * (int)(i / 2) * 2);
@@ -75,9 +77,10 @@ int				handle_action_event(t_wolf *wolf)
 			open_door(wolf, pos);
 		i++;
 	}
+	return (0);
 }
 
-static t_list *del_a_door(t_wolf *wolf, t_list *ptr, t_list *ptr_last)
+static t_list	*del_a_door(t_wolf *wolf, t_list *ptr, t_list *ptr_last)
 {
 	if (ptr_last == NULL)
 	{
@@ -99,24 +102,19 @@ void			handle_door_state(t_wolf *wolf)
 
 	ptr = wolf->door_list;
 	ptr_last = NULL;
-	while(ptr != NULL)
+	while (ptr != NULL && (door = (t_door*)ptr->content) != NULL)
 	{
-		door = (t_door*)ptr->content;
 		if (door->timer <= 0)
 		{
-			door->timer = 64;
+			door->timer = (door->state == door_state_opening) ? 200 : 64;
 			if (door->state == door_state_opening)
-			{
-				door->timer = 200;
 				door->state = door_state_open;
-			}
-			else if (door->state == door_state_open)
+			else if (door->state == door_state_open
+				|| door->state == door_state_waiting_for_player_to_move_is_ass)
 				door->state = door_state_closing;
-			else if (door->state == door_state_closing)
-			{
+			else
 				ptr = del_a_door(wolf, ptr, ptr_last);
-				continue ;
-			}
+			continue ;
 		}
 		door->timer--;
 		ptr_last = ptr;
