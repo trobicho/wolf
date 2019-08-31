@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 20:25:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 20:15:43 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 01:27:23 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,18 @@ int			handle_door_ray(t_wolf *wolf, t_ray *ray, t_map *map)
 		ray->wall_col -= timer;
 	}
 	return (99 + (side_save != ray->side ? 2 : 0));
+}
+
+int			handle_ray_in_door(t_wolf *wolf, t_ray *ray, t_map *map)
+{
+	if (is_found_door(map->pixels[ray->pos.x + ray->pos.y * map->w]))
+	{
+		ray_step(ray);
+		if (map->pixels[ray->pos.x + ray->pos.y * map->w] > 0)
+		{
+			calc_dist(ray);
+			return (101);
+		}
+	}
+	return (0);
 }

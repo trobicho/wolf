@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 13:24:06 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 17:38:26 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 01:24:53 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,11 @@ void		ray_cast(t_wolf *wolf)
 	{
 		create_ray(&ray, dir, col / (float)wolf->display.width
 			, (t_vec2f){wolf->player.pos.x / 64.0, wolf->player.pos.y / 64.0});
-		handle_ray_draw(wolf, &ray, col
-			, launch_one_ray(wolf, &ray, &wolf->map));
+		if (handle_ray_in_door(wolf, &ray, &wolf->map))
+			handle_ray_draw(wolf, &ray, col, 101);
+		else
+			handle_ray_draw(wolf, &ray, col
+				, launch_one_ray(wolf, &ray, &wolf->map));
 		teta_cur += teta_add;
 		col++;
 	}
