@@ -1,0 +1,40 @@
+
+int	handle_door_ray(t_ray *ray)
+	if (is_found_door(found))
+	{
+		t_vec2i pos = ray->pos;
+		if ((door = find_that_door(wolf, pos)) != NULL
+			&& door->state == door_state_open)
+			return (launch_one_ray(wolf, ray, map));
+		else
+		{
+			if (ray->side == 0)
+				ray->side_dist.x -= ray->delta_dist.x / 1.8;
+			else
+				ray->side_dist.y -= ray->delta_dist.y / 1.8;
+			ray_step(ray);
+			if (side_save == ray->side && ray->side == 0)
+				ray->origin.x += ray->step.x / 1.8;
+			if (side_save == ray->side && ray->side == 1)
+				ray->origin.y += ray->step.y / 1.8;
+			found = 99 + (side_save != ray->side ? 2 : 0);
+		}
+	}
+	calc_dist(ray);
+	if (door && door->state != door_state_close && side_save == ray->side)
+	{
+		float timer;
+		if (door->state == door_state_opening)
+			timer =  1.0 - door->timer / 64.0;
+		else if (door->state == door_state_closing)
+			timer =  door->timer / 64.0;
+		if (ray->wall_col < timer)
+		{
+			*ray = ray_copy;
+			return (launch_one_ray(wolf, ray, map));
+		}
+		else
+			ray->wall_col -= timer;
+	}
+	return (found + ray->side);
+}

@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 04:34:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 17:21:16 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 23:40:07 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,14 @@ void			handle_door_state(t_wolf *wolf)
 	while(ptr != NULL)
 	{
 		door = (t_door*)ptr->content;
-		door->timer--;
-		printf("timer = %d\n", door->timer);
 		if (door->timer <= 0)
 		{
+			door->timer = 64;
 			if (door->state == door_state_opening)
+			{
+				door->timer = 200;
 				door->state = door_state_open;
+			}
 			else if (door->state == door_state_open)
 				door->state = door_state_closing;
 			else if (door->state == door_state_closing)
@@ -115,8 +117,8 @@ void			handle_door_state(t_wolf *wolf)
 				ptr = del_a_door(wolf, ptr, ptr_last);
 				continue ;
 			}
-			door->timer = 64;
 		}
+		door->timer--;
 		ptr_last = ptr;
 		ptr = ptr->next;
 	}

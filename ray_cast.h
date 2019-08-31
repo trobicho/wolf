@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 13:24:11 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 20:47:55 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/30 23:15:12 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct	s_ray
 	t_vec2f	plane;
 	t_vec2i	step;
 	int		side;
+	float	add_float_step_to_dist;
 	float	dist;
 	float	wall_col;
 }				t_ray;

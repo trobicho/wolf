@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 13:24:06 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 06:17:10 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 00:05:33 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	create_ray(t_ray *ray, t_vec2f dir, float col, t_vec2f pos)
 	ray->wall_col = 0;
 	ray->step.x = 1.0;
 	ray->step.y = 1.0;
+	ray->add_float_step_to_dist = 0.0;
 	ray->pos = (t_vec2i){(int)ray->origin.x, (int)ray->origin.y};
 	if (ray->vec.x < 0)
 	{
@@ -55,6 +56,8 @@ int	launch_one_ray(t_wolf *wolf, t_ray *ray, t_map *map)
 			break ;
 		}
 	}
+	if (ray->dist <= 0.0)
+	calc_dist(ray);
 	return (found);
 }
 
@@ -80,6 +83,7 @@ void		ray_cast(t_wolf *wolf)
 			, (t_vec2f){wolf->player.pos.x / 64.0, wolf->player.pos.y / 64.0});
 		if ((found = launch_one_ray(wolf, &ray, &wolf->map)))
 		{
+			found += 1 - ray.side;
 			ray.dist *= 64.0;
 			if (found == -1)
 				draw_unicolor_slice(wolf, ray, col, 0x0);

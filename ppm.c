@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 18:08:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/29 20:32:52 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 02:05:29 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ int			ppm_load_1bpp_map(const char *file_path, t_ppm_tex_1bpp *map)
 		y++;
 	}
 	if (map->player_pos.x < 0 || map->player_pos.y < 0)
-		return (map_load_error(fd, map));
+	{
+		map->player_pos = (t_vec2i){64, 64};
+	}
 	close(fd);
 	return (0);
 }
