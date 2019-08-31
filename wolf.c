@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:18:33 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 16:33:55 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 02:37:34 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static int	game_loop(t_wolf *wolf)
 		player_move(&wolf->player);
 		handle_door_state(wolf);
 		physic_check(wolf);
+		if (wolf->consecutive_eject > 1)
+			printf("consecutive eject: %d \n", wolf->consecutive_eject);
 		render_one_frame(wolf);
 	}
 	return (0);
@@ -50,6 +52,7 @@ int			state_loop(t_wolf *wolf)
 
 int			is_found_door(int id)
 {
+	id %= 110;
 	if (id >= 99 && id <= 102)
 		return 99;
 	return (0);

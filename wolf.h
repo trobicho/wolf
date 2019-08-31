@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 16:34:37 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 02:20:51 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct	s_wolf
 	t_state			state;
 	t_menu			menu;
 	t_list			*door_list;
+	int				consecutive_eject;
 	int				quit;
 }				t_wolf;
 

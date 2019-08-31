@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 22:00:02 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/30 16:24:06 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/08/31 02:25:27 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void			physic_check(t_wolf *wolf)
 	t_vec2i	normal[4];
 	t_vec2i	pos;
 	int		i;
+	int		consecutive_eject = wolf->consecutive_eject;
 
 	i = 0;
 	while (i < 4)
@@ -97,9 +98,16 @@ void			physic_check(t_wolf *wolf)
 		if ((found = check_grid(&wolf->map, pos)))
 		{
 			if (physic_check_door(wolf, pos, found))
+			{
+				wolf->consecutive_eject++;
 				normal[i] = calc_normal(pos, &wolf->map, (int)((i % 2) == 0));
+			}
 		}
 		i++;
 	}
+	if (wolf->consecutive_eject == consecutive_eject)
+		wolf->consecutive_eject = 0;
+	else
+		wolf->consecutive_eject = consecutive_eject + 1;
 	apply_physic_to_player(wolf, normal);
 }
