@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/01 02:03:52 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 05:02:48 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 07:44:35 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static int	check_if_pass_through_door(t_ray *ray, float perp_dist)
 		ray->wall_col = 0.45 + d_proj;
 		if (ray->wall_col > 0.546)
 			ray->wall_col = 0.546;
+		else if (ray->wall_col < 0.458)
+			ray->wall_col = 0.458;
 		return (1);
 	}
 	return (0);
