@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:18:33 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 19:07:33 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 22:04:29 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static int	game_loop(t_wolf *wolf)
 		physic_check(wolf);
 		render_one_frame(wolf);
 	}
+	wolf->player.state = 0;
 	return (0);
 }
 

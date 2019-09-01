@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 20:25:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 03:35:58 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 21:55:42 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,13 +109,17 @@ int			handle_ray_in_door(t_wolf *wolf, t_ray *ray, t_map *map)
 	if (is_found_door(map->pixels[ray->pos.x + ray->pos.y * map->w]))
 	{
 		ray_step(ray);
-		if ((found = map->pixels[ray->pos.x + ray->pos.y * map->w]) > 0)
+		if ((found = map->pixels[ray->pos.x + ray->pos.y * map->w]) > 0
+			&& is_found_door(found) == 0)
 		{
 			calc_dist(ray);
 			if (search_perpendicular_to_ray(ray, map))
 				return (101);
 			return (found);
 		}
+		else if (is_found_door(found))
+			return (handle_door_ray(wolf, ray, map));
+		return (found);
 	}
 	return (0);
 }

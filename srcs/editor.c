@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 10:26:47 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 20:38:50 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 23:13:12 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	editor_init(t_wolf *wolf, t_editor_inf *edit_inf)
 	edit_inf->panel.y = 10;
 	edit_inf->panel.w = 128;
 	edit_inf->panel.h = 16 * 32;
-	edit_inf->save_select = 0;
+	edit_inf->button_select = 0;
 	edit_inf->max_id = 110;
 	return (0);
 }
@@ -73,18 +73,11 @@ static int	editor_click(t_wolf *wolf, t_editor_inf *edit)
 			edit->cursor.tex_select = edit->max_id
 				+ (edit->cursor.x - edit->panel.x) / 32 + 1;
 	}
-	if (cursor_in_rect(&edit->cursor, edit->save_button))
-	{
-		if (edit->cursor.state == cur_state_none && edit->save_select)
-		{
-			edit->save_select = 0;
-			save_map(&edit->map);
-		}
-		else if (edit->cursor.state == cur_state_left_click)
-			edit->save_select = 1;
-		return (0);
-	}
-	return (edit->save_select = 0);
+	if (handle_button_click(edit, edit->save_button, 1, &save_map) == -1)
+		return (-1);
+	if (handle_button_click(edit, edit->erase_button, 2, &erase_map) == -1)
+		return (-1);
+	return (0);
 }
 
 int			editor_state(t_wolf *wolf)
@@ -93,8 +86,6 @@ int			editor_state(t_wolf *wolf)
 
 	if (editor_init(wolf, &edit))
 		return (1);
-	printf("{%d, %d}\n", edit.map.player_pos.x, edit.map.player_pos.y);
-	printf("%d\n", edit.map.pixels[edit.map.player_pos.x, edit.map.player_pos.y]);
 	editor_display_reset(wolf);
 	SDL_ShowCursor(SDL_ENABLE);
 	while (!wolf->quit && wolf->state == state_editor)

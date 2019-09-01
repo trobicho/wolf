@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 18:19:27 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 20:45:53 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 23:07:54 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,23 @@ int		cursor_in_rect(t_edit_cursor *cursor, SDL_Rect rect)
 	if (cursor->x >= rect.x && cursor->x < rect.x + rect.w
 		&& cursor->y >= rect.y && cursor->y < rect.y + rect.h)
 		return (1);
+	return (0);
+}
+
+int		handle_button_click(t_editor_inf *edit, SDL_Rect button
+	, int state, int (*f)(t_map *map))
+{
+	if (cursor_in_rect(&edit->cursor, button))
+	{
+		if (edit->cursor.state == cur_state_none && edit->button_select == state)
+		{
+			edit->button_select = 0;
+			return (f(&edit->map));
+		}
+		else if (edit->cursor.state == cur_state_left_click)
+			edit->button_select = state;
+	}
+	else if (edit->button_select == state)
+		edit->button_select = 0;
 	return (0);
 }

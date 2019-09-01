@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/25 14:31:29 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 16:55:56 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 23:01:08 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,25 +59,21 @@ void		editor_display_hud(t_wolf *wolf, t_editor_inf *edit)
 {
 	int			i;
 	SDL_Rect	rect;
+	Uint32		color;
 
 	display_panel(wolf, edit);
 	edit->save_button = edit->panel;
 	edit->save_button.y += edit->panel.h + 20;
 	edit->save_button.h = 50;
-	if (edit->save_select)
-	{
-		if (edit->map.player_pos.x > 0 && edit->map.player_pos.y > 0)
-			draw_full_rect(&wolf->display, edit->save_button, 0x225500);
-		else
-			draw_full_rect(&wolf->display, edit->save_button, 0x552200);
-		draw_border(&wolf->display, edit->save_button, 0x0, 3);
-	}
-	else
-	{
-		if (edit->map.player_pos.x > 0 && edit->map.player_pos.y > 0)
-			draw_full_rect(&wolf->display, edit->save_button, 0x00AA00);
-		else
-			draw_full_rect(&wolf->display, edit->save_button, 0xAA0000);
-		draw_border(&wolf->display, edit->save_button, 0x0, 3);
-	}
+	edit->erase_button = edit->save_button;
+	edit->erase_button.y += edit->save_button.h + 20;
+	edit->erase_button.h = 50;
+	color = (edit->button_select == 1) ? 0x552200 : 0xAA0000;
+	if (edit->map.player_pos.x > 0 && edit->map.player_pos.y > 0)
+		color = (edit->button_select == 1) ? 0x225500 : 0x00AA00;
+	draw_full_rect(&wolf->display, edit->save_button, color);
+	draw_border(&wolf->display, edit->save_button, 0x0, 3);
+	color = (edit->button_select == 2) ? 0xFFC0CB : 0xAA5560;
+	draw_full_rect(&wolf->display, edit->erase_button, color);
+	draw_border(&wolf->display, edit->erase_button, 0x0, 3);
 }
