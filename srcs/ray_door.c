@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 20:25:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 21:55:42 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/02 01:21:20 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ int			handle_door_ray(t_wolf *wolf, t_ray *ray, t_map *map)
 	door = find_that_door(wolf, ray->pos);
 	launch_door_ray(ray);
 	calc_dist(ray);
-	if ((ray->side == 0 && ray->step.x < 0)
-		|| (ray->side == 1 && ray->step.y > 0))
+	if ((ray->side == 0 && ray->side == side_save && ray->step.x < 0)
+		|| (ray->side == 1 && ray->side == side_save && ray->step.y > 0))
 		ray->wall_col = 1.0 - ray->wall_col;
 	if (door && door->state != door_state_close && side_save == ray->side)
 	{
