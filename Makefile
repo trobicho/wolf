@@ -6,7 +6,7 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/08/31 21:53:01 by trobicho         ###   ########.fr        #
+#    Updated: 2019/09/01 02:08:28 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS_NAME	=	main.c \
 				ray_cast.c \
 				ray_utils.c \
 				ray_door.c \
+				ray_special_3d_door.c \
 				physic.c \
 				map.c \
 				map_alloc.c \

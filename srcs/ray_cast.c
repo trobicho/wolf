@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 13:24:06 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 01:24:53 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 01:54:17 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,23 +76,19 @@ void		ray_cast(t_wolf *wolf)
 {
 	float	teta_cur;
 	float	teta_add;
-	t_ray	ray;
 	t_vec2f	dir;
+	t_ray	ray;
 	int		col;
+	int		found;
 
 	col = 0;
-	dir.x = cos(wolf->player.angle);
-	dir.y = -sin(wolf->player.angle);
-	ray.plane.x = (dir.x * cos(M_PI / 2.0) + dir.y * -sin(M_PI / 2.0))
-		* (wolf->player.fov / M_PI);
-	ray.plane.y = (dir.y * cos(M_PI / 2.0) + dir.x * sin(M_PI / 2.0))
-		* (wolf->player.fov / M_PI);
+	dir = calc_ray_plane(wolf, &ray);
 	while (col < wolf->display.width)
 	{
 		create_ray(&ray, dir, col / (float)wolf->display.width
 			, (t_vec2f){wolf->player.pos.x / 64.0, wolf->player.pos.y / 64.0});
-		if (handle_ray_in_door(wolf, &ray, &wolf->map))
-			handle_ray_draw(wolf, &ray, col, 101);
+		if ((found = handle_ray_in_door(wolf, &ray, &wolf->map)))
+			handle_ray_draw(wolf, &ray, col, found);
 		else
 			handle_ray_draw(wolf, &ray, col
 				, launch_one_ray(wolf, &ray, &wolf->map));

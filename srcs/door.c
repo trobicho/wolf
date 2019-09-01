@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 04:34:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 20:42:10 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 02:39:13 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static t_door	*add_door_to_list(t_wolf *wolf, t_vec2i pos)
 	door.pos = pos;
 	door.state = door_state_opening;
 	door.timer = 64;
+	door.w = 0.4;
 	if (wolf->door_list == NULL)
 	{
 		wolf->door_list = ft_lstnew((void*)&door, sizeof(t_door));

@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 10:26:47 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 17:22:59 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 03:47:45 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int			editor_state(t_wolf *wolf)
 	if (editor_init(wolf, &edit))
 		return (1);
 	editor_display_reset(wolf);
+	SDL_ShowCursor(SDL_ENABLE);
 	while (!wolf->quit && wolf->state == state_editor)
 	{
 		editor_event(wolf, &edit.cursor);
@@ -103,5 +104,6 @@ int			editor_state(t_wolf *wolf)
 		SDL_RenderPresent(wolf->display.renderer);
 	}
 	free(edit.map.pixels);
+	SDL_ShowCursor(SDL_DISABLE);
 	return (0);
 }

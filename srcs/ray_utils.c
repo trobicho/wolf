@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 01:35:54 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 16:52:10 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 01:55:18 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,17 @@ int		handle_ray_search(t_wolf *wolf, t_ray *ray, t_map *map)
 		found = handle_door_ray(wolf, ray, map);
 	}
 	return (found);
+}
+
+t_vec2f	calc_ray_plane(t_wolf *wolf, t_ray *ray)
+{
+	t_vec2f	dir;
+
+	dir.x = cos(wolf->player.angle);
+	dir.y = -sin(wolf->player.angle);
+	ray->plane.x = (dir.x * cos(M_PI / 2.0) + dir.y * -sin(M_PI / 2.0))
+		* (wolf->player.fov / M_PI);
+	ray->plane.y = (dir.y * cos(M_PI / 2.0) + dir.x * sin(M_PI / 2.0))
+		* (wolf->player.fov / M_PI);
+	return (dir);
 }

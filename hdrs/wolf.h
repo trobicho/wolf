@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 18:33:50 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 02:38:35 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct	s_door
 {
 	t_vec2i			pos;
 	t_door_state	state;
+	float			w;
 	int				timer;
 }				t_door;
 

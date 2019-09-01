@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 21:13:55 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 03:46:57 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static int	wolf_init_display(t_display *display)
 	if ((display->pixels = malloc(sizeof(Uint32)
 					* display->width * display->height)) == NULL)
 		return (1);
+	SDL_ShowCursor(SDL_DISABLE);
 	SDL_SetRenderDrawColor(display->renderer, 0, 0, 0, 255);
 	SDL_RenderClear(display->renderer);
 	SDL_RenderPresent(display->renderer);
