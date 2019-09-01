@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 10:26:47 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 03:47:45 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 20:38:50 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@
 
 static int	editor_init(t_wolf *wolf, t_editor_inf *edit_inf)
 {
-	if (map_alloc(&edit_inf->map, 62, 62, 0))
+	if (map_alloc(&edit_inf->map, 64, 64, 0))
 		return (1);
 	ft_memset(edit_inf->map.pixels, 0, edit_inf->map.w * edit_inf->map.h);
+	map_copy(&edit_inf->map, &wolf->map);
 	edit_inf->cursor = (t_edit_cursor){0, 0, 0, 1};
 	edit_inf->map_box.h = wolf->display.height - 20;
 	edit_inf->map_box.h -= edit_inf->map_box.h % edit_inf->map.h;
@@ -92,6 +93,8 @@ int			editor_state(t_wolf *wolf)
 
 	if (editor_init(wolf, &edit))
 		return (1);
+	printf("{%d, %d}\n", edit.map.player_pos.x, edit.map.player_pos.y);
+	printf("%d\n", edit.map.pixels[edit.map.player_pos.x, edit.map.player_pos.y]);
 	editor_display_reset(wolf);
 	SDL_ShowCursor(SDL_ENABLE);
 	while (!wolf->quit && wolf->state == state_editor)

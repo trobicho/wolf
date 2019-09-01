@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 18:19:27 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 17:19:38 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/01 20:45:53 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	draw_tex(t_wolf *wolf, SDL_Rect rect, int tex_index)
 	Uint32	color;
 	int		offset;
 
+	tex_index %= 115;
 	offset = ((tex_index - 1) % 6) * 64
 		+ ((tex_index - 1) / 6) * 64 * wolf->tiles_wall.w;
 	y = -1;
