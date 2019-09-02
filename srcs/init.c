@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 22:30:04 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/02 18:41:37 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static int	wolf_init_display(t_display *display)
 	display->win = SDL_CreateWindow("Wolf"
 		, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED
 		, display->width, display->height, SDL_WINDOW_OPENGL);
-		//| SDL_WINDOW_FULLSCREEN);
 	if (display->win == NULL)
 		return (1);
 	display->renderer = SDL_CreateRenderer(display->win, -1
@@ -50,12 +49,8 @@ static int	wolf_init_display(t_display *display)
 
 int			wolf_init(t_wolf *wolf)
 {
-	/*
-	wolf->display.width = 1920;
-	wolf->display.height = 1080;
-	*/
-	wolf->display.width = 800;
-	wolf->display.height = 700;
+	wolf->display.width = 1000;
+	wolf->display.height = 800;
 	if (wolf_init_display(&wolf->display))
 		return (1);
 	TTF_Init();

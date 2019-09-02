@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/01 02:03:52 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 07:44:35 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/02 20:31:27 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static int	check_if_pass_through_door(t_ray *ray, float perp_dist)
 	return (0);
 }
 
-int			ray_special_3d_door(t_wolf *wolf, t_ray *ray, t_map *map, float timer)
+int			ray_special_3d_door(t_wolf *wolf, t_ray *ray, t_map *map
+	, float timer)
 {
 	float	perp_dist;
 

@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 13:24:06 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 01:54:17 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/02 20:34:32 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ int			launch_one_ray(t_wolf *wolf, t_ray *ray, t_map *map)
 
 void		ray_cast(t_wolf *wolf)
 {
-	float	teta_cur;
-	float	teta_add;
 	t_vec2f	dir;
 	t_ray	ray;
 	int		col;
@@ -92,7 +90,6 @@ void		ray_cast(t_wolf *wolf)
 		else
 			handle_ray_draw(wolf, &ray, col
 				, launch_one_ray(wolf, &ray, &wolf->map));
-		teta_cur += teta_add;
 		col++;
 	}
 }
