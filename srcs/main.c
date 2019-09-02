@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:54:36 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 20:24:45 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/02 02:47:52 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ int	main(int ac, char **av)
 	ft_memset(&wolf, 0x0, sizeof(wolf));
 	if (wolf_init(&wolf))
 		return (1);
-	if (init_map(&wolf.map))
+	if (ac != 2 && init_map(&wolf.map))
+		return (1);
+	if (ac == 2 && ppm_load_1bpp_map(av[1], &wolf.map))
 		return (1);
 	wolf.player.pos.x = wolf.map.w * 64 / 2;
 	wolf.player.pos.y = wolf.map.h * 64 / 2;
