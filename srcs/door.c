@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 04:34:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 02:39:13 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/03 06:39:13 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int				handle_action_event(t_wolf *wolf)
 	t_vec2i	pos;
 	int		range;
 	int		i;
+	int		found;
 
 	i = 0;
 	range = 20;
@@ -74,8 +75,11 @@ int				handle_action_event(t_wolf *wolf)
 		pos = wolf->player.pos;
 		pos.x += (i % 2 == 1 ? 0 : range - range * (int)(i / 2) * 2);
 		pos.y += (i % 2 == 0 ? 0 : range - range * (int)(i / 2) * 2);
-		if (is_found_door(check_grid(&wolf->map, pos)))
+		if (is_found_door((found = check_grid(&wolf->map, pos))))
 			open_door(wolf, pos);
+		else if (found > 0 && found % 2 == 1)
+			open_secret_door(wolf, pos, (t_vec2i){pos.x - wolf->player.pos.x
+					, pos.y - wolf->player.pos.y});
 		i++;
 	}
 	return (0);

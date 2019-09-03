@@ -6,7 +6,7 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/09/01 02:08:28 by trobicho         ###   ########.fr        #
+#    Updated: 2019/09/03 06:08:32 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRCS_NAME	=	main.c \
 				init.c \
 				wolf.c \
 				door.c \
+				secret_door.c \
 				player.c \
 				render.c \
 				ray_cast.c \

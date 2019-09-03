@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 20:25:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/02 01:21:20 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/03 07:49:46 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,13 @@ static int	search_perpendicular_to_ray(t_ray *ray, t_map *map)
 	return (map->pixels[pos_perp.x + pos_perp.y * map->w]);
 }
 
-void		launch_door_ray(t_ray *ray)
+void		launch_div_ray(t_ray *ray, float div)
 {
-	float	div;
-
-	div = 1.8;
 	if (ray->side == 0)
 	{
-		if (ray->side_dist.x - ray->delta_dist.x / div < ray->side_dist.y)
-			ray->add_float_step_to_dist = ray->step.x - ray->step.x / div;
+		if (ray->side_dist.x - ray->delta_dist.x * (1.0 - div)
+			< ray->side_dist.y)
+			ray->add_float_step_to_dist = ray->step.x * div;
 		else
 		{
 			ray->pos.y += ray->step.y;
@@ -41,13 +39,14 @@ void		launch_door_ray(t_ray *ray)
 	}
 	else if (ray->side == 1)
 	{
-		if (ray->side_dist.x < ray->side_dist.y - ray->delta_dist.y / div)
+		if (ray->side_dist.x < ray->side_dist.y
+			- ray->delta_dist.y * (1.0 -  div))
 		{
 			ray->pos.x += ray->step.x;
 			ray->side = 0;
 		}
 		else
-			ray->add_float_step_to_dist = ray->step.y - ray->step.y / div;
+			ray->add_float_step_to_dist = ray->step.y * div;
 	}
 }
 
@@ -83,7 +82,7 @@ int			handle_door_ray(t_wolf *wolf, t_ray *ray, t_map *map)
 
 	side_save = ray->side;
 	door = find_that_door(wolf, ray->pos);
-	launch_door_ray(ray);
+	launch_div_ray(ray, 0.45);
 	calc_dist(ray);
 	if ((ray->side == 0 && ray->side == side_save && ray->step.x < 0)
 		|| (ray->side == 1 && ray->side == side_save && ray->step.y > 0))

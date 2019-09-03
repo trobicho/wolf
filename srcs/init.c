@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/02 18:41:37 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/03 06:27:42 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ static int	wolf_init_display(t_display *display)
 
 int			wolf_init(t_wolf *wolf)
 {
-	wolf->display.width = 1000;
-	wolf->display.height = 800;
+	wolf->display.width = 920;
+	wolf->display.height = 600;
 	if (wolf_init_display(&wolf->display))
 		return (1);
 	TTF_Init();
@@ -72,12 +72,14 @@ int			wolf_init(t_wolf *wolf)
 	wolf->menu.w = 200;
 	wolf->menu.h = 300;
 	wolf->door_list = NULL;
+	wolf->secret_door_list = NULL;
 	return (0);
 }
 
 int			wolf_quit(t_wolf *wolf)
 {
 	ft_lstdel(&wolf->door_list, del_door_list);
+	ft_lstdel(&wolf->secret_door_list, del_door_list);
 	SDL_DestroyTexture(wolf->display.texture);
 	SDL_DestroyRenderer(wolf->display.renderer);
 	SDL_DestroyWindow(wolf->display.win);

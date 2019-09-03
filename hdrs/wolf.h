@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:59:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 02:38:35 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/03 06:40:31 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,13 @@ typedef enum	e_door_state
 	door_state_waiting_for_player_to_move_is_ass,
 }				t_door_state;
 
+typedef enum	e_secret_door_state
+{
+	secret_door_state_block = 0,
+	secret_door_state_moving,
+	secret_door_state_block_by_player,
+}				t_secret_door_state;
+
 typedef struct	s_door
 {
 	t_vec2i			pos;
@@ -52,6 +59,14 @@ typedef struct	s_door
 	float			w;
 	int				timer;
 }				t_door;
+
+typedef struct	s_secret_door
+{
+	t_vec2i				pos;
+	t_vec2i				dir;
+	t_secret_door_state	state;
+	int					timer;
+}				t_secret_door;
 
 typedef struct	s_player
 {
@@ -93,12 +108,16 @@ typedef struct	s_wolf
 	t_state			state;
 	t_menu			menu;
 	t_list			*door_list;
+	t_list			*secret_door_list;
 	int				quit;
 }				t_wolf;
 
 int				state_loop(t_wolf *wolf);
 int				is_found_door(int id);
 t_door			*find_that_door(t_wolf *wolf, t_vec2i pos);
+t_secret_door	*find_that_secret_door(t_wolf *wolf, t_vec2i pos);
 int				handle_action_event(t_wolf *wolf);
 void			handle_door_state(t_wolf *wolf);
+void			handle_secret_door_state(t_wolf *wolf);
+void			open_secret_door(t_wolf *wolf, t_vec2i pos, t_vec2i dir);
 #endif

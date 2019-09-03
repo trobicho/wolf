@@ -6,10 +6,13 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 01:35:54 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/02 01:18:02 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/03 06:12:06 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "wolf.h"
+#include "map.h"
+#include "vector.h"
 #include "ray_utils.h"
 
 void	calc_dist(t_ray *ray)
