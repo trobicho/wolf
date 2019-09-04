@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/25 14:31:29 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 23:01:08 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/04 23:19:32 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ static void	display_panel(t_wolf *wolf, t_editor_inf *edit)
 		if (i == 55)
 			rect.y = edit->panel.y + edit->panel.h - rect.h;
 		if (i == 54)
+		{
 			draw_tex(wolf, rect, 110);
+			rect.x += rect.w;
+			draw_tex(wolf, rect, 109);
+		}
 		else if (i >= 55)
 			draw_tex(wolf, rect, 111 + (i - 55));
 		else

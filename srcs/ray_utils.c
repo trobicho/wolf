@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 01:35:54 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/03 06:12:06 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/03 21:41:25 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,21 @@ void	ray_step(t_ray *ray)
 
 int		handle_ray_search(t_wolf *wolf, t_ray *ray, t_map *map)
 {
-	int		found;
-	t_door	*door;
+	int				found;
+	t_secret_door	*sdoor;
 
-	door = NULL;
+	sdoor = NULL;
 	if ((found = map->pixels[ray->pos.x + ray->pos.y * map->w]) == 0)
 		return (0);
 	if (found < 0)
 		return (-1);
 	if (is_found_door(found))
-	{
 		found = handle_door_ray(wolf, ray, map);
+	else if (found % 2 == 1)
+	{
+		if ((sdoor = find_that_secret_door(wolf, ray->pos)) != NULL)
+			found = handle_secret_door_ray(wolf, ray, map, sdoor);
+		found -= 1 - found % 2;
 	}
 	return (found);
 }

@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 20:25:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/03 07:49:46 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/03 21:54:56 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void		launch_div_ray(t_ray *ray, float div)
 			ray->add_float_step_to_dist = ray->step.x * div;
 		else
 		{
+			ray->side_dist.y += ray->delta_dist.y;
 			ray->pos.y += ray->step.y;
 			ray->side = 1;
 		}
@@ -42,6 +43,7 @@ void		launch_div_ray(t_ray *ray, float div)
 		if (ray->side_dist.x < ray->side_dist.y
 			- ray->delta_dist.y * (1.0 -  div))
 		{
+			ray->side_dist.x += ray->delta_dist.x;
 			ray->pos.x += ray->step.x;
 			ray->side = 0;
 		}

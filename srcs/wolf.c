@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:18:33 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/03 06:23:43 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/04 00:51:28 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_secret_door	*find_that_secret_door(t_wolf *wolf, t_vec2i pos)
 	{
 		pos_door = ((t_secret_door*)ptr->content)->pos;
 		if (pos.x == pos_door.x && pos.y == pos_door.y)
-			return ((t_door*)ptr->content);
+			return ((t_secret_door*)ptr->content);
 		ptr = ptr->next;
 	}
 	return (NULL);

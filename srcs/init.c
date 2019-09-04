@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/03 06:27:42 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/04 01:47:31 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	wolf_init_display(t_display *display)
 int			wolf_init(t_wolf *wolf)
 {
 	wolf->display.width = 920;
-	wolf->display.height = 600;
+	wolf->display.height = 700;
 	if (wolf_init_display(&wolf->display))
 		return (1);
 	TTF_Init();
