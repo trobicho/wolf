@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:18:33 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/04 00:51:28 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/06 21:46:53 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int				state_loop(t_wolf *wolf)
 
 int				is_found_door(int id)
 {
-	if (id >= 99 && id <= 102)
+	if (id == 25 || (id >= 99 && id <= 106))
 		return (99);
 	return (0);
 }

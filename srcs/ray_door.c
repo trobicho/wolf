@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 20:25:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/03 21:54:56 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/06 21:45:13 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int			handle_door_ray(t_wolf *wolf, t_ray *ray, t_map *map)
 	t_door	*door;
 	int		side_save;
 	float	timer;
+	int		found;
 
 	side_save = ray->side;
 	door = find_that_door(wolf, ray->pos);
@@ -100,7 +101,9 @@ int			handle_door_ray(t_wolf *wolf, t_ray *ray, t_map *map)
 			timer = 1.0;
 		return (ray_special_3d_door(wolf, ray, map, timer));
 	}
-	return (99 + (side_save != ray->side ? 2 : 0));
+	if ((found = map->pixels[ray->pos.x + ray->pos.y * map->w]) == 101)
+		found = 99;
+	return ((side_save != ray->side ? 101 : found));
 }
 
 int			handle_ray_in_door(t_wolf *wolf, t_ray *ray, t_map *map)
