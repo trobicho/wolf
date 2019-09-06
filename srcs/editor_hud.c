@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/25 14:31:29 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/04 23:19:32 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/05 20:50:23 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,6 @@ static void	display_panel(t_wolf *wolf, t_editor_inf *edit)
 		}
 		if (i == 55)
 			rect.y = edit->panel.y + edit->panel.h - rect.h;
-		if (i == 54)
-		{
-			draw_tex(wolf, rect, 110);
-			rect.x += rect.w;
-			draw_tex(wolf, rect, 109);
-		}
 		else if (i >= 55)
 			draw_tex(wolf, rect, 111 + (i - 55));
 		else
@@ -73,7 +67,7 @@ void		editor_display_hud(t_wolf *wolf, t_editor_inf *edit)
 	edit->erase_button.y += edit->save_button.h + 20;
 	edit->erase_button.h = 50;
 	color = (edit->button_select == 1) ? 0x552200 : 0xAA0000;
-	if (edit->map.player_pos.x > 0 && edit->map.player_pos.y > 0)
+	if (edit->map.player_pos.x >= 0 && edit->map.player_pos.y >= 0)
 		color = (edit->button_select == 1) ? 0x225500 : 0x00AA00;
 	draw_full_rect(&wolf->display, edit->save_button, color);
 	draw_border(&wolf->display, edit->save_button, 0x0, 3);

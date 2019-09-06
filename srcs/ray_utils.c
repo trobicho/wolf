@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 01:35:54 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/03 21:41:25 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/05 20:59:43 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		handle_ray_search(t_wolf *wolf, t_ray *ray, t_map *map)
 		return (-1);
 	if (is_found_door(found))
 		found = handle_door_ray(wolf, ray, map);
-	else if (found % 2 == 1)
+	else if (found % 2 == 0)
 	{
 		if ((sdoor = find_that_secret_door(wolf, ray->pos)) != NULL)
 			found = handle_secret_door_ray(wolf, ray, map, sdoor);

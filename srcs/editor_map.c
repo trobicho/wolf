@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 01:38:20 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 16:59:37 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/05 20:57:52 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	apply_to_map_buffer_and_potentially_update_cursor(
 		apply = 0;
 	if (apply > 110)
 	{
-		if (edit->map.player_pos.x > 0 && edit->map.player_pos.y > 0)
+		if (edit->map.player_pos.x >= 0 && edit->map.player_pos.y >= 0)
 		{
 			edit->map.pixels[edit->map.player_pos.x
 				+ edit->map.player_pos.y * edit->map.w] = 0;
@@ -34,7 +34,11 @@ static void	apply_to_map_buffer_and_potentially_update_cursor(
 	}
 	else if (edit->map.pixels[x + y * edit->map.w] > 110)
 		edit->map.player_pos = (t_vec2i){-1, -1};
-	edit->map.pixels[x + y * edit->map.w] = apply;
+	if (apply == 109)
+		edit->map.pixels[x + y * edit->map.w]
+			+= (edit->map.pixels[x + y * edit->map.w] % 2) * 2 - 1;
+	else
+		edit->map.pixels[x + y * edit->map.w] = apply;
 }
 
 void		place_to_map(t_editor_inf *edit)
