@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:58:18 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/01 23:14:56 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 02:18:31 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	erase_map(t_map *map)
 {
 	ft_memset(map->pixels, 0x0, sizeof(*map->pixels) * map->w * map->h);
 	map->player_pos = (t_vec2i){-1, -1};
+	return (0);
 }
 
 int	map_id_add(t_map *map, int x, int y, Uint8 id)

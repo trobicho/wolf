@@ -6,12 +6,12 @@
 #    By: trobicho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/17 14:52:42 by trobicho          #+#    #+#              #
-#    Updated: 2019/09/03 06:08:32 by trobicho         ###   ########.fr        #
+#    Updated: 2019/09/07 02:13:51 by trobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	gcc
-CFLAGS	= 	-g #-Wall -Wextra -Werror
+CFLAGS	= 	-g -Wall -Wextra -Werror
 
 SRCS_PATH	=	./srcs
 HDRS_PATH	=	./hdrs

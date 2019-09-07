@@ -6,14 +6,14 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 22:00:02 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 21:23:34 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 02:18:10 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "physic.h"
 #include "map.h"
 
-static t_vec2i	calc_normal(t_vec2i pos, t_map *map, int x)
+static t_vec2i	calc_normal(t_vec2i pos, int x)
 {
 	t_vec2i	normal;
 	int		dx;
@@ -107,7 +107,7 @@ void			physic_check(t_wolf *wolf)
 		if ((found = check_grid(&wolf->map, pos)))
 		{
 			if (physic_check_door(wolf, pos, found, 0))
-				normal[i] = calc_normal(pos, &wolf->map, (int)((i % 2) == 0));
+				normal[i] = calc_normal(pos, (int)((i % 2) == 0));
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 19:56:38 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/02 20:30:59 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 02:18:47 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ static void	calc_rect(t_map *map, t_map *cpy, SDL_Rect *rect, t_vec2i *pos)
 
 int			map_alloc(t_map *map, int w, int h, int add_border)
 {
-	int p;
-
 	map->w = w + (add_border == 0 ? 0 : 2);
 	map->h = h + (add_border == 0 ? 0 : 2);
 	if ((map->pixels = malloc(sizeof(*map->pixels) * map->w * map->h)) == NULL)

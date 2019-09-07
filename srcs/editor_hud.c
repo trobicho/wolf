@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/25 14:31:29 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/06 19:14:45 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 02:20:33 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ void		editor_display_reset(t_wolf *wolf)
 
 void		editor_display_hud(t_wolf *wolf, t_editor_inf *edit)
 {
-	int			i;
-	SDL_Rect	rect;
 	Uint32		color;
 
 	display_panel(wolf, edit);

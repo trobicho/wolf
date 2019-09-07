@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 04:34:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/05 21:00:56 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 02:14:59 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static t_door	*add_door_to_list(t_wolf *wolf, t_vec2i pos)
 static void		open_door(t_wolf *wolf, t_vec2i pos)
 {
 	t_door	*door_ptr;
-	t_list	lptr;
 
 	pos.x /= 64;
 	pos.y /= 64;

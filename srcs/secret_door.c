@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/03 04:39:14 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/07 01:53:20 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 02:15:16 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static t_list			*del_a_secret_door(t_wolf *wolf, t_list *ptr
 void					open_secret_door(t_wolf *wolf, t_vec2i pos, t_vec2i dir)
 {
 	t_secret_door	*sdoor_ptr;
-	t_list			lptr;
 
 	pos.x /= 64;
 	pos.y /= 64;

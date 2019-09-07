@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 18:08:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 21:24:03 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 02:20:58 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,6 @@ int			ppm_load_1bpp_map(const char *file_path, t_ppm_tex_1bpp *map)
 int			ppm_write_1bpp(const char *file_path, t_ppm_tex_1bpp *tex)
 {
 	int				fd;
-	int				x;
-	int				y;
-	int				color;
 
 	ft_putstr(file_path);
 	ft_putstr("\n");

@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/01 02:03:52 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/07 01:56:41 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 02:16:26 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int			ray_special_3d_door(t_wolf *wolf, t_ray *ray, t_map *map
 	return (found);
 }
 
-int			handle_secret_door_ray(t_wolf *wolf, t_ray *ray, t_map *map
+int			handle_secret_door_ray(t_ray *ray, t_map *map
 	, t_secret_door *sdoor)
 {
 	int		found;

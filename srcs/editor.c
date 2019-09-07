@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 10:26:47 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/07 00:31:29 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 02:20:05 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,6 @@ static int	editor_init(t_wolf *wolf, t_editor_inf *edit_inf)
 
 static int	editor(t_wolf *wolf, t_editor_inf *edit)
 {
-	SDL_Rect	rect;
-	SDL_Rect	map_rect;
-
 	if (edit->cursor.state == cur_state_left_click
 		|| edit->cursor.state == cur_state_right_click)
 	{
@@ -58,7 +55,7 @@ static int	editor(t_wolf *wolf, t_editor_inf *edit)
 	return (0);
 }
 
-static int	editor_click(t_wolf *wolf, t_editor_inf *edit)
+static int	editor_click(t_editor_inf *edit)
 {
 	int				tex_select;
 
@@ -91,7 +88,7 @@ int			editor_state(t_wolf *wolf)
 	while (!wolf->quit && wolf->state == state_editor)
 	{
 		editor_event(wolf, &edit.cursor);
-		editor_click(wolf, &edit);
+		editor_click(&edit);
 		editor(wolf, &edit);
 		editor_display_hud(wolf, &edit);
 		render_texture_apply(wolf);

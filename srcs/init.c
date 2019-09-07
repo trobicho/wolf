@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:45:23 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/07 00:35:26 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 02:14:43 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,12 @@
 
 static void	del_door_list(void *content, size_t content_size)
 {
+	(void)content_size;
 	free(content);
 }
 
 static int	wolf_init_display(t_display *display)
 {
-	int	w;
-	int	h;
-
 	display->win = SDL_CreateWindow("Wolf"
 		, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED
 		, display->width, display->height, SDL_WINDOW_OPENGL);
