@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 13:54:36 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/02 02:47:52 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 04:41:38 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	main(int ac, char **av)
 	if (wolf_init(&wolf))
 		return (1);
 	if (ac != 2 && init_map(&wolf.map))
-		return (1);
+		return (wolf_quit(&wolf));
 	if (ac == 2 && ppm_load_1bpp_map(av[1], &wolf.map))
-		return (1);
+		return (wolf_quit(&wolf));
 	wolf.player.pos.x = wolf.map.w * 64 / 2;
 	wolf.player.pos.y = wolf.map.h * 64 / 2;
 	wolf.player.angle = 0.0;
@@ -40,6 +40,7 @@ int	main(int ac, char **av)
 		return (1);
 	return (wolf_quit(&wolf));
 }
+
 /*
 __attribute__((destructor))
 void end()

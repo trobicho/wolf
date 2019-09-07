@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 05:53:57 by trobicho          #+#    #+#             */
-/*   Updated: 2019/08/31 17:09:27 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 02:47:08 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 int	ppm_4bbp_load_error(int fd, t_ppm_tex_4bpp *tex)
 {
 	free(tex->pixels);
+	tex->pixels = NULL;
 	close(fd);
 	ft_putstr("invalid tex file\n");
 	return (-1);
@@ -25,6 +26,7 @@ int	ppm_4bbp_load_error(int fd, t_ppm_tex_4bpp *tex)
 int	map_load_error(int fd, t_ppm_tex_1bpp *map)
 {
 	free(map->pixels);
+	map->pixels = NULL;
 	close(fd);
 	ft_putstr("invalid map file\n");
 	return (-1);

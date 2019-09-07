@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 14:04:49 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/07 02:21:12 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 02:51:47 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int		ppm_parse_header(int fd, ssize_t *w, ssize_t *h)
 	ssize_t	size;
 
 	size = read(fd, magic_buf, 3);
-	if (magic_buf[0] != 'P' || magic_buf[1] != '6' || !ft_isspace(magic_buf[2]))
+	if (size < 3 || magic_buf[0] != 'P' || magic_buf[1] != '6'
+		|| !ft_isspace(magic_buf[2]))
 		return (-1);
 	if ((*w = read_unsigned_nb_until_space(fd, 10000)) == -1)
 		return (-1);
