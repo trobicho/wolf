@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 01:38:20 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/06 19:11:33 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/06 23:48:05 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ static void	apply_to_map_buffer_and_potentially_update_cursor(
 	if (apply == 109)
 	{
 		if (edit->map.pixels[x + y * edit->map.w] > 0)
-		edit->map.pixels[x + y * edit->map.w]
-			+= (edit->map.pixels[x + y * edit->map.w] % 2) * 2 - 1;
+			edit->map.pixels[x + y * edit->map.w] +=
+				(edit->map.pixels[x + y * edit->map.w] % 2) * 2 - 1;
 	}
 	else
 		edit->map.pixels[x + y * edit->map.w] = apply;

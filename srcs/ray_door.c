@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 20:25:10 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/06 21:45:13 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 01:46:26 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void		launch_div_ray(t_ray *ray, float div)
 	else if (ray->side == 1)
 	{
 		if (ray->side_dist.x < ray->side_dist.y
-			- ray->delta_dist.y * (1.0 -  div))
+			- ray->delta_dist.y * (1.0 - div))
 		{
 			ray->side_dist.x += ray->delta_dist.x;
 			ray->pos.x += ray->step.x;
@@ -92,9 +92,8 @@ int			handle_door_ray(t_wolf *wolf, t_ray *ray, t_map *map)
 		ray->wall_col = 1.0 - ray->wall_col;
 	if (door && door->state != door_state_close && side_save == ray->side)
 	{
-		if (door->state == door_state_opening)
-			timer = 1.0 - door->timer / 64.0;
-		else if (door->state == door_state_closing)
+		timer = 1.0 - door->timer / 64.0;
+		if (door->state == door_state_closing)
 			timer = door->timer / 64.0;
 		else if (door->state == door_state_open
 			|| door->state == door_state_waiting_for_player_to_move_is_ass)

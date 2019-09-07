@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/01 02:03:52 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/06 21:47:26 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 01:56:41 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,13 @@ static int	check_if_pass_through_door(t_ray *ray, float perp_dist)
 	return (0);
 }
 
-static int	check_if_pass_through_secret_door(t_ray *ray, t_secret_door *sdoor)
+static int	calc_if_pass_through_secret_door(t_ray *ray, t_secret_door *sdoor
+	, float timer)
 {
-	float	factor;
 	float	d_proj;
+	float	factor;
 	float	perp_dist;
-	float	timer;
-	int		invert_wall_col = 0;
 
-	if (ray->side == 0 && ray->step.x * sdoor->dir.y < 0
-		|| ray->side == 1 && ray->step.y * sdoor->dir.x > 0)
-	{
-		timer = sdoor->timer / 64.0;
-		if (ray->wall_col < timer)
-			return (0);
-	}
-	else
-	{
-		timer = 1.0 - sdoor->timer / 64.0;
-		invert_wall_col = 1;
-		if (ray->wall_col > timer)
-			return (0);
-	}
 	if (ray->side == 0)
 		factor = ft_abs(ray->vec.x);
 	else
@@ -73,8 +58,35 @@ static int	check_if_pass_through_secret_door(t_ray *ray, t_secret_door *sdoor)
 		ray->dist += perp_dist;
 		ray->side = 1 - ray->side;
 		ray->wall_col = d_proj;
+		return (0);
+	}
+	return (1);
+}
+
+static int	check_if_pass_through_secret_door(t_ray *ray, t_secret_door *sdoor)
+{
+	float	timer;
+	int		invert_wall_col;
+
+	if ((ray->side == 0 && ray->step.x * sdoor->dir.y < 0)
+		|| (ray->side == 1 && ray->step.y * sdoor->dir.x > 0))
+	{
+		timer = sdoor->timer / 64.0;
+		invert_wall_col = 0;
+		if (ray->wall_col < timer)
+			return (0);
+	}
+	else
+	{
+		timer = 1.0 - sdoor->timer / 64.0;
+		invert_wall_col = 1;
+		if (ray->wall_col > timer)
+			return (0);
+	}
+	if (calc_if_pass_through_secret_door(ray, sdoor, timer) == 0)
+	{
 		if (invert_wall_col)
-			ray->wall_col = 1.0 - d_proj;
+			ray->wall_col = 1.0 - ray->wall_col;
 		return (0);
 	}
 	return (1);
@@ -134,10 +146,7 @@ int			handle_secret_door_ray(t_wolf *wolf, t_ray *ray, t_map *map
 	{
 		calc_dist(ray);
 		if (check_if_pass_through_secret_door(ray, sdoor))
-		{
-			found = 0;
-			ray->dist = 0;
-		}
+			return ((int)(ray->dist = 0));
 	}
 	return (found);
 }

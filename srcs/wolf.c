@@ -6,7 +6,7 @@
 /*   By: trobicho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:18:33 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/06 21:46:53 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 01:12:53 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static int		game_loop(t_wolf *wolf)
 
 int				state_loop(t_wolf *wolf)
 {
+	SDL_ShowCursor(SDL_DISABLE);
 	while (!wolf->quit)
 	{
 		if (wolf->state == state_game)
@@ -53,7 +54,7 @@ int				state_loop(t_wolf *wolf)
 
 int				is_found_door(int id)
 {
-	if (id == 25 || (id >= 99 && id <= 106))
+	if (id >= 99 && id <= 106)
 		return (99);
 	return (0);
 }

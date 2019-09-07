@@ -6,7 +6,7 @@
 /*   By: trobicho <trobicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/03 04:39:14 by trobicho          #+#    #+#             */
-/*   Updated: 2019/09/03 07:06:44 by trobicho         ###   ########.fr       */
+/*   Updated: 2019/09/07 01:53:20 by trobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ static t_list			*del_a_secret_door(t_wolf *wolf, t_list *ptr
 	return (ptr_last);
 }
 
-
 void					open_secret_door(t_wolf *wolf, t_vec2i pos, t_vec2i dir)
 {
 	t_secret_door	*sdoor_ptr;
@@ -77,29 +76,25 @@ void					open_secret_door(t_wolf *wolf, t_vec2i pos, t_vec2i dir)
 		return ;
 	if ((sdoor_ptr = find_that_secret_door(wolf, pos)) == NULL)
 	{
-		if (wolf->map.pixels[(pos.x + dir.x) + (pos.y  + dir.y) * wolf->map.w])
+		if (wolf->map.pixels[(pos.x + dir.x) + (pos.y + dir.y) * wolf->map.w])
 			return ;
 		if ((sdoor_ptr = add_secret_door_to_list(wolf, pos, dir)) == NULL)
 			return ;
 	}
 }
 
-static int				secret_door_move(t_wolf *wolf, t_secret_door *sdoor)
+static void				secret_door_move(t_wolf *wolf, t_secret_door *sdoor)
 {
 	t_vec2i	pos;
 
-	pos = sdoor->pos;
-	pos.x += sdoor->dir.x;
-	pos.y += sdoor->dir.y;
-	if (pos.x == 0 || pos.y == 0
-		|| pos.x == wolf->map.w - 1 || pos.y == wolf->map.h - 1)
-		sdoor->state = secret_door_state_block;
-	if (wolf->map.pixels[pos.x + pos.y * wolf->map.w] > 0)
+	pos = (t_vec2i){sdoor->pos.x + sdoor->dir.x, sdoor->pos.y + sdoor->dir.y};
+	if ((pos.x <= 0 || pos.y <= 0
+		|| pos.x >= wolf->map.w - 1 || pos.y >= wolf->map.h - 1)
+			|| wolf->map.pixels[pos.x + pos.y * wolf->map.w] > 0)
 	{
 		if (sdoor->timer == 64)
 			sdoor->state = secret_door_state_block;
-		else
-			sdoor->timer++;
+		sdoor->timer++;
 	}
 	else if (pos.x == (int)wolf->player.pos.x / 64
 		&& pos.y == (int)wolf->player.pos.y / 64)
@@ -107,16 +102,13 @@ static int				secret_door_move(t_wolf *wolf, t_secret_door *sdoor)
 		sdoor->state = secret_door_state_block_by_player;
 		sdoor->timer += (sdoor->timer < 64) ? 1 : 0;
 	}
-	else
+	else if (--sdoor->timer <= 0)
 	{
-		if (--sdoor->timer <= 0)
-		{
-			wolf->map.pixels[pos.x + pos.y * wolf->map.w] = 
-				wolf->map.pixels[sdoor->pos.x + sdoor->pos.y * wolf->map.w];
-			wolf->map.pixels[sdoor->pos.x + sdoor->pos.y * wolf->map.w] = 0;
-			sdoor->pos = pos;
-			sdoor->timer = 64;
-		}
+		wolf->map.pixels[pos.x + pos.y * wolf->map.w] =
+			wolf->map.pixels[sdoor->pos.x + sdoor->pos.y * wolf->map.w];
+		wolf->map.pixels[sdoor->pos.x + sdoor->pos.y * wolf->map.w] = 0;
+		sdoor->pos = pos;
+		sdoor->timer = 64;
 	}
 }
 
@@ -136,7 +128,6 @@ void					handle_secret_door_state(t_wolf *wolf)
 			ptr = del_a_secret_door(wolf, ptr, ptr_last);
 			continue;
 		}
-		printf("secret door timer = %d\n", sdoor->timer);
 		ptr_last = ptr;
 		ptr = ptr->next;
 	}
